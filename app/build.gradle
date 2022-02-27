@@ -6,6 +6,10 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'androidx.navigation.safeargs.kotlin'
 }
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 
 android {
     compileSdk 32
@@ -16,6 +20,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "F_API_KEY", localProperties['fApiKey']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
