@@ -1,0 +1,7 @@
+
+Ekotlin:S1481"-Remove this unused "msg_from" local variable.(é„Äš
+Fkotlin:S1481")Remove this unused "msgs" local variable.(œµ˜úÿÿÿÿ
+;kotlin:S1874!"#Deprecated code should not be used.(¿®êÓ
+lkotlin:S6306J"TUsing "GlobalScope" here leads to the breaking of structured concurrency principles.(á¥ €
+4kotlin:S6310J"Avoid hardcoded dispatchers.(á¥ €
+jkotlin:S117"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(é„Äš

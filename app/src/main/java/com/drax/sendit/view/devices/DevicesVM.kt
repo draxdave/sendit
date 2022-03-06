@@ -1,4 +1,4 @@
-package com.drax.sendit.view.main
+package com.drax.sendit.view.devices
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -14,7 +14,7 @@ import com.drax.sendit.view.util.ResViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val devicesRepository: DevicesRepository, private val pushRepository: PushRepository) : ResViewModel() {
+class DevicesVM(private val devicesRepository: DevicesRepository, private val pushRepository: PushRepository) : ResViewModel() {
     val versionText="Version ALPHA.${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 
 

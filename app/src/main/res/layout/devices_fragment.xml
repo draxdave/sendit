@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <variable name="model" type="com.drax.sendit.view.main.MainViewModel" />
+        <variable name="model" type="com.drax.sendit.view.devices.DevicesVM" />
     </data>
 
     <LinearLayout

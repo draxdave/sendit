@@ -1,4 +1,4 @@
-package com.drax.sendit.view.main.adapter
+package com.drax.sendit.view.devices.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -2,11 +2,31 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/HomeFragment">
+    app:startDestination="@id/qrFragment">
 
     <fragment
-        android:id="@+id/HomeFragment"
-        android:name="com.drax.sendit.view.main.MainFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/main_fragment" />
+        android:id="@+id/devicesFragment"
+        android:name="com.drax.sendit.view.devices.DevicesFragment"
+        android:label="@string/fragment_devices"
+        tools:layout="@layout/devices_fragment" />
+
+    <fragment
+        android:id="@+id/qrFragment"
+        android:name="com.drax.sendit.view.qr.QrFragment"
+        android:label="@string/fragment_qr"
+        tools:layout="@layout/qr_fragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.drax.sendit.view.profile.ProfileFragment"
+        android:label="@string/fragment_profile"
+        tools:layout="@layout/profile_fragment" />
+
+    <fragment
+        android:id="@+id/transmissionsFragment"
+        android:name="com.drax.sendit.view.transmissions.TransmissionsFragment"
+        android:label="@string/fragment_transmitted"
+        tools:layout="@layout/transmissions_fragment" />
+
+
 </navigation>
