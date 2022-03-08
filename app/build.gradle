@@ -21,6 +21,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "F_API_KEY", localProperties['fApiKey']
+        buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
