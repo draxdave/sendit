@@ -2,11 +2,12 @@ package com.drax.sendit.domain.repo
 
 import androidx.lifecycle.LiveData
 import com.drax.sendit.data.db.model.Device
+import kotlinx.coroutines.flow.Flow
 
 interface DevicesRepository{
-    suspend fun addDevice(device: Device):Long
-    suspend fun removeDevice(deviceId: String)
-    suspend fun updateDevice(device: Device)
-    fun getAllDevices(): LiveData<List<Device>>
+    fun addDevice(device: Device):Long
+    fun removeDevice(deviceId: String)
+    fun updateDevice(device: Device)
+    fun getAllDevices(): Flow<List<Device>>
     fun getAllDevicesSync():List<Device>
 }

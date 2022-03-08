@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.drax.sendit.databinding.DevicesFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.devices.adapter.DevicesAdapter
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,9 +26,10 @@ class DevicesFragment : BaseFragment<DevicesFragmentBinding,DevicesVM>(DevicesFr
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel.devices.observe(viewLifecycleOwner){
-            it?.let {
-                adapter.submitList(it)
+        lifecycleScope.launchWhenCreated {
+
+            viewModel.devices.collect {
+                    adapter.submitList(it)
             }
         }
     }

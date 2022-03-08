@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "devices")
 data class Device (
     @PrimaryKey
-    var instanceId: String,
+    val id: Long,
 
-    var name: String,
-    var addedDate: Long = System.currentTimeMillis()
+    val instanceId: String,
+    val name: String,
+    val iconUrl: String,
+    val addedDate: Long = System.currentTimeMillis()
 )

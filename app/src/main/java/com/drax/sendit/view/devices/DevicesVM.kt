@@ -12,6 +12,9 @@ import com.drax.sendit.domain.repo.DevicesRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.view.util.ResViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DevicesVM(private val devicesRepository: DevicesRepository, private val pushRepository: PushRepository) : ResViewModel() {
@@ -30,7 +33,16 @@ class DevicesVM(private val devicesRepository: DevicesRepository, private val pu
         }
     }
 
-    val devices = devicesRepository.getAllDevices()
+    private val _devices = MutableStateFlow<List<Device>>(emptyList())
+    val devices:StateFlow<List<Device>> = _devices
+
+    init {
+        viewModelScope.launch(Dispatchers.Default) {
+            devicesRepository.getAllDevices().collect {
+                _devices.value = it
+            }
+        }
+    }
 
     fun removeDevice(id:String){
         async{ devicesRepository.removeDevice(id) }
