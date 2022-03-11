@@ -18,13 +18,19 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.drax.sendit.view.profile.ProfileFragment"
+        android:name="com.drax.sendit.view.login.LoginFragment"
         android:label="@string/fragment_profile"
         tools:layout="@layout/profile_fragment" />
 
     <fragment
         android:id="@+id/transmissionsFragment"
         android:name="com.drax.sendit.view.transmissions.TransmissionsFragment"
+        android:label="@string/fragment_transmitted"
+        tools:layout="@layout/transmissions_fragment" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.drax.sendit.view.login.LoginFragment"
         android:label="@string/fragment_transmitted"
         tools:layout="@layout/transmissions_fragment" />
 

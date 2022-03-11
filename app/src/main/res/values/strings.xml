@@ -42,4 +42,5 @@
     <string name="fragment_devices">Devices</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_transmitted">Transmitted</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
 </resources>

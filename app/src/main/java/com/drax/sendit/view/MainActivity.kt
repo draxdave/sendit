@@ -4,17 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.drax.sendit.R
-import com.drax.sendit.view.profile.ProfileFragment.Companion.REQ_ONE_TAP
-import com.drax.sendit.view.qr.QrVM
+import com.drax.sendit.view.login.LoginFragment.Companion.REQ_ONE_TAP
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {

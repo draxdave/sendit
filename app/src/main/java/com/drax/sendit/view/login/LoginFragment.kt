@@ -1,19 +1,19 @@
-package com.drax.sendit.view.profile
+package com.drax.sendit.view.login
 
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.drax.sendit.BuildConfig
+import com.drax.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.databinding.ProfileFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
-import com.drax.sendit.view.login.LoginVM
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment: BaseFragment<ProfileFragmentBinding, LoginVM>(ProfileFragmentBinding::inflate) {
+class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
     override val viewModel: LoginVM by viewModel()
 
     private val TAG = javaClass.canonicalName
@@ -25,7 +25,9 @@ class ProfileFragment: BaseFragment<ProfileFragmentBinding, LoginVM>(ProfileFrag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchOneTapSignIn()
+        binding.signInGoogle.setOnClickListener {
+            launchOneTapSignIn()
+        }
     }
 
     private fun launchOneTapSignIn(){
