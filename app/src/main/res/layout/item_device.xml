@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="device" type="com.drax.sendit.data.db.model.Device"/>
+        <variable name="deviceWrapper" type="com.drax.sendit.view.DeviceWrapper"/>
+        <import type="android.view.View"/>
     </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/cvItem"
@@ -22,10 +23,11 @@
                 android:src="@drawable/ic_baseline_phonelink_64"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:img="@{deviceWrapper.device.iconUrl}"
                 android:layout_margin="@dimen/_16sdp"
                 android:padding="@dimen/_16sdp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <ImageView
                 android:id="@+id/remove"
@@ -33,7 +35,30 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/ic_close_white_24dp"
                 android:padding="@dimen/_16sdp"
+                app:tint="@color/black"
+                android:visibility="@{deviceWrapper.device.thisDevice ? View.GONE: View.VISIBLE}"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/thisDevice"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="11sp"
+                android:textColor="@color/colorPrimaryText"
+                android:background="@drawable/tag"
+                android:text="@string/this_device"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:layout_gravity="start"
+                android:layout_width="wrap_content"
+                android:paddingEnd="@dimen/_16sdp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -44,8 +69,8 @@
                 android:maxLines="2"
                 android:minLines="2"
                 android:layout_margin="16dp"
-                android:text="@{device.name}"
-                android:gravity="right"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:text="@{deviceWrapper.device.name}"
                 app:layout_constraintTop_toBottomOf="@id/icon" />
 
             <TextView
@@ -54,10 +79,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="16dp"
+                style="@style/body_light"
                 android:textSize="10sp"
+                android:padding="8dp"
                 android:layout_marginEnd="16dp"
-                android:gravity="right"
-                android:text="@{String.valueOf(device.addedDate)}"
+                android:text="@{@string/devices_item_device_added_date(String.valueOf(deviceWrapper.addedDate))}"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

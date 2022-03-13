@@ -8,9 +8,11 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.BuildConfig
+import com.drax.sendit.R
 import com.drax.sendit.data.model.User
 import com.drax.sendit.data.model.UserType
 import com.drax.sendit.databinding.LoginFragmentBinding
@@ -73,7 +75,16 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
     }
 
     private fun enterTheApp() {
-        findNavController().navigate(LoginFragmentDirections.toDevices())
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.main_graph,true)
+            .setLaunchSingleTop(true)
+            .build()
+        
+        findNavController().navigate(
+            findNavController().graph.startDestination,
+            null,
+            navOptions
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

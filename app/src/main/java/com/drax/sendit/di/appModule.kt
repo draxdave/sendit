@@ -28,7 +28,7 @@ val appModule = module {
     single                     {   get<AppDB>().registryDao() }
 
     viewModel                  {  DevicesVM(get(),get())  }
-    viewModel                  {  QrVM()  }
+    viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransmissionsVM()  }
     viewModel                  {  LoginVM(get())  }
     viewModel                  {  ProfileVM()  }

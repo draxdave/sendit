@@ -15,9 +15,9 @@ data class Device (
     val addedDate: Long = System.currentTimeMillis()
 ){
     companion object {
-        fun thisDevice(name: String, token: String) = Device(
+        fun thisDevice(name: String, instanceId: String) = Device(
             id = 0,
-            instanceId = token,
+            instanceId = instanceId,
             name = name,
             iconUrl = "https://sendit-app.s3.ap-southeast-1.amazonaws.com/public/android+(2).png",
             isThisDevice = true

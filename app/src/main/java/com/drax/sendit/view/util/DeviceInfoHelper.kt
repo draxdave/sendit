@@ -2,6 +2,7 @@ package com.drax.sendit.view.util
 
 import android.annotation.SuppressLint
 import android.os.Build.*
+import java.util.*
 
 object DeviceInfoHelper {
 
@@ -12,9 +13,8 @@ object DeviceInfoHelper {
     val id: String? = ID
 
     private val deviceModel
-        @SuppressLint("DefaultLocale")
         get() = capitalize(
-            if (MODEL.toLowerCase().startsWith(MANUFACTURER.toLowerCase())) {
+            if (MODEL.lowercase(Locale.getDefault()).startsWith(MANUFACTURER.lowercase(Locale.getDefault()))) {
                 MODEL
             } else {
                 "$MANUFACTURER $MODEL"
@@ -23,7 +23,7 @@ object DeviceInfoHelper {
 
     private fun capitalize(str: String) = str.apply {
         if (isNotEmpty()) {
-            first().run { if (isLowerCase()) toUpperCase() }
+            first().run { if (isLowerCase()) uppercaseChar() }
         }
     }
 

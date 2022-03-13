@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.databinding.ItemDeviceBinding
+import com.drax.sendit.view.DeviceWrapper
 
-class DevicesAdapter(private val onRemove : (String) -> Unit) : ListAdapter<Device, RecyclerView.ViewHolder>(
+class DevicesAdapter(private val onRemove : (Long) -> Unit) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
     diffCallback
 )
 {
@@ -23,22 +24,22 @@ class DevicesAdapter(private val onRemove : (String) -> Unit) : ListAdapter<Devi
 
     companion object {
         //This diff callback informs the PagedListAdapter how to compute list differences when new
-        private val diffCallback = object : DiffUtil.ItemCallback<Device>() {
-            override fun areItemsTheSame(oldItem: Device, newItem: Device): Boolean =
-                oldItem.instanceId == newItem.instanceId
+        private val diffCallback = object : DiffUtil.ItemCallback<DeviceWrapper>() {
+            override fun areItemsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
+                oldItem.device.id == newItem.device.id
 
-            override fun areContentsTheSame(oldItem: Device, newItem: Device): Boolean =
+            override fun areContentsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
                 oldItem == newItem
         }
     }
 
 }
-class DeviceViewHolder( val binding : ItemDeviceBinding ,val onRemove : (String) -> Unit ) : RecyclerView.ViewHolder(binding.root) {
+class DeviceViewHolder(private val binding : ItemDeviceBinding, val onRemove : (Long) -> Unit ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindTo(deviceItem : Device) {
+    fun bindTo(deviceItem : DeviceWrapper) {
         with(binding) {
-            device = deviceItem
-            remove.setOnClickListener { onRemove(deviceItem.instanceId) }
+            deviceWrapper = deviceItem
+            remove.setOnClickListener { onRemove(deviceItem.device.id) }
             executePendingBindings()
         }
     }

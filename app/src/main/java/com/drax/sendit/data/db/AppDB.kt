@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.db.model.Registry
+import com.drax.sendit.view.util.DeviceInfoHelper
 
 /**
  * Main database description.
@@ -17,7 +18,7 @@ import com.drax.sendit.data.db.model.Registry
         Device::class,
         Registry::class
     ],
-    version = 2,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDB : RoomDatabase() {
@@ -37,13 +38,13 @@ abstract class AppDB : RoomDatabase() {
                     .fallbackToDestructiveMigration()
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
-                            fillInDb(context.applicationContext)
+                            fillInDb(context.applicationContext,db as AppDB)
                         }
                     }).build()
             }
             return instance!!
         }
-        fun getIfExists(): AppDB?{
+        private fun getIfExists(): AppDB?{
             if(instance !=  null)
                 return  instance
             return null
@@ -51,7 +52,8 @@ abstract class AppDB : RoomDatabase() {
         /**
          * fill database with tests data
          */
-        private fun fillInDb(context: Context) { // Test data will be added here
+        @Suppress("UNUSED_PARAMETER")
+        private fun fillInDb(context: Context, db: AppDB) { // Test data will be added here
         }
     }
 }

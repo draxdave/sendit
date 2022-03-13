@@ -36,14 +36,28 @@ class SenditFirebaseService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         println("Firebase registrationToken=$token FCM")
+        updateDeviceInstanceId(token)
+    }
+
+    @Suppress("EXPERIMENTAL_API_USAGE")
+    private fun updateDeviceInstanceId(instanceId: String) {
         GlobalScope.launch(Dispatchers.IO) {
-            devicesRepository.updateDevice(
-                Device.thisDevice(
-                    name = DeviceInfoHelper.model,
-                    token = token
+
+            try{
+                val thisDevice: Device = devicesRepository.getAllDevicesSync()
+                    .first { it.isThisDevice }
+                devicesRepository.updateDevice( thisDevice.copy(instanceId = instanceId))
+
+            }catch (e: NoSuchElementException){
+                devicesRepository.addDevice(
+                    Device.thisDevice(
+                        name = DeviceInfoHelper.model,
+                        instanceId = instanceId
+                    )
                 )
-            )
-            registryRepository.setFirebaseId(token)
+            }
+
+            registryRepository.setFirebaseId(instanceId)
         }
     }
 

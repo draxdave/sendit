@@ -1,12 +1,12 @@
 package com.drax.sendit.view.devices
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.drax.sendit.databinding.DevicesFragmentBinding
+import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.devices.adapter.DevicesAdapter
 import kotlinx.coroutines.flow.collect
@@ -18,50 +18,27 @@ class DevicesFragment : BaseFragment<DevicesFragmentBinding,DevicesVM>(DevicesFr
     override val viewModel: DevicesVM by viewModel()
 
     private val adapter : DevicesAdapter by lazy { DevicesAdapter { id ->
-
+        viewModel.removeDevice(id)
     }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
 
-
-        lifecycleScope.launchWhenCreated {
-
-            viewModel.devices.collect {
-                    adapter.submitList(it)
-            }
+    private fun initView() {
+        binding.list.apply {
+            layoutManager = GridLayoutManager(requireContext(), 3)
+            adapter = this@DevicesFragment.adapter
+        }
+        viewModel.devices.observe(viewLifecycleOwner) {
+            adapter.submitList(it.map {device->
+                DeviceWrapper(device)
+            })
+            if (it.isEmpty())
+                viewModel.addSelfDevice()
         }
     }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.SEND_SMS),
-                100
-            )
-
-            checkActivation()
-        }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        checkActivation()
-    }
-
-
-    private fun checkActivation() {
-//        model.permissionGranted.postValue(checkPermissions())
-    }
-
 
 }

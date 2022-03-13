@@ -33,11 +33,7 @@
         android:id="@+id/loginFragment"
         android:name="com.drax.sendit.view.login.LoginFragment"
         android:label="@string/fragment_login"
-        tools:layout="@layout/login_fragment" >
-        <action android:id="@+id/toDevices"
-            app:destination="@id/devicesFragment"
-            app:popUpTo="@id/main_graph"/>
-    </fragment>
+        tools:layout="@layout/login_fragment" />
 
 
 </navigation>
