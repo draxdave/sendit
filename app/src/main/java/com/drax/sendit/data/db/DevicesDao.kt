@@ -21,7 +21,7 @@ interface  DevicesDao {
     fun delete(device: Device)
 
     @Query("DELETE FROM devices WHERE id = :id")
-    fun deleteById(id: String)
+    fun deleteById(id: Long)
 
     @Update
     fun update(device: Device)

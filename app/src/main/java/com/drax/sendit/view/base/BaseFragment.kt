@@ -15,7 +15,6 @@ abstract class  BaseFragment<out T: ViewDataBinding, E : ViewModel>(
     private val inflate:Inflate<T>
 ) : Fragment(){
 
-    //    val viewModel: E by viewModel()
     protected abstract val viewModel: E
 
     private var _binding: T? = null
@@ -32,8 +31,8 @@ abstract class  BaseFragment<out T: ViewDataBinding, E : ViewModel>(
         }.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 

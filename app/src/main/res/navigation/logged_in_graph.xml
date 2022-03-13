@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/profileFragment">
+    android:id="@+id/main_graph"
+    app:startDestination="@id/devicesFragment">
 
     <fragment
         android:id="@+id/devicesFragment"
@@ -18,7 +19,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.drax.sendit.view.login.LoginFragment"
+        android:name="com.drax.sendit.view.profile.ProfileFragment"
         android:label="@string/fragment_profile"
         tools:layout="@layout/profile_fragment" />
 
@@ -31,8 +32,12 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.drax.sendit.view.login.LoginFragment"
-        android:label="@string/fragment_transmitted"
-        tools:layout="@layout/transmissions_fragment" />
+        android:label="@string/fragment_login"
+        tools:layout="@layout/login_fragment" >
+        <action android:id="@+id/toDevices"
+            app:destination="@id/devicesFragment"
+            app:popUpTo="@id/main_graph"/>
+    </fragment>
 
 
 </navigation>

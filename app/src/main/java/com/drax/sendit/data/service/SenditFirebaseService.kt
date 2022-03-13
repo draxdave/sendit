@@ -1,7 +1,10 @@
 package com.drax.sendit.data.service
 
 import android.content.Intent
-import com.drax.sendit.data.repo.RegistryRepository
+import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.domain.repo.DevicesRepository
+import com.drax.sendit.domain.repo.RegistryRepository
+import com.drax.sendit.view.util.DeviceInfoHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -16,6 +19,7 @@ import org.koin.android.ext.android.inject
 class SenditFirebaseService : FirebaseMessagingService() {
 
     private val registryRepository: RegistryRepository by inject()
+    private val devicesRepository: DevicesRepository by inject()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println(Gson().toJson(remoteMessage.data))
@@ -33,6 +37,12 @@ class SenditFirebaseService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         println("Firebase registrationToken=$token FCM")
         GlobalScope.launch(Dispatchers.IO) {
+            devicesRepository.updateDevice(
+                Device.thisDevice(
+                    name = DeviceInfoHelper.model,
+                    token = token
+                )
+            )
             registryRepository.setFirebaseId(token)
         }
     }

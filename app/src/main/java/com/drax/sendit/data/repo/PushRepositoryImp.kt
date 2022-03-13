@@ -10,9 +10,14 @@ import com.drax.sendit.domain.network.model.FirebaseSendResponse
 import com.drax.sendit.domain.network.model.Invitation
 import com.drax.sendit.domain.repo.DevicesRepository
 import com.drax.sendit.domain.repo.PushRepository
+import com.drax.sendit.domain.repo.RegistryRepository
 import retrofit2.Response
+import javax.inject.Inject
 
-class PushRepositoryImp(private val push: ApiService, private val registryRepository: RegistryRepository, private val devicesRepository: DevicesRepository)
+class PushRepositoryImp @Inject constructor(
+    private val push: ApiService,
+    private val registryRepository: RegistryRepository,
+    private val devicesRepository: DevicesRepository)
     : PushRepository {
 
     override suspend fun sendInvitation(destinationId: String) : Resource<FirebaseSendResponse>? {

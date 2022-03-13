@@ -11,5 +11,16 @@ data class Device (
     val instanceId: String,
     val name: String,
     val iconUrl: String,
+    val isThisDevice: Boolean,
     val addedDate: Long = System.currentTimeMillis()
-)
+){
+    companion object {
+        fun thisDevice(name: String, token: String) = Device(
+            id = 0,
+            instanceId = token,
+            name = name,
+            iconUrl = "https://sendit-app.s3.ap-southeast-1.amazonaws.com/public/android+(2).png",
+            isThisDevice = true
+        )
+    }
+}

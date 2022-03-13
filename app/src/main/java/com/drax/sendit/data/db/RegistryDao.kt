@@ -3,6 +3,7 @@ package com.drax.sendit.data.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.drax.sendit.data.db.model.Registry
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RegistryDao {
@@ -11,10 +12,10 @@ interface RegistryDao {
     fun add(registry: Registry)
 
     @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 " )
-    fun getRegistryValue(key:Int):LiveData<String?>
+    fun getRegistryValue(key:String):Flow<String?>
 
     @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 " )
-    fun getRegistryValueSync(key:Int):String?
+    fun getRegistryValueSync(key:String):String?
 
     @Update
     fun updateRegistry(registry: Registry)

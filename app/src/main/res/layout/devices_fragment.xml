@@ -8,84 +8,10 @@
         <variable name="model" type="com.drax.sendit.view.devices.DevicesVM" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/container"
-        android:background="@drawable/curved_outline_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/form"
+            android:background="@color/colorPrimaryText"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/launcher"
-                android:elevation="7dp"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="64dp"
-                android:background="@color/colorPrimaryText"
-                app:srcCompat="@mipmap/ic_launcher_round"
-                android:layout_width="125dp"
-                android:layout_height="125dp"/>
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/infoBtn"
-                android:elevation="7dp"
-                android:foreground="?attr/selectableItemBackground"
-                app:contentPadding="@dimen/_8sdp"
-                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="@dimen/_16sdp"
-                android:background="@color/colorPrimaryText"
-                app:srcCompat="@drawable/ic_outline_info_24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_margin="@dimen/_16sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/moreOptions"
-                android:src="@drawable/ic_baseline_more_vert_24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/launcher"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="@string/app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:id="@+id/stateIcon"
-                app:layout_constraintTop_toBottomOf="@id/launcher"
-                app:layout_constraintStart_toEndOf="@id/launcher"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:src="@{model.serviceStarted?@drawable/done:@drawable/warning}"
-                android:layout_width="32dp"
-                android:layout_height="32dp"/>
-
-            <TextView
-                android:id="@+id/message"
-                app:layout_constraintEnd_toStartOf="@id/stateIcon"
-                android:layout_margin="@dimen/_16sdp"
-                android:text="@{model.stateMessage}"
-                app:layout_constraintTop_toTopOf="@id/stateIcon"
-                app:layout_constraintBottom_toBottomOf="@id/stateIcon"
-                android:textColor="@color/gray"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/list_title"
@@ -95,10 +21,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_16sdp"
-                app:layout_constraintTop_toBottomOf="@id/message"
-                app:layout_constraintRight_toRightOf="parent"
+                style="@style/heading"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                  />
 
+            <View
+                style="@style/HorizontalLine"
+                app:layout_constraintTop_toBottomOf="@id/list_title"
+                android:id="@+id/title_divider"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_width="match_parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -113,9 +47,8 @@
             <TextView
                 android:text="@string/no_connected_devices"
                 android:textStyle="italic"
-                android:alpha="0.5"
-                android:textColor="@color/colorPrimary"
-                android:visibility="@{model.devices.size()>0? View.GONE: View.VISIBLE}"
+                android:alpha="0.7"
+                android:visibility="@{model.devices.size() > 0 ? View.GONE: View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/centerGuide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,36 +57,12 @@
                 app:drawableBottomCompat="@drawable/ic_baseline_phonelink_off_24"
                 app:drawableTint="@color/colorPrimary" />
 
-            <ImageView
-                android:id="@+id/connectDeviceBtn"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="32dp"
-                android:padding="16dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:background="@drawable/circle_filled_accent"
-                android:src="@drawable/add_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-            <TextView
-                android:id="@+id/versionText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="@dimen/_16sdp"
-                android:text="@{model.versionText}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:textColor="@color/gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/centerGuide"
                 app:layout_constraintGuide_percent=".5"
                 android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="0dp"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
 </layout>

@@ -8,8 +8,23 @@
         <variable name="model" type="com.drax.sendit.view.qr.QrVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/colorPrimaryText"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/connectDeviceBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="32dp"
+            android:padding="16dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@drawable/circle_filled_accent"
+            android:src="@drawable/ic_add_device_qr_24"
+            android:layout_width="128dp"
+            android:layout_height="128dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

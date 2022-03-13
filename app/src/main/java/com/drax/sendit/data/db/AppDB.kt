@@ -17,7 +17,7 @@ import com.drax.sendit.data.db.model.Registry
         Device::class,
         Registry::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDB : RoomDatabase() {

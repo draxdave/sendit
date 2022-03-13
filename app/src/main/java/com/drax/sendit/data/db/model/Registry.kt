@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Registry (
 
     @PrimaryKey(autoGenerate = false)
-    var key               : Int,
+    var key               : String,
     var value              : String?,
-    var modifiedAt              : Long=System.currentTimeMillis()
+    var modifiedAt              : Long = System.currentTimeMillis()
 )

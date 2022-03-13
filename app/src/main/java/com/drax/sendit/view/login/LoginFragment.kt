@@ -1,12 +1,19 @@
 package com.drax.sendit.view.login
 
+import android.app.Activity
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.drax.sendit.BuildConfig
+import com.drax.sendit.data.model.User
+import com.drax.sendit.data.model.UserType
 import com.drax.sendit.databinding.LoginFragmentBinding
-import com.drax.sendit.databinding.ProfileFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -21,6 +28,53 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
+    private val signInActivityResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+        checkResult(it)
+    }
+
+    private val signupActivityResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+        checkResult(it)
+    }
+
+    private fun checkResult(result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            val credential = Identity.getSignInClient(requireActivity()).getSignInCredentialFromIntent(result.data)
+            val idToken = credential.googleIdToken
+            val username = credential.id
+            val password = credential.password
+            when {
+                idToken != null || password != null -> {
+                    // Got a saved username and password. Use them to authenticate
+                    // with your backend.
+                    viewModel.login(
+                        User(
+                            id = "",
+                            fullname = credential.displayName ?: credential.givenName + " " + credential.familyName,
+                            avatar = credential.profilePictureUri.toString(),
+                            email = username,
+                            birthDate = "",
+                            phone = "",
+                            type = UserType.SignedIn,
+                            isServiceEnabled = true,
+                            language = User.appDefaultLocale.language
+                        )
+                    )
+                    enterTheApp()
+
+                    Log.d("TAG", "Got password.")
+                }
+                else -> {
+                    // Shouldn't happen.
+                    Log.d("TAG", "No ID token or password!")
+                }
+            }
+        }
+    }
+
+    private fun enterTheApp() {
+        findNavController().navigate(LoginFragmentDirections.toDevices())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,6 +82,8 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         binding.signInGoogle.setOnClickListener {
             launchOneTapSignIn()
         }
+
+//        launchOneTapSignIn()
     }
 
     private fun launchOneTapSignIn(){
@@ -51,9 +107,10 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener(requireActivity()) { result ->
                 try {
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP,
-                        null, 0, 0, 0, null)
+                    signInActivityResult.launch(
+                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    )
+
                 } catch (e: IntentSender.SendIntentException) {
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
@@ -81,9 +138,10 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         oneTapClient.beginSignIn(signUpRequest)
             .addOnSuccessListener(requireActivity()) { result ->
                 try {
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP,
-                        null, 0, 0, 0,null)
+                    signupActivityResult.launch(
+                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    )
+
                 } catch (e: IntentSender.SendIntentException) {
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
@@ -94,8 +152,9 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             }
     }
 
-
-    companion object {
-        const val REQ_ONE_TAP = 100
+    override fun onDetach() {
+        super.onDetach()
+        signInActivityResult.unregister()
+        signupActivityResult.unregister()
     }
 }

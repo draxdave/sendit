@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface DevicesRepository{
     fun addDevice(device: Device):Long
-    fun removeDevice(deviceId: String)
+    fun removeDevice(deviceId: Long)
     fun updateDevice(device: Device)
     fun getAllDevices(): Flow<List<Device>>
     fun getAllDevicesSync():List<Device>

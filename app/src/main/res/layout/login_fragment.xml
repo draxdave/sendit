@@ -51,6 +51,16 @@
             android:layout_height="48dp"
             app:drawableStartCompat="@drawable/ic_google_icon" />
 
-
+        <TextView
+            android:id="@+id/versionText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/_16sdp"
+            android:text="@{model.versionText}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/gray"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

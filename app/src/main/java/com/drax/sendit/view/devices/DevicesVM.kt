@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DevicesVM(private val devicesRepository: DevicesRepository, private val pushRepository: PushRepository) : ResViewModel() {
-    val versionText="Version ALPHA.${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 
 
     val permissionGranted = MutableLiveData(false)
@@ -44,7 +43,7 @@ class DevicesVM(private val devicesRepository: DevicesRepository, private val pu
         }
     }
 
-    fun removeDevice(id:String){
+    fun removeDevice(id:Long){
         async{ devicesRepository.removeDevice(id) }
     }
 
