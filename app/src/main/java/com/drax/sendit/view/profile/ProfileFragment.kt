@@ -13,8 +13,8 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment: BaseFragment<ProfileFragmentBinding, LoginVM>(ProfileFragmentBinding::inflate) {
-    override val viewModel: LoginVM by viewModel()
+class ProfileFragment: BaseFragment<ProfileFragmentBinding, ProfileVM>(ProfileFragmentBinding::inflate) {
+    override val viewModel: ProfileVM by viewModel()
 
     private val TAG = javaClass.canonicalName
 
@@ -25,7 +25,10 @@ class ProfileFragment: BaseFragment<ProfileFragmentBinding, LoginVM>(ProfileFrag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launchOneTapSignIn()
+        initView()
+    }
+
+    private fun initView() {
     }
 
     private fun launchOneTapSignIn(){

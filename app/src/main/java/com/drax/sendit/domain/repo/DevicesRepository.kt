@@ -10,4 +10,5 @@ interface DevicesRepository{
     fun updateDevice(device: Device)
     fun getAllDevices(): Flow<List<Device>>
     fun getAllDevicesSync():List<Device>
+    fun clearData()
 }

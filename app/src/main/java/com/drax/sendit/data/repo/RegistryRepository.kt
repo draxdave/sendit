@@ -27,7 +27,14 @@ class  RegistryRepositoryImpl(
     override suspend fun setFirebaseId(id:String) = registryDao.add(Registry(key = FIREBASE_ID,value = id))
     override fun getFirebaseId():String? = registryDao.getRegistryValueSync(FIREBASE_ID)
 
-    override suspend fun setUser(user: User) = registryDao.add(Registry(key = USER,value = Json.encodeToString(User.serializer(), user)))
+    override suspend fun setUser(user: User?) = registryDao.add(Registry(key = USER, value =
+    if (user == null) null
+    else Json.encodeToString(User.serializer(), user)))
+
+    override suspend fun clearData() {
+        registryDao.deleteAll()
+    }
+
     override fun getUser(): Flow<User?> {
         return registryDao.getRegistryValue(USER).map {
             if (it == null)

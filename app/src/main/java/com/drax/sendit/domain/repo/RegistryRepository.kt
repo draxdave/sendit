@@ -8,5 +8,6 @@ interface RegistryRepository {
     fun getFirebaseId():String?
 
     fun getUser(): Flow<User?>
-    suspend fun setUser(user: User)
+    suspend fun setUser(user: User?)
+    suspend fun clearData()
 }

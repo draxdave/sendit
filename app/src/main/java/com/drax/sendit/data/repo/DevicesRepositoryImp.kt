@@ -11,4 +11,5 @@ open class DevicesRepositoryImp(private val devicesDao: DevicesDao): DevicesRepo
     override fun updateDevice(device: Device) = devicesDao.update(device)
     override fun getAllDevices() = devicesDao.getList()
     override fun getAllDevicesSync() = devicesDao.getAll()
+    override fun clearData() = devicesDao.deleteAll()
 }

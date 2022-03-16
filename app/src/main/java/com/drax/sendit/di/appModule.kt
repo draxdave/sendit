@@ -31,13 +31,13 @@ val appModule = module {
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransmissionsVM()  }
     viewModel                  {  LoginVM(get())  }
-    viewModel                  {  ProfileVM()  }
+    viewModel                  {  ProfileVM(get())  }
     viewModel                  {  MainVM(get())  }
 
     single<DevicesRepository>  { DevicesRepositoryImp(get()) }
     single<PushRepository>     { PushRepositoryImp(get(),get(),get()) }
     single<RegistryRepository> { RegistryRepositoryImpl(get()) }
-    single<UserRepository>     { UserRepositoryImpl(get()) }
+    single<UserRepository>     { UserRepositoryImpl(get(), get()) }
 
     single<ApiService>         {   AppRetrofit().getRetrofitClient().create(ApiService::class.java)     }
 

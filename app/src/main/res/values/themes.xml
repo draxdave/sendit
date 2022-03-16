@@ -139,6 +139,10 @@
         <item name="android:fontFamily">@font/dosis_bold</item>
     </style>
 
+    <style name="heading2" parent="TextAppearance.AppCompat.Headline" >
+        <item name="android:fontFamily">@font/nunito_italic</item>
+    </style>
+
     <style name="body_light" parent="TextAppearance.AppCompat.Body1" >
         <item name="android:fontFamily">@font/dosis_light</item>
     </style>

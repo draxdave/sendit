@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     fun getUser(): Flow<User>
     suspend fun addOrUpdateUser(user: User)
+    suspend fun signOutAndClearUserData()
 }

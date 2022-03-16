@@ -47,7 +47,7 @@
                 android:id="@+id/thisDevice"
                 style="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="11sp"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/white"
                 android:background="@drawable/tag"
                 android:text="@string/this_device"
                 android:layout_marginTop="@dimen/_16sdp"

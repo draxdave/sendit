@@ -36,7 +36,7 @@
     <string name="remove_device_ok">Unregister device</string>
     <string name="pairing">Pairing …</string>
     <string name="connect_device_done">Device is paired successfully</string>
-    <string name="connected_devices">Paired devices</string>
+    <string name="devices_title">Paired devices</string>
 
     <string name="fragment_qr">Pairing</string>
     <string name="fragment_devices">Devices</string>
@@ -46,4 +46,5 @@
     <string name="fragment_login">Login</string>
     <string name="this_device">This Device</string>
     <string name="devices_item_device_added_date">Paired since %s</string>
+    <string name="sign_out">Sign out</string>
 </resources>
