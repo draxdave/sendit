@@ -2,6 +2,7 @@ package com.drax.sendit.view.util
 
 import android.annotation.SuppressLint
 import android.os.Build.*
+import com.drax.sendit.BuildConfig
 import java.util.*
 
 object DeviceInfoHelper {
@@ -11,6 +12,7 @@ object DeviceInfoHelper {
     val user: String? = USER
 
     val id: String? = ID
+    val platformVersion: Int = VERSION.SDK_INT
 
     private val deviceModel
         get() = capitalize(

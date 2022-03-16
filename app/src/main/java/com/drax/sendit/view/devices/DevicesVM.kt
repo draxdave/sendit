@@ -36,7 +36,9 @@ class DevicesVM(
             devicesRepository.addDevice(
                 Device.thisDevice(
                     name = DeviceInfoHelper.model,
-                    instanceId = ""
+                    instanceId = "",
+                    platform = "Android",
+                    platformVersion = DeviceInfoHelper.platformVersion.toString()
                 )
             )
         }

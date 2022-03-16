@@ -52,7 +52,9 @@ class SenditFirebaseService : FirebaseMessagingService() {
                 devicesRepository.addDevice(
                     Device.thisDevice(
                         name = DeviceInfoHelper.model,
-                        instanceId = instanceId
+                        instanceId = instanceId,
+                        platform = "Android",
+                        platformVersion = DeviceInfoHelper.platformVersion.toString()
                     )
                 )
             }
