@@ -28,7 +28,7 @@ val appModule = module {
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransmissionsVM()  }
     viewModel                  {  LoginVM(get())  }
-    viewModel                  {  ProfileVM(get())  }
+    viewModel                  {  ProfileVM(get(), get())  }
     viewModel                  {  MainVM(get())  }
 
     single<DevicesRepository>  { DevicesRepositoryImpl(get(), get()) }
@@ -39,6 +39,6 @@ val appModule = module {
     single<AuthRepository>     { AuthRepositoryImpl(get(), get(),get(),get()) }
 
     single<ApiService>         {   AppRetrofit(get()).getRetrofitClient().create(ApiService::class.java)}
-    single                     { AuthInterceptor(androidContext().resources, get()) }
+    single                     { AuthInterceptor(androidContext().resources, get(), get()) }
 
 }

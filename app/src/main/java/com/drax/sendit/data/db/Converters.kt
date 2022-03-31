@@ -8,16 +8,14 @@ import java.time.Instant
 
 
 class TimeConverters {
-    companion object {
 
-        @TypeConverter
-        fun fromTimestamp(value: String?): Instant? {
-            return Json.decodeFromString(value?:"")
-        }
+    @TypeConverter
+    fun fromTimestamp(value: String?): Instant? {
+        return value?.let{ Json.decodeFromString(value)}
+    }
 
-        @TypeConverter
-        fun dateToTimestamp(date: Instant?): String? {
-            return Json.encodeToString(date)
-        }
+    @TypeConverter
+    fun dateToTimestamp(date: Instant?): String? {
+        return date?.let { Json.encodeToString(date)}
     }
 }

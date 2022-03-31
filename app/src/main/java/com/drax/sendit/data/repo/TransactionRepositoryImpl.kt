@@ -9,6 +9,9 @@ class TransactionRepositoryImpl(
     private val apiService: ApiService
 ): TransactionRepository {
     override fun getAllTransactions() = transactionsDao.getList()
+    override suspend fun clearDb() {
+        transactionsDao.deleteAll()
+    }
 
     /*
     emit(

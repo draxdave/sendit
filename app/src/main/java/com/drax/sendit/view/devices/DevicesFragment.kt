@@ -2,23 +2,20 @@ package com.drax.sendit.view.devices
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.drax.sendit.databinding.DevicesFragmentBinding
+import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.devices.adapter.DevicesAdapter
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class DevicesFragment : BaseFragment<DevicesFragmentBinding,DevicesVM>(DevicesFragmentBinding::inflate) {
 
     override val viewModel: DevicesVM by viewModel()
 
-    private val adapter : DevicesAdapter by lazy { DevicesAdapter { id ->
-        viewModel.removeDevice(id)
+    private val adapter : DevicesAdapter by lazy { DevicesAdapter { connection_id ->
+        viewModel.removeDevice(UnpairRequest(connection_id))
     }
     }
 
@@ -36,8 +33,8 @@ class DevicesFragment : BaseFragment<DevicesFragmentBinding,DevicesVM>(DevicesFr
             adapter.submitList(it.map {device->
                 DeviceWrapper(device)
             })
-            if (it.isEmpty())
-                viewModel.addSelfDevice()
+//            if (it.isEmpty())
+//                viewModel.addSelfDevice()
         }
     }
 

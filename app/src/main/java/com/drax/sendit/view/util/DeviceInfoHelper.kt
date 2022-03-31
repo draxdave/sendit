@@ -6,12 +6,16 @@ import android.os.Build.*
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat.getSystemService
+import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.domain.network.model.type.DevicePlatform
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
 
 
 object DeviceInfoHelper {
+
+    val platform = DevicePlatform.DevicePlatform_ANDROID
 
     val model = deviceModel
 
@@ -36,7 +40,7 @@ object DeviceInfoHelper {
     }
     val platformVersion: Int = VERSION.SDK_INT
 
-    private val deviceModel
+    val deviceModel
         get() = capitalize(
             if (MODEL.lowercase(Locale.getDefault()).startsWith(MANUFACTURER.lowercase(Locale.getDefault()))) {
                 MODEL

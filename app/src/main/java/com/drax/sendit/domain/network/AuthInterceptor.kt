@@ -1,28 +1,59 @@
 package com.drax.sendit.domain.network
 
 import android.content.res.Resources
+import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.ErrorResponse
-import com.drax.sendit.domain.repo.AuthRepository
+import com.drax.sendit.domain.repo.RegistryRepository
+import com.drax.sendit.domain.repo.UserRepository
+import com.drax.sendit.view.util.DeviceInfoHelper
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
-import okhttp3.Response
+import okhttp3.*
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+@DelicateCoroutinesApi
 class AuthInterceptor(
     private val resources: Resources,
-    private val authRepository: AuthRepository,
+    private val authRepository: UserRepository,
+    private val registryRepository: RegistryRepository,
 
-): Interceptor {
+    ): Interceptor {
+    private lateinit var request: Request
+    private val apiToken: String? by lazy {
+        registryRepository.getApiToken()
+    }
+
+    private val headers by lazy {
+        Headers.headersOf(
+            "lang:en",
+            "app-version:"+BuildConfig.VERSION_CODE,
+            "region:hk",
+            "device-platform:"+ DeviceInfoHelper.platform,
+            "device-platform-version:"+DeviceInfoHelper.platformVersion,
+            "device-model:"+DeviceInfoHelper.model,
+            "api-key:$apiToken"
+        )
+    }
+
     override fun intercept(chain: Interceptor.Chain): Response {
+        request = chain.request()
+            .newBuilder()
+            .headers(headers)
+            .build()
 
         val response = try {
-            val initResponse = chain.call().execute()
+            val initResponse = chain.proceed(request)
             if (initResponse.isSuccessful) {
 
                 val initBody = initResponse.body
@@ -83,15 +114,21 @@ class AuthInterceptor(
     }
 
     private fun ErrorResponse.toResponse(): Response {
-        val body = retrofit2.Response.success(ApiResponse(this.type, Unit, this))
 
         return Response.Builder()
-            .networkResponse(body.raw())
+            .request(request)
+            .protocol(Protocol.HTTP_1_1)
+//            .networkResponse(body.raw())
+            .code(200)
+            .message("")
+            .body(Json.encodeToString(ApiResponse(this.type, Unit, this)).toResponseBody())
             .build()
     }
 
     private fun unAuthorizedAccessDetected(){
-        authRepository.signOutDevice()
+        GlobalScope.launch(Dispatchers.Default) {
+            authRepository.clearDb()
+        }
     }
 
     companion object {

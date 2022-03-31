@@ -40,7 +40,9 @@ class DevicesRepositoryImpl(
         )
     }
 
-    override fun getAllDevices() = flow {
-        emit(devicesDao.getAll())
+    override fun getAllDevices() = devicesDao.getList()
+
+    override suspend fun clearDb() {
+        devicesDao.deleteAll()
     }
 }

@@ -15,7 +15,7 @@ class AppRetrofit(private val authInterceptor: AuthInterceptor ) {
     fun getRetrofitClient(): Retrofit {
         return Retrofit.Builder()
             .client(buildClient())
-            .baseUrl("https://fcm.googleapis.com")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

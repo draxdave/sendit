@@ -19,15 +19,12 @@ class PushRepositoryImpl @Inject constructor(
     private val devicesRepository: DevicesRepository)
     : PushRepository {
 
-    override fun shareContent(shareRequest: ShareRequest): Flow<Resource> = flow {
-
-        val result = object : NetworkCall<ApiResponse<ShareResponse>>() {
-            override suspend fun createCall(): Response<ApiResponse<ShareResponse>> {
-                return apiService.share(shareRequest)
-            }
-        }.fetch()
-
-        emit(result)
+    override fun shareContent(shareRequest: ShareRequest) = flow {
+        emit(
+            NetworkCall {
+                apiService.share(shareRequest)
+            }.fetch()
+        )
     }
 
 }

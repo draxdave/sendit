@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-abstract class ResViewModel:ViewModel() {
+abstract class ResViewModel: ViewModel() {
     protected fun setLoading(isLoading:Boolean){
         if (isLoading) activeLoading++
         else activeLoading--
@@ -12,8 +12,8 @@ abstract class ResViewModel:ViewModel() {
 
     private var activeLoading:Int = 0
         set(value) {
-            field=value
-            _isLoading.value = field != 0
+            field = value
+            _isLoading.postValue(field != 0)
         }
 
     private val _isLoading = MutableLiveData<Boolean>()
