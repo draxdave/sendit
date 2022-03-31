@@ -1,14 +1,14 @@
 package com.drax.sendit.domain.repo
 
-import androidx.lifecycle.LiveData
 import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.model.Resource
+import com.drax.sendit.domain.network.model.*
 import kotlinx.coroutines.flow.Flow
 
-interface DevicesRepository{
-    fun addDevice(device: Device):Long
-    fun removeDevice(deviceId: Long)
-    fun updateDevice(device: Device)
+interface DevicesRepository: LocalStorageRepository{
+    fun sendInvitation(pairRequest: PairRequest): Flow<Resource<ApiResponse<PairResponse>>>
+    fun invitationResponse(pairResponseRequest: PairResponseRequest): Flow<Resource<ApiResponse<PairResponseResponse>>>
+    fun unpair(unpairRequest: UnpairRequest): Flow<Resource<ApiResponse<UnpairResponse>>>
+
     fun getAllDevices(): Flow<List<Device>>
-    fun getAllDevicesSync():List<Device>
-    fun clearData()
 }

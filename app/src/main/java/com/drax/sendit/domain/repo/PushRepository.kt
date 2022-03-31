@@ -1,12 +1,11 @@
 package com.drax.sendit.domain.repo
 
 import com.drax.sendit.data.model.Resource
-import com.drax.sendit.domain.network.model.FirebaseSendResponse
+import com.drax.sendit.domain.network.model.ShareRequest
+import kotlinx.coroutines.flow.Flow
 
 interface PushRepository {
-    suspend fun sendInvitation(destinationId:String): Resource<FirebaseSendResponse>?
-    suspend fun sendContent(content:String,destinationIds: List<String>):Resource<FirebaseSendResponse>?
-    suspend fun sendContentToAll(content:String):Resource<FirebaseSendResponse>?
+    fun shareContent(shareRequest: ShareRequest): Flow<Resource>
 
 }
 

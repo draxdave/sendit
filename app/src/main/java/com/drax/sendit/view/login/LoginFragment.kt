@@ -8,19 +8,25 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
-import com.drax.sendit.data.model.User
-import com.drax.sendit.data.model.UserType
+import com.drax.sendit.data.model.*
+import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.databinding.LoginFragmentBinding
+import com.drax.sendit.domain.network.model.SignInRequest
+import com.drax.sendit.domain.network.model.type.UserSex
 import com.drax.sendit.view.base.BaseFragment
+import com.drax.sendit.view.util.DeviceInfoHelper
+import com.drax.sendit.view.util.modal
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.Instant
 
 class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
     override val viewModel: LoginVM by viewModel()
@@ -43,34 +49,40 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
 
             val credential = Identity.getSignInClient(requireActivity()).getSignInCredentialFromIntent(result.data)
             val idToken = credential.googleIdToken
-            val username = credential.id
-            val password = credential.password
+
             when {
-                idToken != null || password != null -> {
-                    // Got a saved username and password. Use them to authenticate
-                    // with your backend.
-                    viewModel.login(
-                        User(
-                            id = "",
-                            fullname = credential.displayName ?: credential.givenName + " " + credential.familyName,
-                            avatar = credential.profilePictureUri.toString(),
-                            email = username,
-                            birthDate = "",
-                            phone = "",
-                            type = UserType.SignedIn,
-                            isServiceEnabled = true,
-                            language = User.appDefaultLocale.language
+                idToken != null -> {
+                    SenditFirebaseService.token({
+                        viewModel.googleSignInFailed(R.string.signin_google_error)
+
+                    }) {instanceId->
+
+                        viewModel.login(
+                            SignInRequest(
+                                firstName = credential.givenName ?: "",
+                                lastName = credential.familyName ?: "",
+                                fullName = credential.displayName ?: "",
+                                email = credential.id,
+                                sex = UserSex.UserSex_NONE,
+                                birthDate = Instant.now(),
+                                avatarUrl = credential.profilePictureUri.toString(),
+                                deviceId = DeviceInfoHelper.getId(requireContext()),
+                                instanceId = instanceId,
+                                tokenId = idToken
+                            )
                         )
-                    )
-                    enterTheApp()
+                    }
 
                     Log.d("TAG", "Got password.")
                 }
                 else -> {
                     // Shouldn't happen.
                     Log.d("TAG", "No ID token or password!")
+                    viewModel.googleSignInFailed(R.string.signin_google_error)
                 }
             }
+        }else{
+            viewModel.googleSignInFailed(R.string.signin_google_error)
         }
     }
 
@@ -79,7 +91,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             .setPopUpTo(R.id.main_graph,true)
             .setLaunchSingleTop(true)
             .build()
-        
+
         findNavController().navigate(
             findNavController().graph.startDestination,
             null,
@@ -91,10 +103,23 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         super.onViewCreated(view, savedInstanceState)
 
         binding.signInGoogle.setOnClickListener {
-            launchOneTapSignIn()
+            viewModel.googleSignInClicked()
         }
 
-//        launchOneTapSignIn()
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.collect {uiState->
+                when(uiState){
+                    is LoginUiState.LoginFailed ->
+                        modal(ModalMessage.Failed(
+                            uiState.message ?: getString(R.string.error_internal)
+                        ))
+                    UiState.Neutral -> Unit
+                    LoginUiState.LoginSucceed -> enterTheApp()
+                    LoginUiState.GoogleSignInClicked -> launchOneTapSignIn()
+                    is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.Failed(getString(uiState.message)))
+                }
+            }
+        }
     }
 
     private fun launchOneTapSignIn(){
@@ -123,6 +148,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                     )
 
                 } catch (e: IntentSender.SendIntentException) {
+                    viewModel.googleSignInFailed(R.string.signin_google_error)
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
@@ -154,11 +180,13 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                     )
 
                 } catch (e: IntentSender.SendIntentException) {
+                    viewModel.googleSignInFailed(R.string.signin_google_error)
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
             .addOnFailureListener(requireActivity()) { e ->
                 // No Google Accounts found. Just continue presenting the signed-out UI.
+                viewModel.googleSignInFailed(R.string.signin_google_error_no_account)
                 Log.d(TAG, e.localizedMessage)
             }
     }

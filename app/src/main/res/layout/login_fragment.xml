@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.drax.sendit.data.model.LoginUiState"/>
         <variable name="model" type="com.drax.sendit.view.login.LoginVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,5 +64,10 @@
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <include layout="@layout/loading_layout"
+            app:isShowing="@{model.isLoading()}"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

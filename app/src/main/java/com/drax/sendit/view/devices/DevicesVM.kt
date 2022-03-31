@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.FirebaseSendResponse
+import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.repo.DevicesRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.view.util.DeviceInfoHelper
@@ -24,26 +25,11 @@ class DevicesVM(
     val devices: LiveData<List<Device>> = devicesRepository.getAllDevices()
         .asLiveData()
 
-    fun removeDevice(id:Long){
+    fun removeDevice(unpairRequest: UnpairRequest){
         job {
-            devicesRepository.removeDevice(id)
+            devicesRepository.unpair(unpairRequest)
         }
     }
-
-    fun addSelfDevice(){
-        //todo: remove this method before production
-        job {
-            devicesRepository.addDevice(
-                Device.thisDevice(
-                    name = DeviceInfoHelper.model,
-                    instanceId = "",
-                    platform = "Android",
-                    platformVersion = DeviceInfoHelper.platformVersion.toString()
-                )
-            )
-        }
-    }
-
 }
 
 fun ViewModel.job(dispatcher: CoroutineContext = Dispatchers.IO, job: suspend CoroutineScope.() -> Unit){

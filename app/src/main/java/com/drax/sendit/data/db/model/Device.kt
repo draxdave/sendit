@@ -2,35 +2,37 @@ package com.drax.sendit.data.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.drax.sendit.BuildConfig
+import androidx.room.TypeConverters
+import com.drax.sendit.data.db.TimeConverters
+import com.drax.sendit.domain.network.model.type.DevicePlatform
+import com.drax.sendit.domain.network.model.type.DeviceStatus
+import com.google.gson.annotations.SerializedName
+import java.time.Instant
 
-@Entity(tableName = "devices")
+@Entity(tableName = "device")
 data class Device (
     @PrimaryKey
-    val id: Long,
+    val iid: Long,
 
-    val instanceId: String,
+    val id: Long,
     val name: String,
-    val iconUrl: String,
+    val uid: String,
+    val token: String,
+    @DevicePlatform val platform: Int,
+    @DeviceStatus val status: Int,
+    val region: String,
+    val meta: String,
+    val model: String,
+    @SerializedName("instance_id") val instanceId: String,
+    @SerializedName("icon_url") val iconUrl: String,
+
+    @SerializedName("added_date") val addedDate: Instant,
+    @SerializedName("platform_version") val platformVersion: String,
+    @SerializedName("app_version") val appVersion: Int,
+    @SerializedName("user_id") val userId: String,
+    @SerializedName("language_code") val languageCode: String,
+
+
+    @SerializedName("last_touch") val lastTouch: Instant,
     val isThisDevice: Boolean,
-    val addedDate: Long,
-    val platform: String,
-    val platformVersion: String,
-    val appVersion: Int,
-    val userId: String
-){
-    companion object {
-        fun thisDevice(name: String, instanceId: String, platform: String, platformVersion: String) = Device(
-            id = 0,
-            instanceId = instanceId,
-            name = name,
-            iconUrl = "https://sendit-app.s3.ap-southeast-1.amazonaws.com/public/android+(2).png",
-            isThisDevice = true,
-            addedDate = System.currentTimeMillis(),
-            platform = platform,
-            platformVersion = platformVersion,
-            appVersion = BuildConfig.VERSION_CODE,
-            userId = instanceId
-        )
-    }
-}
+)

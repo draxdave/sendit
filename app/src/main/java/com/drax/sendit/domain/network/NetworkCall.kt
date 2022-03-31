@@ -1,7 +1,7 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.data.model.Resource
-import com.drax.sendit.data.model.Status
+import com.drax.sendit.domain.network.model.ApiResponse
 import okhttp3.Headers
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -11,51 +11,31 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
-//todo : inject Gson by parameter
-abstract class NetworkCall<ResultType> {
+class NetworkCall<ResultType>(
+    private val createCall: suspend () -> Response<ResultType>
+) {
+
+
     suspend fun fetch(): Resource<ResultType> {
-        return try {
-            val response = createCall()
-            if (response.isSuccessful) {
-                onSuccess(response.body(),response.headers())
-                Resource(Status.SUCCESS, response.body(),"")
 
-            } else{
-                val errorMsg = response.errorBody()?.let {
-                    JSONObject(it.charStream().readText()).getString("message")
-                }
+        val response = createCall()
+        return  if (response.isSuccessful) {
+            val body = response.body()
 
-                Resource.error(errorMsg?:"" ,null, response.code())
-            }
+            if (body is ApiResponse<*>){
+                if (body.statusCode == 200)
+                    Resource.SUCCESS(body)
 
-        } catch (e: HttpException) {
-            e.printStackTrace()
-            Resource.error("", null, e.code())
+                else
+                    Resource.ERROR(body.error.description, body.statusCode)
 
-        } catch (e: ConnectException) {
-            e.printStackTrace()
-            Resource.error("",null, ConnectException)
+            }else
+                Resource.SUCCESS(body)
 
-        } catch (e: SocketTimeoutException) {
-            e.printStackTrace()
-            Resource.error("",null, SocketTimeoutException)
+        } else
+            Resource.ERROR(errorCode = response.code())
 
-        }catch (e : UnknownHostException){
-            e.printStackTrace()
-            Resource.error("",null, UnknownHostException)
 
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.error("",null, Exception)
-        }
     }
 
-    abstract suspend fun createCall(): Response<ResultType>
-    open suspend fun onSuccess(result: ResultType?, headers: Headers){}
-    companion object{
-        final const val ConnectException=600
-        final const val SocketTimeoutException=601
-        final const val UnknownHostException=602
-        final const val Exception=603
-    }
 }

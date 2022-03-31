@@ -1,16 +1,11 @@
 package com.drax.sendit.di
 
 import com.drax.sendit.data.db.AppDB
-import com.drax.sendit.data.repo.DevicesRepositoryImp
-import com.drax.sendit.data.repo.PushRepositoryImp
-import com.drax.sendit.data.repo.RegistryRepositoryImpl
-import com.drax.sendit.data.repo.UserRepositoryImpl
+import com.drax.sendit.data.repo.*
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.AppRetrofit
-import com.drax.sendit.domain.repo.DevicesRepository
-import com.drax.sendit.domain.repo.PushRepository
-import com.drax.sendit.domain.repo.RegistryRepository
-import com.drax.sendit.domain.repo.UserRepository
+import com.drax.sendit.domain.network.AuthInterceptor
+import com.drax.sendit.domain.repo.*
 import com.drax.sendit.view.MainVM
 import com.drax.sendit.view.devices.DevicesVM
 import com.drax.sendit.view.login.LoginVM
@@ -26,6 +21,8 @@ val appModule = module {
     single                     {   AppDB.get(androidContext()) }
     single                     {   get<AppDB>().devicesDao() }
     single                     {   get<AppDB>().registryDao() }
+    single                     {   get<AppDB>().userDao() }
+    single                     {   get<AppDB>().transactionDao() }
 
     viewModel                  {  DevicesVM(get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
@@ -34,11 +31,14 @@ val appModule = module {
     viewModel                  {  ProfileVM(get())  }
     viewModel                  {  MainVM(get())  }
 
-    single<DevicesRepository>  { DevicesRepositoryImp(get()) }
-    single<PushRepository>     { PushRepositoryImp(get(),get(),get()) }
+    single<DevicesRepository>  { DevicesRepositoryImpl(get(), get()) }
+    single<PushRepository>     { PushRepositoryImpl(get(),get(),get()) }
     single<RegistryRepository> { RegistryRepositoryImpl(get()) }
-    single<UserRepository>     { UserRepositoryImpl(get(), get()) }
+    single<UserRepository>     { UserRepositoryImpl(get()) }
+    single<TransactionRepository>     { TransactionRepositoryImpl(get(), get()) }
+    single<AuthRepository>     { AuthRepositoryImpl(get(), get(),get(),get()) }
 
-    single<ApiService>         {   AppRetrofit().getRetrofitClient().create(ApiService::class.java)     }
+    single<ApiService>         {   AppRetrofit(get()).getRetrofitClient().create(ApiService::class.java)}
+    single                     { AuthInterceptor(androidContext().resources, get()) }
 
 }

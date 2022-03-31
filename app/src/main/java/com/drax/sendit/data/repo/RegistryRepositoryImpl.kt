@@ -2,13 +2,7 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.RegistryDao
 import com.drax.sendit.data.db.model.Registry
-import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.repo.RegistryRepository
-import com.google.gson.Gson
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.Json
-import javax.inject.Inject
 
 
 /**
@@ -19,29 +13,15 @@ import javax.inject.Inject
 class  RegistryRepositoryImpl(
     private val registryDao: RegistryDao,
 ): RegistryRepository {
-    companion object{
-        private const val FIREBASE_ID = "FIREBASE_ID"
-        private const val USER = "USER"
-    }
 
     override suspend fun setFirebaseId(id:String) = registryDao.add(Registry(key = FIREBASE_ID,value = id))
     override fun getFirebaseId():String? = registryDao.getRegistryValueSync(FIREBASE_ID)
-
-    override suspend fun setUser(user: User?) = registryDao.add(Registry(key = USER, value =
-    if (user == null) null
-    else Json.encodeToString(User.serializer(), user)))
 
     override suspend fun clearData() {
         registryDao.deleteAll()
     }
 
-    override fun getUser(): Flow<User?> {
-        return registryDao.getRegistryValue(USER).map {
-            if (it == null)
-                null
-            else
-                Json.decodeFromString(User.serializer(), it)
-        }
+    companion object{
+        private const val FIREBASE_ID = "FIREBASE_ID"
     }
-
 }

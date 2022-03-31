@@ -9,5 +9,5 @@ class MainVM(
     userRepository: UserRepository
 ) : ResViewModel() {
 
-    val user: Flow<User> = userRepository.getUser()
+    val user: Flow<User?> = userRepository.getUser()
 }

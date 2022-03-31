@@ -11,7 +11,7 @@ class ProfileVM(
     private val userRepository: UserRepository
 ): ResViewModel() {
 
-    val user: LiveData<User> = userRepository.getUser()
+    val user: LiveData<User?> = userRepository.getUser()
         .asLiveData()
 
     fun signOut(){

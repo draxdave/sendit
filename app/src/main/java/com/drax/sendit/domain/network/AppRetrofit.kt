@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-class AppRetrofit {
+class AppRetrofit(private val authInterceptor: AuthInterceptor ) {
 
 
     fun getRetrofitClient(): Retrofit {
@@ -32,6 +32,7 @@ class AppRetrofit {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
 
+
             addInterceptor {
                 val original: Request = it.request()
 
@@ -42,9 +43,10 @@ class AppRetrofit {
 
                 it.proceed(request)
             }
-
+            addInterceptor(authInterceptor)
         }.build()
 
 
     }
 }
+

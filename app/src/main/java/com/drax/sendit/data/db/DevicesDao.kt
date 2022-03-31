@@ -1,6 +1,5 @@
 package com.drax.sendit.data.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.drax.sendit.data.db.model.Device
 import kotlinx.coroutines.flow.Flow
@@ -11,21 +10,21 @@ interface  DevicesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(device: Device) : Long
 
-    @Query("SELECT * FROM devices" )
+    @Query("SELECT * FROM device" )
     fun getList(): Flow<List<Device>>
 
-    @Query("SELECT * FROM devices" )
+    @Query("SELECT * FROM device" )
     fun getAll():List<Device>
 
     @Delete
     fun delete(device: Device)
 
-    @Query("DELETE FROM devices WHERE id = :id")
-    fun deleteById(id: Long)
+    @Query("DELETE FROM device WHERE iid = :iid")
+    fun deleteById(iid: Long)
 
     @Update fun update(device: Device)
 
-    @Query("DELETE FROM devices")
+    @Query("DELETE FROM device")
     fun deleteAll()
 
 }

@@ -9,7 +9,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.drax.sendit.R
-import com.drax.sendit.data.model.UserType
+import com.drax.sendit.domain.network.model.type.UserType.Companion.UserType_NORMAL
+import com.drax.sendit.domain.network.model.type.UserType.Companion.UserType_VIP
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,12 +34,16 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenCreated {
             mainVM.user.collect {user->
-                if (user.type is UserType.Guest) {
-                    navigateToLogin(navController)
-                    bottomNavigationView.visibility = View.GONE
-
-                } else
-                    bottomNavigationView.visibility = View.VISIBLE
+                when{
+                    user == null -> {
+                        navigateToLogin(navController)
+                        bottomNavigationView.visibility = View.GONE
+                    }
+                    user.type == UserType_NORMAL ||
+                            user.type == UserType_VIP->{
+                        bottomNavigationView.visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }
