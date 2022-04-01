@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface  DevicesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(device: Device) : Long
+    fun add(vararg device: Device)
 
     @Query("SELECT * FROM device" )
     fun getList(): Flow<List<Device>>

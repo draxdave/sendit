@@ -2,9 +2,7 @@ package com.drax.sendit.di
 
 import com.drax.sendit.data.db.AppDB
 import com.drax.sendit.data.repo.*
-import com.drax.sendit.domain.network.ApiService
-import com.drax.sendit.domain.network.AppRetrofit
-import com.drax.sendit.domain.network.AuthInterceptor
+import com.drax.sendit.domain.network.*
 import com.drax.sendit.domain.repo.*
 import com.drax.sendit.view.MainVM
 import com.drax.sendit.view.devices.DevicesVM
@@ -27,7 +25,7 @@ val appModule = module {
     viewModel                  {  DevicesVM(get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransmissionsVM()  }
-    viewModel                  {  LoginVM(get())  }
+    viewModel                  {  LoginVM(get(),get(),get(),)  }
     viewModel                  {  ProfileVM(get(), get())  }
     viewModel                  {  MainVM(get())  }
 
@@ -38,7 +36,10 @@ val appModule = module {
     single<TransactionRepository>     { TransactionRepositoryImpl(get(), get()) }
     single<AuthRepository>     { AuthRepositoryImpl(get(), get(),get(),get()) }
 
-    single<ApiService>         {   AppRetrofit(get()).getRetrofitClient().create(ApiService::class.java)}
-    single                     { AuthInterceptor(androidContext().resources, get(), get()) }
+    single<ApiService>         {   AppRetrofit(get(), get(), get()).getRetrofitClient()
+        .create(ApiService::class.java)}
+    single                     { AuthInterceptor(get()) }
+    single                     { HeaderInterceptor( get()) }
+    single                     { ErrorHandlerInterceptor( androidContext().resources) }
 
 }

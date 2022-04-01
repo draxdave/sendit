@@ -1,6 +1,7 @@
 package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.DevicesDao
+import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
@@ -45,4 +46,6 @@ class DevicesRepositoryImpl(
     override suspend fun clearDb() {
         devicesDao.deleteAll()
     }
+
+    override suspend fun addDevice(devices: Device) = devicesDao.add(devices)
 }

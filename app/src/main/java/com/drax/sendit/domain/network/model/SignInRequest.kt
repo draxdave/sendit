@@ -15,5 +15,5 @@ data class SignInRequest(
     @SerializedName("avatar_url") val avatarUrl: String,
     @SerializedName("device_id") val deviceId: String,
     @SerializedName("instance_id") val instanceId: String,
-    @SerializedName("token_id") val tokenId: String
+    @SerializedName("id_token") val tokenId: String
 )

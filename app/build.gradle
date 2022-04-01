@@ -24,6 +24,7 @@ android {
         buildConfigField "String", "F_API_KEY", localProperties['fApiKey']
         buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
         buildConfigField "String", "BASE_URL", "\"http://192.168.0.114\""
+//        buildConfigField "String", "BASE_URL", "\"https://sendit-be.herokuapp.com\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

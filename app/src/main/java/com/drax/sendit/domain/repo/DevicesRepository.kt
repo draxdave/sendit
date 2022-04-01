@@ -9,6 +9,7 @@ interface DevicesRepository: LocalStorageRepository{
     fun sendInvitation(pairRequest: PairRequest): Flow<Resource<ApiResponse<PairResponse>>>
     fun invitationResponse(pairResponseRequest: PairResponseRequest): Flow<Resource<ApiResponse<PairResponseResponse>>>
     fun unpair(unpairRequest: UnpairRequest): Flow<Resource<ApiResponse<UnpairResponse>>>
+    suspend fun addDevice(devices: Device)
 
     fun getAllDevices(): Flow<List<Device>>
 }
