@@ -2,14 +2,14 @@ package com.drax.sendit.view.login
 
 import androidx.lifecycle.viewModelScope
 import com.drax.sendit.BuildConfig
+import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
-import com.drax.sendit.data.model.LoginUiState
 import com.drax.sendit.data.model.Resource
-import com.drax.sendit.data.model.UiState
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.network.model.SignInRequest
 import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.DevicesRepository
+import com.drax.sendit.domain.repo.ConnectionRepository
+import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
@@ -23,10 +23,11 @@ import kotlinx.coroutines.launch
 class LoginVM(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val devicesRepository: DevicesRepository,
+    private val deviceRepository: DeviceRepository,
+    private val connectionRepository: ConnectionRepository,
 ): ResViewModel() {
     val versionText="Version A.${BuildConfig.VERSION_NAME}"
-    private val _uiState = MutableStateFlow<LoginUiState>(UiState.Neutral)
+    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Neutral)
     val uiState: StateFlow<LoginUiState> = _uiState
 
     fun login(signInRequest: SignInRequest) = viewModelScope.launch(Dispatchers.IO) {
@@ -38,8 +39,11 @@ class LoginVM(
                 when(result){
                     is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode, result.message)
                     is Resource.SUCCESS -> {
-                        storeDevices(result.data.data!!.device)
-                        storeUser(result.data.data.user)
+                        result.data.data?.let {
+                            storeDevices(it.device)
+                            storeUser(it.user)
+                        }
+                        result.data.data?.connections?.let { storeConnections(*it.toTypedArray()) }
                         LoginUiState.LoginSucceed
                     }
                 }
@@ -55,7 +59,13 @@ class LoginVM(
 
     private fun storeDevices(device: Device){
         job {
-            devicesRepository.addDevice(device)
+            deviceRepository.addOrUpdateDevice(device)
+        }
+    }
+
+    private fun storeConnections(vararg connection: Connection){
+        job {
+            connectionRepository.addConnection(*connection)
         }
     }
 

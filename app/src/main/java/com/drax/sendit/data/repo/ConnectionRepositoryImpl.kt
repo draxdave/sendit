@@ -1,21 +1,23 @@
 package com.drax.sendit.data.repo
 
-import com.drax.sendit.data.db.DevicesDao
-import com.drax.sendit.data.db.model.Device
-import com.drax.sendit.data.model.Resource
+import com.drax.sendit.data.db.ConnectionDao
+import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.*
-import com.drax.sendit.domain.repo.DevicesRepository
-import kotlinx.coroutines.flow.Flow
+import com.drax.sendit.domain.network.model.PairRequest
+import com.drax.sendit.domain.network.model.PairResponseRequest
+import com.drax.sendit.domain.network.model.UnpairRequest
+import com.drax.sendit.domain.repo.ConnectionRepository
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 
+class ConnectionRepositoryImpl(
+    private val apiService: ApiService,
+    private val connectionDao: ConnectionDao,
+)
+    : ConnectionRepository {
+    override fun getConnections() = connectionDao.getList()
 
-class DevicesRepositoryImpl(
-    private val devicesDao: DevicesDao,
-    private val apiService: ApiService
-): DevicesRepository {
+    override suspend fun addConnection(vararg connection: Connection) = connectionDao.add(*connection)
 
     override fun sendInvitation(pairRequest: PairRequest) = flow {
         emit(
@@ -41,11 +43,6 @@ class DevicesRepositoryImpl(
         )
     }
 
-    override fun getAllDevices() = devicesDao.getList()
+    override suspend fun clearDb() = connectionDao.deleteAll()
 
-    override suspend fun clearDb() {
-        devicesDao.deleteAll()
-    }
-
-    override suspend fun addDevice(devices: Device) = devicesDao.add(devices)
 }

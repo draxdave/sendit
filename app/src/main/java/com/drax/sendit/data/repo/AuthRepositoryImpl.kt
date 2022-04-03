@@ -2,22 +2,18 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.SignInRequest
-import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.DevicesRepository
+import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.TransactionRepository
 import com.drax.sendit.domain.repo.UserRepository
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
-import javax.inject.Inject
 
 class AuthRepositoryImpl(
     private val apiService: ApiService,
     private val userRepository: UserRepository,
     private val transactionRepository: TransactionRepository,
-    private val devicesRepository: DevicesRepository,
+    private val deviceRepository: DeviceRepository,
 ): AuthRepository {
 
     override fun signInDevice(signInRequest: SignInRequest) = flow {
@@ -37,7 +33,7 @@ class AuthRepositoryImpl(
                 emit(it)
                 userRepository.clearDb()
                 transactionRepository.clearDb()
-                devicesRepository.clearDb()
+                deviceRepository.clearDb()
             }
     }
 }

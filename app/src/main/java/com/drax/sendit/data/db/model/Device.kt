@@ -2,16 +2,15 @@ package com.drax.sendit.data.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.drax.sendit.data.db.TimeConverters
+import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DeviceStatus
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import java.time.Instant
 
-@Entity(tableName = "device")
+@Serializable
 data class Device (
-    @PrimaryKey
     val iid: Long,
 
     val id: Long,
@@ -26,13 +25,13 @@ data class Device (
     @SerializedName("instance_id") val instanceId: String,
     @SerializedName("icon_url") val iconUrl: String,
 
-    @SerializedName("added_date") val addedDate: Instant,
+    @SerializedName("added_date") @Serializable(with = InstantSerializer::class) val addedDate: Instant,
     @SerializedName("platform_version") val platformVersion: String,
     @SerializedName("app_version") val appVersion: Int,
     @SerializedName("user_id") val userId: String,
     @SerializedName("language_code") val languageCode: String,
 
 
-    @SerializedName("last_touch") val lastTouch: Instant,
+    @SerializedName("last_touch") @Serializable(with = InstantSerializer::class) val lastTouch: Instant,
     val isThisDevice: Boolean,
 )

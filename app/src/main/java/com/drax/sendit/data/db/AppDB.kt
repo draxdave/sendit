@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.drax.sendit.BuildConfig
+import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.db.model.Transaction
@@ -18,20 +19,18 @@ import com.drax.sendit.view.util.DeviceInfoHelper
  */
 @Database(
     entities = [
-        Device::class,
         Registry::class,
         Transaction::class,
-        User::class
+        Connection::class
     ],
-    version = 9,
+    version = 11,
     exportSchema = false
 )
 @TypeConverters(TimeConverters::class)
 abstract class AppDB : RoomDatabase() {
-    abstract fun devicesDao() : DevicesDao
     abstract fun registryDao() : RegistryDao
-    abstract fun userDao() : UserDao
     abstract fun transactionDao() : TransactionsDao
+    abstract fun connectionDao() : ConnectionDao
 
     companion object {
         private var instance: AppDB? = null

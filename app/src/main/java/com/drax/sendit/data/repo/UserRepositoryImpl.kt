@@ -1,18 +1,16 @@
 package com.drax.sendit.data.repo
 
-import com.drax.sendit.data.db.UserDao
 import com.drax.sendit.data.model.User
+import com.drax.sendit.domain.repo.RegistryRepository
 import com.drax.sendit.domain.repo.UserRepository
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import kotlinx.coroutines.flow.flow
 
 class UserRepositoryImpl(
-    private val userDao: UserDao
+    private val registryRepository: RegistryRepository
 ) : UserRepository {
-    override fun getUser(): Flow<User?> = userDao.getUser()
+//    override fun getUserSync() = registryRepository.getUser()
+    override fun getUser() = registryRepository.getUser()
 
-    override suspend fun addOrUpdateUser(user: User) = userDao.update(user)
-    override suspend fun clearDb() {
-        userDao.deleteAll()
-    }
+    override suspend fun addOrUpdateUser(user: User) = registryRepository.updateUser(user)
+    override suspend fun clearDb() = registryRepository.updateUser(null)
 }

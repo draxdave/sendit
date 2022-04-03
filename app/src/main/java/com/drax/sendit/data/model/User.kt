@@ -1,25 +1,29 @@
 package com.drax.sendit.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.drax.sendit.domain.network.model.type.UserSex
 import com.drax.sendit.domain.network.model.type.UserStatus
 import com.drax.sendit.domain.network.model.type.UserType
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.time.Instant
 import java.util.*
 
 
-@Entity
+@Serializable
 data class User (
-    @PrimaryKey val id: String,
+    val id: String,
     @SerializedName("first_name") val firstName: String,
     @SerializedName("last_name") val lastName: String,
     @SerializedName("full_name") val fullName: String,
 
-    @SerializedName("last_login") val lastLogin: Instant,
+    @SerializedName("last_login") @Serializable(with = InstantSerializer::class) val lastLogin: Instant,
 
-    @SerializedName("birth_date") val birthDate: Instant,
+    @SerializedName("birth_date") @Serializable(with = InstantSerializer::class) val birthDate: Instant,
     @SerializedName("avatar_url") val avatarUrl: String,
     val email: String,
     @UserSex val sex: Int,
@@ -29,10 +33,22 @@ data class User (
     val meta: String
 
 
-) {
+){
 
     companion object {
         // App default language
         val appDefaultLocale: Locale = Locale.ENGLISH
+    }
+}
+
+object InstantSerializer : KSerializer<Instant> {
+    override val descriptor = PrimitiveSerialDescriptor("Instant", PrimitiveKind.STRING)
+
+    override fun deserialize(decoder: Decoder): Instant {
+        return Instant.parse(decoder.decodeString())
+    }
+
+    override fun serialize(encoder: Encoder, value: Instant) {
+        encoder.encodeString(value.toString())
     }
 }

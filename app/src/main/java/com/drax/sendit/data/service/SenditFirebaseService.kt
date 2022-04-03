@@ -1,10 +1,7 @@
 package com.drax.sendit.data.service
 
 import android.content.Intent
-import com.drax.sendit.data.db.model.Device
-import com.drax.sendit.domain.repo.DevicesRepository
 import com.drax.sendit.domain.repo.RegistryRepository
-import com.drax.sendit.view.util.DeviceInfoHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService

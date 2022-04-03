@@ -1,15 +1,14 @@
-package com.drax.sendit.view.devices.adapter
+package com.drax.sendit.view.connections.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.databinding.ItemDeviceBinding
 import com.drax.sendit.view.DeviceWrapper
 
-class DevicesAdapter(private val onRemove : (Long) -> Unit) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
+class ConnectionsAdapter(private val onRemove : (Long) -> Unit) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
     diffCallback
 )
 {

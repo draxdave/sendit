@@ -4,13 +4,14 @@ import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.databinding.ProfileFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
-import com.drax.sendit.view.login.LoginVM
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment: BaseFragment<ProfileFragmentBinding, ProfileVM>(ProfileFragmentBinding::inflate) {
@@ -29,6 +30,13 @@ class ProfileFragment: BaseFragment<ProfileFragmentBinding, ProfileVM>(ProfileFr
     }
 
     private fun initView() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.collect{
+                when(it){
+                    ProfileUiState.Neutral -> Unit
+                }
+            }
+        }
     }
 
     private fun launchOneTapSignIn(){

@@ -1,12 +1,12 @@
 package com.drax.sendit.view.qr
 
-import com.drax.sendit.domain.repo.DevicesRepository
+import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.view.util.ResViewModel
 
 class QrVM(
     private val pushRepository: PushRepository,
-    private val devicesRepository: DevicesRepository
+    private val deviceRepository: DeviceRepository
 ): ResViewModel() {
 
 //    fun sendInvitation(partyId:String): MutableLiveData<Resource<FirebaseSendResponse>> {

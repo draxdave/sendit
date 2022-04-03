@@ -13,11 +13,14 @@ data class DeviceWrapper(
     }
 
     private fun getDateFromMilliseconds(instant: Instant): String {
-        val dateFormat = "dd MMMMM yyyy HH:mm"
         val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())
         val calendar = Calendar.getInstance()
 
         calendar.timeInMillis = instant.epochSecond
         return formatter.format(calendar.time)
+    }
+    
+    companion object{
+        private const val dateFormat = "dd MMMMM yyyy HH:mm"
     }
 }

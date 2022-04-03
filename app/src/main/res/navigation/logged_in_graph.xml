@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/devicesFragment"
-        android:name="com.drax.sendit.view.devices.DevicesFragment"
+        android:name="com.drax.sendit.view.connections.ConnectionsFragment"
         android:label="@string/fragment_devices"
-        tools:layout="@layout/devices_fragment" />
+        tools:layout="@layout/connections_fragment" />
 
     <fragment
         android:id="@+id/qrFragment"

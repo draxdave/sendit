@@ -86,19 +86,6 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         }
     }
 
-    private fun enterTheApp() {
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.main_graph,true)
-            .setLaunchSingleTop(true)
-            .build()
-
-        findNavController().navigate(
-            findNavController().graph.startDestination,
-            null,
-            navOptions
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -113,8 +100,8 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                         modal(ModalMessage.Failed(
                             uiState.message ?: getString(R.string.error_internal)
                         ))
-                    UiState.Neutral -> Unit
-                    LoginUiState.LoginSucceed -> enterTheApp()
+                    LoginUiState.Neutral -> Unit
+                    LoginUiState.LoginSucceed -> Unit
                     LoginUiState.GoogleSignInClicked -> launchOneTapSignIn()
                     is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.Failed(getString(uiState.message)))
                 }

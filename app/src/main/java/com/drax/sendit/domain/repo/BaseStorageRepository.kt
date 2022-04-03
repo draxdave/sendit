@@ -1,5 +1,5 @@
 package com.drax.sendit.domain.repo
 
-interface LocalStorageRepository {
+interface BaseStorageRepository {
     suspend fun clearDb()
 }

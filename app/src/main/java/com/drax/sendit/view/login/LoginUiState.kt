@@ -1,10 +1,7 @@
-package com.drax.sendit.data.model
+package com.drax.sendit.view.login
 
-sealed class UiState{
+sealed class LoginUiState {
     object Neutral: LoginUiState()
-}
-
-sealed class LoginUiState: UiState() {
     data class LoginFailed(val errorCode: Int, val message: String?): LoginUiState()
     object LoginSucceed: LoginUiState()
 

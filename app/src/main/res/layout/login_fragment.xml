@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.drax.sendit.data.model.LoginUiState"/>
+        <import type="com.drax.sendit.view.login.LoginUiState"/>
         <variable name="model" type="com.drax.sendit.view.login.LoginVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
