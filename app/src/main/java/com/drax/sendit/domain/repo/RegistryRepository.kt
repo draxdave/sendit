@@ -12,7 +12,7 @@ interface RegistryRepository: BaseStorageRepository {
     fun getApiToken():String?
 
     suspend fun updateThisDevice(device: Device?)
-    fun getThisDevice():Device?
+    fun getThisDevice():Flow<Device?>
 
     suspend fun updateUser(user: User?)
     fun getUser(): Flow<User?>

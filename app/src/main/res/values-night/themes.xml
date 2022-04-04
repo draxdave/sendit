@@ -1,15 +1,15 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="colorSecondary">@color/colorAccent</item>
-        <item name="editTextStyle">@style/textInput</item>
-        <item name="android:fontFamily">@font/dosis</item>
+        <item name="android:editTextStyle">@style/textInput</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -115,7 +115,7 @@
     <style name="HorizontalLine" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:background">@color/gray</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">1px</item>
     </style>
 
     <declare-styleable name="CirclesLoadingView">
@@ -134,4 +134,25 @@
             <enum name="overshoot" value="6"/>
         </attr>
     </declare-styleable>
+
+    <style name="heading" parent="TextAppearance.AppCompat.Headline" >
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="heading2" parent="TextAppearance.AppCompat.Headline" >
+        <item name="android:fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="body_light" parent="TextAppearance.AppCompat.Body1" >
+        <item name="android:fontFamily">@font/dosis_light</item>
+    </style>
+
+    <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="light_text" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>

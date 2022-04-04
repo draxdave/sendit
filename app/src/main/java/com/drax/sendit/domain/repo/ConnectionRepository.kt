@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ConnectionRepository: BaseStorageRepository{
     fun getConnections(): Flow<List<Connection>>
+    fun getConnectionsFromServer(): Flow<Resource<ApiResponse<GetConnectionsResponse>>>
     suspend fun addConnection(vararg connection: Connection)
 
     fun sendInvitation(pairRequest: PairRequest): Flow<Resource<ApiResponse<PairResponse>>>

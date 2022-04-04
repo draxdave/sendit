@@ -2,12 +2,12 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.ConnectionDao
 import com.drax.sendit.data.db.model.Connection
+import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.PairRequest
-import com.drax.sendit.domain.network.model.PairResponseRequest
-import com.drax.sendit.domain.network.model.UnpairRequest
+import com.drax.sendit.domain.network.model.*
 import com.drax.sendit.domain.repo.ConnectionRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ConnectionRepositoryImpl(
@@ -45,4 +45,11 @@ class ConnectionRepositoryImpl(
 
     override suspend fun clearDb() = connectionDao.deleteAll()
 
+    override fun getConnectionsFromServer() = flow {
+        emit(
+            NetworkCall{
+                apiService.getConnections()
+            }.fetch()
+        )
+    }
 }

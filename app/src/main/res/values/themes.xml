@@ -9,7 +9,7 @@
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="colorSecondary">@color/colorAccent</item>
         <item name="android:editTextStyle">@style/textInput</item>
-        <item name="android:fontFamily">@font/dosis</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -136,11 +136,11 @@
     </declare-styleable>
 
     <style name="heading" parent="TextAppearance.AppCompat.Headline" >
-        <item name="android:fontFamily">@font/dosis_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="heading2" parent="TextAppearance.AppCompat.Headline" >
-        <item name="android:fontFamily">@font/nunito_italic</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 
     <style name="body_light" parent="TextAppearance.AppCompat.Body1" >
@@ -149,6 +149,10 @@
 
     <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="fontFamily">@font/dosis_bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="light_text" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>

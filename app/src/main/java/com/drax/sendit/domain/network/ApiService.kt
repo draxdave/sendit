@@ -42,6 +42,9 @@ interface ApiService {
     suspend fun getTransactions(
         @Query("page") page: Int
     ): Response<ApiResponse<GetTransactionsResponse>>
+
+    @GET("/connections")
+    suspend fun getConnections(): Response<ApiResponse<GetConnectionsResponse>>
 }
 
 

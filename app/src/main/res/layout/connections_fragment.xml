@@ -5,47 +5,127 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.drax.sendit.view.connections.ConnectionUiState"/>
         <variable name="model" type="com.drax.sendit.view.connections.ConnectionsVM" />
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include layout="@layout/toolbar"
-                android:id="@+id/title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@{@string/devices_title}"
-                />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+            android:layout_height="200dp"
+            >
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_height="0dp"/>
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleGravity="top"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <TextView
-                android:text="@string/no_connected_devices"
-                android:textStyle="italic"
-                android:visibility="@{model.devices.size() > 1 ? View.GONE: View.VISIBLE}"
-                app:layout_constraintTop_toBottomOf="@+id/centerGuide"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/expandedView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/black"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" >
+
+                    <!--                    <ImageView-->
+                    <!--                        android:src="@drawable/connection_top_header"-->
+                    <!--                        android:scaleType="centerCrop"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="match_parent"/>-->
+
+                    <TextView
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        style="@style/light_text"
+                        android:layout_margin="@dimen/_16sdp"
+                        android:text="@{@string/last_used(model.device.lastTouch)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_margin="@dimen/_16sdp"
+                        style="@style/light_text"
+                        android:text="@{@string/device_name(model.device.name)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_margin="@dimen/_16sdp"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        img="@{model.device.iconUrl}"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="7dp"
+            android:background="@drawable/profile_card_bg"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresh"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:drawablePadding="@dimen/_16sdp"
-                app:drawableBottomCompat="@drawable/ic_baseline_phonelink_off_24"
-                />
+                android:layout_height="wrap_content">
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuide"
-                app:layout_constraintGuide_percent=".5"
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_height="0dp"/>
+
+                        <TextView
+                            android:text="@string/no_connected_devices"
+                            android:textStyle="italic"
+                            android:visibility="@{model.uiState == ConnectionUiState.NoConnection.INSTANCE || model.uiState == ConnectionUiState.RefreshConnectionListSucceedButEmpty.INSTANCE ? View.VISIBLE: View.GONE}"
+                            app:layout_constraintTop_toBottomOf="@+id/centerGuide"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:drawablePadding="@dimen/_16sdp"
+                            app:drawableBottomCompat="@drawable/ic_baseline_phonelink_off_24"
+                            />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/centerGuide"
+                            app:layout_constraintGuide_percent=".5"
+                            android:orientation="horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

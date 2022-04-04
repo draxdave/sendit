@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface DeviceRepository: BaseStorageRepository{
 
     suspend fun addOrUpdateDevice(device: Device)
-
-    fun getSelfDevice(): Device?
+    fun getSelfDevice(): Flow<Device?>
+    suspend fun storeToken(token: String)
+    suspend fun storeInstanceId(instanceId: String)
+    fun getApiToken(): String?
 }

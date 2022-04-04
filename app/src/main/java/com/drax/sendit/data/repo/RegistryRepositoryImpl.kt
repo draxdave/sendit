@@ -25,16 +25,14 @@ class  RegistryRepositoryImpl(
 
     override suspend fun setFirebaseId(id:String) = registryDao.addOrUpdate(Registry(key = FIREBASE_ID,value = id))
     override fun getFirebaseId():String? = registryDao.getRegistryValueSync(FIREBASE_ID)
-    override suspend fun updateToken(token: String) = registryDao.addOrUpdate(Registry(key = API_TOKEN,value = token))
 
+    override suspend fun updateToken(token: String) = registryDao.addOrUpdate(Registry(key = API_TOKEN,value = token))
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
     override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE,device)
-
-    override fun getThisDevice() =  registryDao.getRegistryValueSync(THIS_DEVICE).decode<Device>()
+    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<Device>()
 
     override suspend fun updateUser(user: User?) = store(THIS_USER, user)
-
     override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>()
 
     private inline fun <reified T> store(key: String, value: T?){

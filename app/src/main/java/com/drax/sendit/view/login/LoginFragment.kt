@@ -90,7 +90,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         super.onViewCreated(view, savedInstanceState)
 
         binding.signInGoogle.setOnClickListener {
-            viewModel.googleSignInClicked()
+            launchOneTapSignIn()
         }
 
         lifecycleScope.launchWhenCreated {
@@ -102,8 +102,8 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                         ))
                     LoginUiState.Neutral -> Unit
                     LoginUiState.LoginSucceed -> Unit
-                    LoginUiState.GoogleSignInClicked -> launchOneTapSignIn()
                     is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.Failed(getString(uiState.message)))
+                    LoginUiState.Loading -> Unit
                 }
             }
         }

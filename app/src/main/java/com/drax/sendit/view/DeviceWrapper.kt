@@ -1,15 +1,15 @@
 package com.drax.sendit.view
 
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.Connection
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 
 data class DeviceWrapper(
-    val device: Device
+    val connection: Connection
 ){
     val addedDate: String by lazy {
-        getDateFromMilliseconds(device.addedDate)
+        getDateFromMilliseconds(connection.connectDate)
     }
 
     private fun getDateFromMilliseconds(instant: Instant): String {

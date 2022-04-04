@@ -31,15 +31,16 @@ class LoginVM(
     val uiState: StateFlow<LoginUiState> = _uiState
 
     fun login(signInRequest: SignInRequest) = viewModelScope.launch(Dispatchers.IO) {
+        _uiState.update {LoginUiState.Loading}
 
         authRepository.signInDevice(signInRequest).collect {result->
-            setLoading(false)
 
             _uiState.update {
                 when(result){
                     is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode, result.message)
                     is Resource.SUCCESS -> {
                         result.data.data?.let {
+                            storeToken(it.token)
                             storeDevices(it.device)
                             storeUser(it.user)
                         }
@@ -48,6 +49,12 @@ class LoginVM(
                     }
                 }
             }
+        }
+    }
+
+    private fun storeToken(token: String){
+        job {
+            deviceRepository.storeToken(token)
         }
     }
 
@@ -69,12 +76,7 @@ class LoginVM(
         }
     }
 
-    fun googleSignInClicked() {
-        setLoading(true)
-        _uiState.update { LoginUiState.GoogleSignInClicked }
-    }
     fun googleSignInFailed(message: Int){
         _uiState.update { LoginUiState.GoogleSignInFailed(message) }
-        setLoading(false)
     }
 }

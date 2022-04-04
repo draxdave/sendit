@@ -14,7 +14,9 @@ class DeviceRepositoryImpl(
 
     override fun getSelfDevice() = registryRepository.getThisDevice()
 
-    override suspend fun clearDb() {
-        registryRepository.updateThisDevice(null)
-    }
+    override suspend fun clearDb() = registryRepository.updateThisDevice(null)
+
+    override suspend fun storeToken(token: String) = registryRepository.updateToken(token)
+    override suspend fun storeInstanceId(instanceId: String) = registryRepository.setFirebaseId(instanceId)
+    override fun getApiToken() = registryRepository.getApiToken()
 }

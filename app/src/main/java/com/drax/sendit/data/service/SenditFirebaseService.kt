@@ -1,6 +1,7 @@
 package com.drax.sendit.data.service
 
 import android.content.Intent
+import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -15,7 +16,7 @@ import org.koin.android.ext.android.inject
 
 class SenditFirebaseService : FirebaseMessagingService() {
 
-    private val registryRepository: RegistryRepository by inject()
+    private val deviceRepository: DeviceRepository by inject()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println("onMessageReceived")
@@ -56,7 +57,7 @@ class SenditFirebaseService : FirebaseMessagingService() {
 //                )
 //            }
 
-            registryRepository.setFirebaseId(instanceId)
+            deviceRepository.storeInstanceId(instanceId)
         }
     }
 

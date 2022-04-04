@@ -21,7 +21,7 @@ val appModule = module {
     single                     {   get<AppDB>().transactionDao() }
     single                     {   get<AppDB>().connectionDao() }
 
-    viewModel                  {  ConnectionsVM(get(),get())  }
+    viewModel                  {  ConnectionsVM(get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransmissionsVM()  }
     viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
