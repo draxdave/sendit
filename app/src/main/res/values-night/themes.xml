@@ -12,20 +12,6 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="textInputBright" parent="textInput">
-        <item name="android:background">@drawable/curved3dp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/gray</item>
-        <item name="android:paddingStart">@dimen/_16sdp</item>
-        <item name="android:paddingEnd">@dimen/_16sdp</item>
-        <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
-    </style>
     <style name="textInput" parent="Widget.AppCompat.EditText">
         <item name="android:padding">@dimen/_8sdp</item>
         <item name="android:background">@drawable/input_bg</item>
@@ -36,32 +22,6 @@
         <item name="android:layout_marginStart">@dimen/_16sdp</item>
         <item name="android:layout_marginEnd">@dimen/_16sdp</item>
         <item name="android:layout_marginTop">@dimen/_8sdp</item>
-    </style>
-
-    <style name="hyperText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorSecondaryText</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginStart">@dimen/_16sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_16sdp</item>
-    </style>
-
-    <style name="superText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginStart">@dimen/_16sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_16sdp</item>
-    </style>
-
-    <style name="buttonInput" parent="TextAppearance.AppCompat">
-        <item name="android:background">@drawable/button_bg</item>
-        <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:padding">@dimen/_8sdp</item>
-        <item name="android:layout_marginStart">@dimen/_16sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_16sdp</item>
-        <item name="android:layout_marginTop">@dimen/_16sdp</item>
     </style>
 
     <style name="button" parent="TextAppearance.AppCompat">
@@ -78,44 +38,9 @@
         <item name="android:layout_marginTop">@dimen/_16sdp</item>
     </style>
 
-    <style name="buttonInputSecondary" parent="TextAppearance.AppCompat">
-        <item name="android:background">@drawable/secondary_button_bg</item>
-        <item name="android:textColor">@color/colorSecondaryText</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:layout_marginStart">@dimen/_16sdp</item>
-        <item name="android:layout_marginEnd">@dimen/_16sdp</item>
-        <item name="android:layout_marginTop">@dimen/_16sdp</item>
-    </style>
-
-    <style name="checkBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
-
-    </style>
-
-    <style name="compoundSwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingEnd">@dimen/_16sdp</item>
-        <item name="android:paddingStart">@dimen/_16sdp</item>
-        <item name="android:paddingTop">@dimen/_8sdp</item>
-        <item name="android:paddingBottom">@dimen/_8sdp</item>
-        <item name="android:textColor">@color/darkerGray</item>
-        <item name="android:textAlignment">viewStart</item>
-        <item name="android:layoutDirection">rtl</item>
-    </style>
-
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="HorizontalLine" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:background">@color/gray</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1px</item>
     </style>
 
     <declare-styleable name="CirclesLoadingView">

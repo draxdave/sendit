@@ -27,41 +27,34 @@ class ErrorHandlerInterceptor(
             val initResponse = chain.proceed(request)
 
             when (initResponse.code) {
-                400 -> {
+                BadRequest -> {
                     Exception("Error 400:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
                         ConnectException,
-                        resources.getString(R.string.error_internal)
                     )
                         .toResponse()
 
                 }
-                in 402..499 -> {
+                in UnControlledBadRequest -> {
                     Exception("Error 402:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
                         ConnectException,
-                        resources.getString(R.string.error_internal)
                     )
                         .toResponse()
 
                 }
-                in 300..399 -> {
+                in UnControlledRedirection -> {
                     Exception("Error 300:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
-                        ConnectException,
-                        resources.getString(R.string.error_internal)
+                        ConnectException
                     )
                         .toResponse()
 
 
                 }
-                in 500..599 -> {
+                in UnControlledServerError -> {
                     Exception("Error 500:" + initResponse.body?.string()).printStackTrace()
-                    ErrorResponse( // Missing Required field(s
-                        ConnectException,
-                        resources.getString(R.string.error_internal)
-                    )
-                        .toResponse()
+                    ErrorResponse(ConnectException).toResponse()
 
 
                 }
@@ -72,35 +65,30 @@ class ErrorHandlerInterceptor(
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            ErrorResponse(e.code(), resources.getString(R.string.network_unavailable))
-                .toResponse()
+            ErrorResponse(e.code()).toResponse()
 
         } catch (e: ConnectException) {
             e.printStackTrace()
-            ErrorResponse(ConnectException, resources.getString(R.string.network_unavailable))
-                .toResponse()
+            ErrorResponse(ConnectException).toResponse()
 
         } catch (e: SocketTimeoutException) {
             e.printStackTrace()
-            ErrorResponse(SocketTimeoutException, resources.getString(R.string.network_unavailable))
-                .toResponse()
+            ErrorResponse(SocketTimeoutException).toResponse()
 
         }catch (e : UnknownHostException){
             e.printStackTrace()
-            ErrorResponse(UnknownHostException, resources.getString(R.string.network_unavailable))
-                .toResponse()
+            ErrorResponse(UnknownHostException).toResponse()
 
         } catch (e: Exception) {
             e.printStackTrace()
-            ErrorResponse(Exception, resources.getString(R.string.unknown_error))
-                .toResponse()
+            ErrorResponse(Exception).toResponse()
         }
 
         return response
     }
 
     private fun ErrorResponse.toResponse(): Response {
-        val json = "{" +
+        val json = "{\"statusCode\":$type," +
                 "\"error\":"+Json.encodeToString(this) +
                 "}"
 
@@ -117,6 +105,10 @@ class ErrorHandlerInterceptor(
         const val ConnectException=600
         const val SocketTimeoutException=601
         const val UnknownHostException=602
-        const val Exception=603
+        const val Exception = 603
+        const val BadRequest = 400
+        val UnControlledBadRequest = 402..499
+        val UnControlledRedirection = 300..399
+        val UnControlledServerError = 500..599
     }
 }

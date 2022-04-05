@@ -11,11 +11,11 @@ import okhttp3.Request
 import okhttp3.Response
 
 class HeaderInterceptor(
-    private val deviceRepository: DeviceRepository,
+    private val registryRepository: RegistryRepository,
 ): Interceptor {
 
     private val apiToken: String
-        get() = deviceRepository.getApiToken() ?: ""
+        get() = registryRepository.getApiToken() ?: ""
 
     private val headers by lazy {
         Headers.headersOf(

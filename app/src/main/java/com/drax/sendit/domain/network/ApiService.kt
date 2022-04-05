@@ -45,6 +45,9 @@ interface ApiService {
 
     @GET("/connections")
     suspend fun getConnections(): Response<ApiResponse<GetConnectionsResponse>>
+
+    @GET("/pair/qr")
+    suspend fun getQr(): Response<ApiResponse<GetQRResponse>>
 }
 
 

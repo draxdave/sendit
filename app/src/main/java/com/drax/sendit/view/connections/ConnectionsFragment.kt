@@ -38,7 +38,7 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
                     ConnectionUiState.RefreshingConnectionList -> Unit
                     ConnectionUiState.NoConnection -> Unit
                     is ConnectionUiState.ConnectionsLoaded -> adapter.newList(it.connectionList)
-                    is ConnectionUiState.RefreshConnectionListFailed -> modal(ModalMessage.Failed(it.error.message ?: getString(it.error.errorCode)))
+                    is ConnectionUiState.RefreshConnectionListFailed -> modal(ModalMessage.FromNetError(it.error.errorCode))
 
                     is ConnectionUiState.RefreshConnectionListSucceed -> adapter.newList(it.connectionList)
                 }

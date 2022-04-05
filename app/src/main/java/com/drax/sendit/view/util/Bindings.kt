@@ -13,7 +13,6 @@ fun ImageView.loadImageFromUri(imageUrl: String?){
     Glide.with(this)
         .load(imageUrl)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .placeholder(R.drawable.ic_baseline_phonelink_64)
         .into(this)
 }
 
@@ -22,6 +21,5 @@ fun ImageView.loadImageFromUri(imageDrawable: Drawable?){
     Glide.with(this)
         .load(imageDrawable)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .placeholder(R.drawable.ic_baseline_phonelink_64)
         .into(this)
 }

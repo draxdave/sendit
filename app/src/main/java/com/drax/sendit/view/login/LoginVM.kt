@@ -37,7 +37,7 @@ class LoginVM(
 
             _uiState.update {
                 when(result){
-                    is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode, result.message)
+                    is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode)
                     is Resource.SUCCESS -> {
                         result.data.data?.let {
                             storeToken(it.token)

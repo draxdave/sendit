@@ -1,13 +1,17 @@
 package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.domain.network.ApiService
+import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
 class DeviceRepositoryImpl(
-    private val registryRepository: RegistryRepository
+    private val registryRepository: RegistryRepository,
+    private val apiService: ApiService
 
 ): DeviceRepository {
     override suspend fun addOrUpdateDevice(device: Device) = registryRepository.updateThisDevice(device)
@@ -19,4 +23,14 @@ class DeviceRepositoryImpl(
     override suspend fun storeToken(token: String) = registryRepository.updateToken(token)
     override suspend fun storeInstanceId(instanceId: String) = registryRepository.setFirebaseId(instanceId)
     override fun getApiToken() = registryRepository.getApiToken()
+
+    override suspend fun getQRUrlFromServer() = NetworkCall{
+            apiService.getQr()
+        }.fetch()
+
+    override suspend fun storeQRUrl(qrUrl: String) = registryRepository.updateQrUrl(qrUrl)
+
+    override fun getQrUrl() = registryRepository.getQrUrl()
+
+
 }

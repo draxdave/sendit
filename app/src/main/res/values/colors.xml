@@ -3,17 +3,15 @@
     <color name="colorPrimary">#EDEDED</color>
     <color name="colorPrimaryDark">#587C2E</color>
     <color name="colorAccent">#349A4F</color>
-    <color name="colorAccentSecondary">#1B3221</color>
     <color name="colorPrimaryText">#333131</color>
     <color name="colorSecondaryText">#349a4f</color>
 
-    <color name="reddishPink">#F44336</color>
-
     <color name="darkerGray">#37383C</color>
     <color name="blur">#1AFFFFFF</color>
-    <color name="transparent">#00000000</color>
 
     <color name="lightAqua">#30BC96</color>
+    <color name="lightA200">#448AFF</color>
+    <color name="blueA200">#40C4FF</color>
     <color name="white">#E3E3E3</color>
     <color name="warning">#FFB300</color>
     <color name="warning_warmer">#FB8C00</color>

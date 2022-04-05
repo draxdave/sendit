@@ -97,12 +97,10 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             viewModel.uiState.collect {uiState->
                 when(uiState){
                     is LoginUiState.LoginFailed ->
-                        modal(ModalMessage.Failed(
-                            uiState.message ?: getString(R.string.error_internal)
-                        ))
+                        modal(ModalMessage.FromNetError(R.string.error_internal))
                     LoginUiState.Neutral -> Unit
                     LoginUiState.LoginSucceed -> Unit
-                    is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.Failed(getString(uiState.message)))
+                    is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                     LoginUiState.Loading -> Unit
                 }
             }

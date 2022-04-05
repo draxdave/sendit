@@ -5,9 +5,9 @@ import com.drax.sendit.data.model.ModalMessage
 import ir.drax.modal.Modal
 
 fun Fragment.modal(message: ModalMessage){
-    Modal.builder(requireActivity()).apply {
+    Modal.builder(requireView()).apply {
         type = Modal.Type.Alert
-        title = message.title
+        title = getString(message.title)
         icon = message.icon
         direction =
             if(message.fromTop)

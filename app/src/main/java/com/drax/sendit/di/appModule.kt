@@ -20,6 +20,7 @@ val appModule = module {
     single                     {   get<AppDB>().registryDao() }
     single                     {   get<AppDB>().transactionDao() }
     single                     {   get<AppDB>().connectionDao() }
+    single                     {   get<AppDB>().authDao() }
 
     viewModel                  {  ConnectionsVM(get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
@@ -28,7 +29,7 @@ val appModule = module {
     viewModel                  {  ProfileVM(get(), get())  }
     viewModel                  {  MainVM(get(), get())  }
 
-    single<DeviceRepository>  { DeviceRepositoryImpl(get()) }
+    single<DeviceRepository>  { DeviceRepositoryImpl(get(), get()) }
     single<PushRepository>     { PushRepositoryImpl(get(),get(),get()) }
     single<RegistryRepository> { RegistryRepositoryImpl(get()) }
     single<UserRepository>     { UserRepositoryImpl(get()) }

@@ -16,4 +16,7 @@ interface RegistryRepository: BaseStorageRepository {
 
     suspend fun updateUser(user: User?)
     fun getUser(): Flow<User?>
+
+    suspend fun updateQrUrl(qrUrl: String?)
+    fun getQrUrl(): Flow<String?>
 }

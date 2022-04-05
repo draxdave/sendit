@@ -35,6 +35,11 @@ class  RegistryRepositoryImpl(
     override suspend fun updateUser(user: User?) = store(THIS_USER, user)
     override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>()
 
+    override suspend fun updateQrUrl(qrUrl: String?) = store(QR_URL, qrUrl)
+
+
+    override fun getQrUrl() =  registryDao.getRegistryValue(QR_URL).decode<String>()
+
     private inline fun <reified T> store(key: String, value: T?){
         registryDao.addOrUpdate(
             Registry(key = key, value = value.encode<T>())
@@ -53,6 +58,7 @@ class  RegistryRepositoryImpl(
         private const val API_TOKEN = "API_TOKEN"
         private const val THIS_DEVICE = "THIS_DEVICE"
         private const val THIS_USER = "THIS_USER"
+        private const val QR_URL = "QR_URL"
     }
 }
 

@@ -27,13 +27,13 @@ class NetworkCall<ResultType>(
                     Resource.SUCCESS(body)
 
                 else
-                    Resource.ERROR(body.error.description, body.statusCode)
+                    Resource.ERROR(body.statusCode)
 
             }else
                 Resource.SUCCESS(body)
 
         } else
-            Resource.ERROR(errorCode = response.code())
+            Resource.ERROR(response.code())
 
 
     }
