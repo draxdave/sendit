@@ -46,7 +46,7 @@ class ErrorHandlerInterceptor(
                 in UnControlledRedirection -> {
                     Exception("Error 300:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
-                        ConnectException
+                        UnControlledRedirection.first
                     )
                         .toResponse()
 
@@ -54,7 +54,7 @@ class ErrorHandlerInterceptor(
                 }
                 in UnControlledServerError -> {
                     Exception("Error 500:" + initResponse.body?.string()).printStackTrace()
-                    ErrorResponse(ConnectException).toResponse()
+                    ErrorResponse(UnControlledServerError.first).toResponse()
 
 
                 }

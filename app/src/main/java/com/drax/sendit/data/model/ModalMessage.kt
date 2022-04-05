@@ -17,6 +17,7 @@ sealed class ModalMessage(
     val icon: Int,
     val fromTop: Boolean,
     val lock: Boolean,
+    val description: Int? = null
 ) {
     data class Success(val message: Int): ModalMessage(
         title = message,
@@ -45,6 +46,20 @@ sealed class ModalMessage(
         icon = R.drawable.ic_outline_info_24,
         fromTop = true,
         lock = false
+    )
+
+    data class Full(
+        val mTitle: Int,
+        val mIcon: Int,
+        val mFromTop: Boolean,
+        val mLock: Boolean,
+        val mDescription: Int
+    ): ModalMessage(
+        title = mTitle,
+        icon = mIcon,
+        fromTop = mFromTop,
+        lock = mLock,
+        description = mDescription
     )
 }
 

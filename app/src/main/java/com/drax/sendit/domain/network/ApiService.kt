@@ -14,7 +14,7 @@ interface ApiService {
     ): Response<ApiResponse<SignInResponse>>
 
     @POST("/device/pair")
-    fun pair(
+    suspend fun pair(
         @Body request: PairRequest
     ): Response<ApiResponse<PairResponse>>
 

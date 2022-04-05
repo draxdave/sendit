@@ -11,10 +11,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:visibility="@{isShowing ? View.VISIBLE: View.GONE}"
-    android:elevation="@dimen/_16sdp"
+    android:elevation="64dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/blur"
+    android:background="@color/darkBlur"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

@@ -22,4 +22,17 @@
     <string name="device_name">Device Name: %s</string>
     <string name="last_used">Last used:</string>
     <string name="scan">Scan</string>
+    <string name="scanner">Scanner</string>
+    <string name="invitation_sent_title">Invitation sent successfully.</string>
+    <string name="invitation_sent_desc">Please wait for the other party to respond to your request.</string>
+    <string name="new_invitation">New Pair Request</string>
+    <string name="new_invitation_desc"><b>%s</b> wants to connect and send you messages.\nDo you accept the invitation?</string>
+    <string name="new_invitation_accept"><b>Yes</b>, Accept the invitation</string>
+    <string name="new_invitation_decline">No, Decline the request</string>
+    <string name="new_invitation_accept_sent">Your response is sent!</string>
+    <string name="permission_needed">Permission Is Required</string>
+    <string name="permission_needed_camera">SendIt Needs Camera permission to scan the barcodes. Please provide it.</string>
+    <string name="invitation_already_active">You are already connected to this device</string>
+    <string name="invitation_rejected">Your pair request has been rejected</string>
+    <string name="invitation_waiting_for_peer">Request already sent</string>
 </resources>

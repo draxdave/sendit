@@ -8,6 +8,7 @@
 
     <color name="darkerGray">#37383C</color>
     <color name="blur">#1AFFFFFF</color>
+    <color name="darkBlur">#1A000000</color>
 
     <color name="lightAqua">#30BC96</color>
     <color name="lightA200">#448AFF</color>
@@ -17,4 +18,6 @@
     <color name="warning_warmer">#FB8C00</color>
     <color name="gray">#A8AAB6</color>
     <color name="black">#24262E</color>
+
+    <color name="main_text_light">#2B2B2B</color>
 </resources>

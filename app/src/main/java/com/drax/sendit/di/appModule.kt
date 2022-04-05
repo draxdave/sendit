@@ -9,6 +9,7 @@ import com.drax.sendit.view.connections.ConnectionsVM
 import com.drax.sendit.view.login.LoginVM
 import com.drax.sendit.view.profile.ProfileVM
 import com.drax.sendit.view.qr.QrVM
+import com.drax.sendit.view.scanner.ScannerVM
 import com.drax.sendit.view.transmissions.TransmissionsVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +29,7 @@ val appModule = module {
     viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
     viewModel                  {  ProfileVM(get(), get())  }
     viewModel                  {  MainVM(get(), get())  }
+    viewModel                  {  ScannerVM()  }
 
     single<DeviceRepository>  { DeviceRepositoryImpl(get(), get()) }
     single<PushRepository>     { PushRepositoryImpl(get(),get(),get()) }

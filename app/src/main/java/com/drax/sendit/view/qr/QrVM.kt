@@ -5,6 +5,10 @@ import androidx.lifecycle.map
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.data.model.Resource
+import com.drax.sendit.domain.network.model.PairRequest
+import com.drax.sendit.domain.network.model.PairResponse
+import com.drax.sendit.domain.network.model.PairResponseRequest
+import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.view.util.ResViewModel
@@ -15,7 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 
 class QrVM(
-    private val pushRepository: PushRepository,
+    private val connectionRepository: ConnectionRepository,
     private val deviceRepository: DeviceRepository
 ): ResViewModel() {
 
@@ -46,6 +50,40 @@ class QrVM(
                         val fullUrl = BuildConfig.BASE_URL + qrUrl
                         deviceRepository.storeQRUrl(fullUrl)
                         QrUiState.QrLoaded(fullUrl)
+                    }
+                }
+            }
+        }
+    }
+
+    fun sendPairRequest(requestCode: String){
+        _uiState.update { QrUiState.InvitationSending }
+
+        job {
+            connectionRepository.sendInvitation(PairRequest(requestCode)).collect {response->
+                _uiState.update {
+                    when(response){
+                        is Resource.ERROR -> when(response.errorCode) {
+                            PairResponse.ALREADY_ACTIVE -> QrUiState.InvitationResponseSending
+                            PairResponse.REJECTED -> QrUiState.InvitationResponseRejected
+                            PairResponse.WAITING_FOR_PEER -> QrUiState.InvitationResponseWaiting
+                            else -> QrUiState.InvitationResponseFailed(response)
+                        }
+                        is Resource.SUCCESS -> QrUiState.InvitationSent
+                    }
+                }
+            }
+        }
+    }
+
+    fun sendInvitationResponse(connectionId: Long, response: Int){
+        _uiState.update { QrUiState.InvitationResponseSending }
+        job {
+            connectionRepository.invitationResponse(PairResponseRequest(connectionId, response)).collect {invResponse->
+                _uiState.update {
+                    when(invResponse){
+                        is Resource.ERROR -> QrUiState.InvitationResponseFailed(invResponse)
+                        is Resource.SUCCESS ->QrUiState.InvitationResponseSent
                     }
                 }
             }

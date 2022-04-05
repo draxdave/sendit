@@ -16,6 +16,9 @@ fun Fragment.modal(message: ModalMessage){
                 Modal.Direction.Bottom
 
         lockVisibility = message.lock
+        message.description?.let {
+            setMessage(getString(it))
+        }
     }
         .build()
         .show()

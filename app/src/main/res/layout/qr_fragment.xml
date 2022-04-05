@@ -83,5 +83,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+
+        <include layout="@layout/loading_layout"
+            app:isShowing="@{model.uiState == QrUiState.InvitationSending.INSTANCE || model.uiState == QrUiState.InvitationResponseSending.INSTANCE}"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

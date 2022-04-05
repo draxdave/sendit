@@ -44,6 +44,7 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:elevation">7sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:padding">@dimen/_8sdp</item>
         <item name="android:gravity">center</item>
@@ -82,8 +83,14 @@
         <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 
+    <style name="heading3" parent="TextAppearance.AppCompat.Headline" >
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
     <style name="body_light" parent="TextAppearance.AppCompat.Body1" >
-        <item name="android:fontFamily">@font/dosis_light</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:color">@color/main_text_light</item>
     </style>
 
     <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
