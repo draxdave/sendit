@@ -14,6 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.PushProcessor.Companion.INVITATION_RESPONSE
 import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.databinding.NewInvitationModalBinding
@@ -58,7 +59,10 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
                 when(it){
                     QrUiState.Neutral -> Unit
                     is QrUiState.QrLoadFailed -> modal(ModalMessage.Failed(it.reason))
-                    is QrUiState.QrLoaded -> binding.deviceQr.loadImageFromUri(it.qrUrl)
+                    is QrUiState.QrLoaded -> {
+                        binding.deviceQr.loadImageFromUri(it.qrUrl)
+                        binding.deviceQrContainer.visibility = View.VISIBLE
+                    }
                     QrUiState.QrLoading -> Unit
                     is QrUiState.QrLoadFailedFromNet -> modal(ModalMessage.FromNetError(it.reason.errorCode))
                     is QrUiState.InvitationFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
@@ -122,7 +126,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun registerListener(){
-        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(SenditFirebaseService.INVITATION_RESPONSE))
+        requireActivity().registerReceiver(broadcastReceiver, IntentFilter(INVITATION_RESPONSE))
     }
 
     private fun unregisterListener(){

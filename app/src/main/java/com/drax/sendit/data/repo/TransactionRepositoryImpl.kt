@@ -1,6 +1,7 @@
 package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.TransactionsDao
+import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.repo.TransactionRepository
 
@@ -11,6 +12,10 @@ class TransactionRepositoryImpl(
     override fun getAllTransactions() = transactionsDao.getList()
     override suspend fun clearDb() {
         transactionsDao.deleteAll()
+    }
+
+    override suspend fun insertNewTransaction(transaction: Transaction) {
+        transactionsDao.add(transaction)
     }
 
     /*

@@ -9,5 +9,10 @@ data class SignInResponse(
     val user: User,
     val connections: List<Connection>?,
     val device: Device
-)
+){
+    companion object{
+        const val DEVICE_IS_NOT_ACTIVE = 1805
+        const val USER_IS_NOT_ACTIVE = 1804
+    }
+}
 

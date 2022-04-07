@@ -32,7 +32,9 @@ class  RegistryRepositoryImpl(
     override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE,device)
     override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<Device>()
 
-    override suspend fun updateUser(user: User?) = store(THIS_USER, user)
+    override suspend fun updateUser(user: User?){
+        store(THIS_USER, user)
+    }
     override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>()
 
     override suspend fun updateQrUrl(qrUrl: String?) = store(QR_URL, qrUrl)

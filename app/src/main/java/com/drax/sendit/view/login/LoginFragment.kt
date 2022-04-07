@@ -17,6 +17,7 @@ import com.drax.sendit.data.model.*
 import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.domain.network.model.SignInRequest
+import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.network.model.type.UserSex
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
@@ -96,8 +97,13 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         lifecycleScope.launchWhenCreated {
             viewModel.uiState.collect {uiState->
                 when(uiState){
-                    is LoginUiState.LoginFailed ->
-                        modal(ModalMessage.FromNetError(R.string.error_internal))
+                    is LoginUiState.LoginFailed -> modal(ModalMessage.Failed(
+                        when(uiState.errorCode){
+                            SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
+                            SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                            else -> R.string.error_internal
+                        }
+                    ))
                     LoginUiState.Neutral -> Unit
                     LoginUiState.LoginSucceed -> Unit
                     is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))

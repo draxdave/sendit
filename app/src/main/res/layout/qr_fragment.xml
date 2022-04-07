@@ -47,8 +47,8 @@
             app:layout_constraintVertical_bias=".3"
             app:cardUseCompatPadding="true"
             app:cardElevation="7dp"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/_8sdp"
-            android:visibility="@{model.uiState instanceof QrUiState.QrLoaded ? View.VISIBLE: View.GONE}"
             android:layout_margin="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

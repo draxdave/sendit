@@ -1,6 +1,7 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.data.db.AuthDao
+import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

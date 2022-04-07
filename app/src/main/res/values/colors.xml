@@ -20,4 +20,5 @@
     <color name="black">#24262E</color>
 
     <color name="main_text_light">#2B2B2B</color>
+    <color name="main_text_lighter">#515151</color>
 </resources>

@@ -4,12 +4,7 @@ import com.drax.sendit.domain.network.model.type.UserSex
 import com.drax.sendit.domain.network.model.type.UserStatus
 import com.drax.sendit.domain.network.model.type.UserType
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import java.time.Instant
 import java.util.*
 
@@ -38,17 +33,5 @@ data class User (
     companion object {
         // App default language
         val appDefaultLocale: Locale = Locale.ENGLISH
-    }
-}
-
-object InstantSerializer : KSerializer<Instant> {
-    override val descriptor = PrimitiveSerialDescriptor("Instant", PrimitiveKind.STRING)
-
-    override fun deserialize(decoder: Decoder): Instant {
-        return Instant.parse(decoder.decodeString())
-    }
-
-    override fun serialize(encoder: Encoder, value: Instant) {
-        encoder.encodeString(value.toString())
     }
 }

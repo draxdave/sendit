@@ -1,5 +1,6 @@
 package com.drax.sendit.data.repo
 
+import com.drax.sendit.data.db.AuthDao
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.network.model.SignInRequest
@@ -11,9 +12,7 @@ import kotlinx.coroutines.flow.flow
 
 class AuthRepositoryImpl(
     private val apiService: ApiService,
-    private val userRepository: UserRepository,
-    private val transactionRepository: TransactionRepository,
-    private val deviceRepository: DeviceRepository,
+    private val authDao: AuthDao,
 ): AuthRepository {
 
     override fun signInDevice(signInRequest: SignInRequest) = flow {
@@ -31,9 +30,9 @@ class AuthRepositoryImpl(
         }.fetch()
             .also {
                 emit(it)
-                userRepository.clearDb()
-                transactionRepository.clearDb()
-                deviceRepository.clearDb()
+                authDao.clearDeviceData()
+                authDao.clearUserData()
+                authDao.clearHistoryData()
             }
     }
 }

@@ -93,6 +93,11 @@
         <item name="android:color">@color/main_text_light</item>
     </style>
 
+    <style name="body_lighter" parent="TextAppearance.AppCompat.Body1" >
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:color">@color/main_text_lighter</item>
+    </style>
+
     <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="fontFamily">@font/roboto_bold</item>

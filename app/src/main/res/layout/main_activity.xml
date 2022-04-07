@@ -29,4 +29,10 @@
         android:theme="@style/BottomNavThem"
         />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/loading_layout"
+        android:visibility="gone"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

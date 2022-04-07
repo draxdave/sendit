@@ -45,7 +45,7 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
             }
         }
         binding.list.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = this@ConnectionsFragment.adapter
         }
 

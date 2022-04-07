@@ -1,7 +1,12 @@
 package com.drax.sendit.di
 
+import android.app.NotificationManager
+import android.content.Context
 import com.drax.sendit.data.db.AppDB
 import com.drax.sendit.data.repo.*
+import com.drax.sendit.data.service.NotificationBuilder
+import com.drax.sendit.data.service.NotificationUtil
+import com.drax.sendit.data.service.PushProcessor
 import com.drax.sendit.domain.network.*
 import com.drax.sendit.domain.repo.*
 import com.drax.sendit.view.main.MainVM
@@ -28,7 +33,7 @@ val appModule = module {
     viewModel                  {  TransmissionsVM()  }
     viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
     viewModel                  {  ProfileVM(get(), get())  }
-    viewModel                  {  MainVM(get(), get())  }
+    viewModel                  {  MainVM(get(), get(), get(), get())  }
     viewModel                  {  ScannerVM()  }
 
     single<DeviceRepository>  { DeviceRepositoryImpl(get(), get()) }
@@ -36,7 +41,7 @@ val appModule = module {
     single<RegistryRepository> { RegistryRepositoryImpl(get()) }
     single<UserRepository>     { UserRepositoryImpl(get()) }
     single<TransactionRepository>     { TransactionRepositoryImpl(get(), get()) }
-    single<AuthRepository>     { AuthRepositoryImpl(get(), get(),get(),get()) }
+    single<AuthRepository>     { AuthRepositoryImpl(get(), get()) }
     single<ConnectionRepository>     { ConnectionRepositoryImpl(get(), get()) }
 
     single<ApiService>         {   AppRetrofit(get(), get(), get()).getRetrofitClient()
@@ -44,5 +49,9 @@ val appModule = module {
     single                     { AuthInterceptor(get()) }
     single                     { HeaderInterceptor( get()) }
     single                     { ErrorHandlerInterceptor( androidContext().resources) }
+
+    single                     { PushProcessor(get(),get(),get(),)}
+    single                     { NotificationUtil(androidContext()) }
+    single                     { NotificationBuilder(get(),) }
 
 }

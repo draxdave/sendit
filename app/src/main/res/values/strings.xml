@@ -35,4 +35,9 @@
     <string name="invitation_already_active">You are already connected to this device</string>
     <string name="invitation_rejected">Your pair request has been rejected</string>
     <string name="invitation_waiting_for_peer">Request already sent</string>
+    <string name="share_modal_title">Select A Connections To Share</string>
+    <string name="share_success">Sent successfully!</string>
+    <string name="notification_title_new_content">Share Content Received</string>
+    <string name="login_error_device_inactive">This device is not active. Please contact support for more info.</string>
+    <string name="login_error_user_inactive">This user is not active. Please contact support for more info.</string>
 </resources>

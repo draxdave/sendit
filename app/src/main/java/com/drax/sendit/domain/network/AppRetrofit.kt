@@ -19,7 +19,7 @@ class AppRetrofit(
 
     fun getRetrofitClient(): Retrofit {
         val gson = GsonBuilder()
-            .registerTypeAdapter(Instant::class.java , InstantSerializer())
+            .registerTypeAdapter(Instant::class.java , InstantDeserializer())
             .enableComplexMapKeySerialization()
             .serializeNulls()
             .setDateFormat(DateFormat.FULL)
@@ -40,15 +40,15 @@ class AppRetrofit(
             callTimeout(60, TimeUnit.SECONDS)
             readTimeout(120, TimeUnit.SECONDS)
             retryOnConnectionFailure(true)
+            addInterceptor(headerInterceptor)
+            addInterceptor(errorHandlerInterceptor)
+            addInterceptor(authInterceptor)
 
             if (BuildConfig.DEBUG)
                 addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
 
-            addInterceptor(headerInterceptor)
-            addInterceptor(errorHandlerInterceptor)
-            addInterceptor(authInterceptor)
 
         }.build()
 
