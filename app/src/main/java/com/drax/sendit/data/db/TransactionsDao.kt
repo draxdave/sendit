@@ -10,7 +10,7 @@ interface  TransactionsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(transaction: Transaction) : Long
 
-    @Query("SELECT * FROM `transaction` ORDER BY sendDate" )
+    @Query("SELECT * FROM `transaction` ORDER BY sendDate DESC" )
     fun getList(): Flow<List<Transaction>>
 
     @Delete

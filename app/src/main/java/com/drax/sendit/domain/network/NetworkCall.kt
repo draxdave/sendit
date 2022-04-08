@@ -2,13 +2,7 @@ package com.drax.sendit.domain.network
 
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ApiResponse
-import okhttp3.Headers
-import org.json.JSONObject
-import retrofit2.HttpException
 import retrofit2.Response
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 
 class NetworkCall<ResultType>(

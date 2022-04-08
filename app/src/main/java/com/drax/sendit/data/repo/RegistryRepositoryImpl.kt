@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonBuilder
 
 
 /**
@@ -20,6 +19,7 @@ import kotlinx.serialization.json.JsonBuilder
  */
 class  RegistryRepositoryImpl(
     private val registryDao: RegistryDao,
+    private val json: Json,
 ): RegistryRepository {
 
 
@@ -30,21 +30,21 @@ class  RegistryRepositoryImpl(
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
     override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE,device)
-    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<Device>()
+    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<Device>(json)
 
     override suspend fun updateUser(user: User?){
         store(THIS_USER, user)
     }
-    override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>()
+    override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>(json)
 
     override suspend fun updateQrUrl(qrUrl: String?) = store(QR_URL, qrUrl)
 
 
-    override fun getQrUrl() =  registryDao.getRegistryValue(QR_URL).decode<String>()
+    override fun getQrUrl() =  registryDao.getRegistryValue(QR_URL).decode<String>(json)
 
     private inline fun <reified T> store(key: String, value: T?){
         registryDao.addOrUpdate(
-            Registry(key = key, value = value.encode<T>())
+            Registry(key = key, value = value.encode<T>(json))
         )
     }
 
@@ -64,23 +64,17 @@ class  RegistryRepositoryImpl(
     }
 }
 
-private inline fun <reified T> Flow<String?>.decode(): Flow<T?> {
+private inline fun <reified T> Flow<String?>.decode(json:Json): Flow<T?> {
 
     return map {
         if(it == null) null
         else
-            Json.decodeFromString<T>(it)
+            json.decodeFromString<T>(it)
     }
 }
 
-private inline fun <reified T> String?.decode(): T? {
+private inline fun <reified T> T?.encode(json:Json): String? {
     return if(this == null) null
     else
-        Json.decodeFromString<T>(this)
-}
-
-private inline fun <reified T> T?.encode(): String? {
-    return if(this == null) null
-    else
-        Json.encodeToString(this)
+        json.encodeToString(this)
 }

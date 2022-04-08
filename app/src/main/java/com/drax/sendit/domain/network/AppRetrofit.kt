@@ -1,6 +1,7 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.BuildConfig
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,19 +15,11 @@ class AppRetrofit(
     private val authInterceptor: AuthInterceptor,
     private val headerInterceptor: HeaderInterceptor,
     private val errorHandlerInterceptor: ErrorHandlerInterceptor,
+    private val gson: Gson
 ) {
 
 
     fun getRetrofitClient(): Retrofit {
-        val gson = GsonBuilder()
-            .registerTypeAdapter(Instant::class.java , InstantDeserializer())
-            .enableComplexMapKeySerialization()
-            .serializeNulls()
-            .setDateFormat(DateFormat.FULL)
-            .setPrettyPrinting()
-            .setVersion(1.0)
-            .create()
-
         return Retrofit.Builder()
             .client(buildClient())
             .baseUrl(BuildConfig.BASE_URL)

@@ -1,7 +1,9 @@
 package com.drax.sendit.data.service.models
 
 import com.drax.sendit.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class NotificationModel (
     val id                  : Int = System.currentTimeMillis().toInt(),
     val icon                : Int,
@@ -10,7 +12,7 @@ data class NotificationModel (
     val text                : Int,
     val vibrate             : Boolean,
     val content             : String? = null
-){
+): java.io.Serializable{
     companion object {
         fun Default(
             title: Int,

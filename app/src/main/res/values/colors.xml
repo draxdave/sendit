@@ -11,7 +11,9 @@
     <color name="darkBlur">#1A000000</color>
 
     <color name="lightAqua">#30BC96</color>
-    <color name="lightA200">#448AFF</color>
+    <color name="aqua200">#448AFF</color>
+    <color name="receiverTextBackground">#ffffff</color>
+    <color name="senderTextBackground">#e7ffdb</color>
     <color name="blueA200">#40C4FF</color>
     <color name="white">#E3E3E3</color>
     <color name="warning">#FFB300</color>
@@ -21,4 +23,5 @@
 
     <color name="main_text_light">#2B2B2B</color>
     <color name="main_text_lighter">#515151</color>
+
 </resources>

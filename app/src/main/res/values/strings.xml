@@ -8,11 +8,13 @@
 
 
     <string name="no_connected_devices">No paired devices yet!\nAdd one now!</string>
+    <string name="no_transactions">No transactions yet!\nSend one now!</string>
 
     <string name="fragment_qr">Pairing</string>
     <string name="fragment_devices">Devices</string>
     <string name="fragment_profile">Profile</string>
-    <string name="fragment_transmitted">Transmitted</string>
+    <string name="fragment_transmitted">Transactions</string>
+    <string name="fragment_transactions_title">Transactions History</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="fragment_login">Login</string>
     <string name="devices_item_device_added_date">Paired since %s</string>

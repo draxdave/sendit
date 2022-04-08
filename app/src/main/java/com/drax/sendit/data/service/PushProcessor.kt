@@ -19,9 +19,7 @@ class PushProcessor (
     private val deviceRepository: DeviceRepository,
     private val transactionRepository: TransactionRepository,
     private val notificationBuilder: NotificationBuilder,
-    private val json: Json = Json {
-        ignoreUnknownKeys = true
-    }
+    private val json: Json
 ){
 
     fun process(op: String?, data: String?) = when(op?.toInt()){

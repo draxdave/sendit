@@ -3,10 +3,7 @@ package com.drax.sendit.view.main
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.type.TransactionContentType
-import com.drax.sendit.domain.repo.ConnectionRepository
-import com.drax.sendit.domain.repo.DeviceRepository
-import com.drax.sendit.domain.repo.PushRepository
-import com.drax.sendit.domain.repo.UserRepository
+import com.drax.sendit.domain.repo.*
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.flow.*
@@ -15,7 +12,8 @@ class MainVM(
     userRepository: UserRepository,
     deviceRepository: DeviceRepository,
     private val connectionRepository: ConnectionRepository,
-    private val pushRepository: PushRepository
+    private val pushRepository: PushRepository,
+    private val transactionRepository: TransactionRepository
 ) : ResViewModel() {
 
     private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Neutral)
@@ -61,7 +59,10 @@ class MainVM(
                 _uiState.update {
                     when(shareResponse){
                         is Resource.ERROR -> MainUiState.SharingFailed(shareResponse)
-                        is Resource.SUCCESS -> MainUiState.SharingDone
+                        is Resource.SUCCESS -> {
+                            shareResponse.data.data?.transaction?.let { transactionRepository.insertNewTransaction(it)}
+                            MainUiState.SharingDone
+                        }
                     }
                 }
 

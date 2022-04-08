@@ -97,13 +97,17 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         lifecycleScope.launchWhenCreated {
             viewModel.uiState.collect {uiState->
                 when(uiState){
-                    is LoginUiState.LoginFailed -> modal(ModalMessage.Failed(
-                        when(uiState.errorCode){
-                            SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                            SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
-                            else -> R.string.error_internal
-                        }
-                    ))
+                    is LoginUiState.LoginFailed -> modal(
+                        if (uiState.errorCode in 1..799)
+                            ModalMessage.FromNetError(uiState.errorCode)
+                        else
+                            ModalMessage.Failed(
+                                when(uiState.errorCode){
+                                    SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
+                                    SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                                    else -> R.string.error_internal
+                                }
+                            ))
                     LoginUiState.Neutral -> Unit
                     LoginUiState.LoginSucceed -> Unit
                     is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))

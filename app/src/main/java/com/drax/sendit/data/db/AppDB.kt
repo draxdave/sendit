@@ -23,7 +23,7 @@ import com.drax.sendit.view.util.DeviceInfoHelper
         Transaction::class,
         Connection::class
     ],
-    version = 18,
+    version = 19,
     exportSchema = false
 )
 @TypeConverters(TimeConverters::class)

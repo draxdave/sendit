@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class ErrorHandlerInterceptor(
-    private val resources: Resources,
+    private val json: Json
     ): Interceptor {
     private lateinit var request: Request
 
@@ -88,8 +88,8 @@ class ErrorHandlerInterceptor(
     }
 
     private fun ErrorResponse.toResponse(): Response {
-        val json = "{\"statusCode\":$type," +
-                "\"error\":"+Json.encodeToString(this) +
+        val responseStr = "{\"statusCode\":$type," +
+                "\"error\":"+json.encodeToString(this) +
                 "}"
 
         return Response.Builder()
@@ -97,7 +97,7 @@ class ErrorHandlerInterceptor(
             .protocol(Protocol.HTTP_1_1)
             .code(200)
             .message("")
-            .body( json.toResponseBody())
+            .body( responseStr.toResponseBody())
             .build()
     }
 

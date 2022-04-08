@@ -11,8 +11,6 @@ import java.time.Instant
 
 @Serializable
 data class Device (
-    val iid: Long,
-
     val id: Long,
     val name: String,
     val uid: String,

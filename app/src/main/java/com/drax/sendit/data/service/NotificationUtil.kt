@@ -11,9 +11,12 @@ import androidx.core.app.NotificationCompat
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.main.MainActivity
 import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class NotificationUtil(
-    private val context: Context
+    private val context: Context,
+    private val json: Json,
 ){
     private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     init {
@@ -31,7 +34,7 @@ class NotificationUtil(
 
         val pendingIntent = PendingIntent.getActivity(context,0,
             Intent(context, MainActivity::class.java).apply {
-                putExtra(ITEM,Gson().toJson(notificationModel))
+                putExtra(ITEM,json.encodeToString(notificationModel))
             },
             PendingIntent.FLAG_UPDATE_CURRENT )
 

@@ -1,6 +1,7 @@
 package com.drax.sendit.data.db.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.TransactionContentType
@@ -19,12 +20,13 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true)  val iid: Long=0,
 
     val id: Long,
-    @SerializedName("from_device")
-    @SerialName("from_device")
-    val fromDevice: Long,
-    @SerializedName("to_device")
-    @SerialName("to_device")
-    val toDevice: Long,
+    @SerializedName("broadcaster_id")
+    @SerialName("broadcaster_id")
+    val broadcasterId: Long,
+
+    @SerializedName("connection_id")
+    @SerialName("connection_id")
+    val connectionId: Long,
 
     @SerializedName("send_date")
     @SerialName("send_date")
