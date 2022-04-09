@@ -1,16 +1,24 @@
 package com.drax.sendit.view.login
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.IntentSender
+import android.graphics.drawable.Animatable2
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.BounceInterpolator
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.data.model.*
@@ -26,8 +34,10 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.isActive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
+
 
 class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
     override val viewModel: LoginVM by viewModel()
@@ -184,6 +194,87 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 viewModel.googleSignInFailed(R.string.signin_google_error_no_account)
                 Log.d(TAG, e.localizedMessage)
             }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startRocketAnimation()
+    }
+
+    private fun startRocketAnimation(){
+
+        val animation = AppCompatResources.getDrawable(requireContext(), R.drawable.login_rocket_animated) as AnimatedVectorDrawable
+
+        binding.rocketAnimated.setImageDrawable(animation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            animation.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                override fun onAnimationEnd(drawable: Drawable?) {
+                    super.onAnimationEnd(drawable)
+                    if (lifecycleScope.isActive && !this@LoginFragment.isDetached)
+                        if(viewModel.uiState.value == LoginUiState.LoginSucceed)
+                            startRocketPreLaunchingAnimation()
+                        else
+                            startRocketAnimation()
+                }
+            })
+        }
+        animation.start()
+    }
+
+    private fun startRocketPreLaunchingAnimation(){
+        stopRocketAnimation()
+        val animation = AppCompatResources.getDrawable(requireContext(), R.drawable.rocket_pre_luaching) as AnimatedVectorDrawable
+
+        binding.rocketAnimated.setImageDrawable(animation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            animation.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                override fun onAnimationEnd(drawable: Drawable?) {
+                    super.onAnimationEnd(drawable)
+                    if (lifecycleScope.isActive && !this@LoginFragment.isDetached) {
+                        startRocketLaunchingAnimation()
+                        animateUp()
+                    }
+                }
+            })
+        }
+        animation.start()
+    }
+    private fun animateUp(){
+        binding.rocketAnimated.animate()
+            .setDuration(2000)
+            .translationY(binding.root.height * -1f)
+            .setInterpolator(AccelerateInterpolator())
+            .start()
+    }
+
+    private fun startRocketLaunchingAnimation(){
+        val animation = AppCompatResources.getDrawable(requireContext(), R.drawable.rocket_launching) as AnimatedVectorDrawable
+
+        binding.rocketAnimated.setImageDrawable(animation)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            animation.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                override fun onAnimationEnd(drawable: Drawable?) {
+                    super.onAnimationEnd(drawable)
+                    if (lifecycleScope.isActive && !this@LoginFragment.isDetached)
+                        startRocketLaunchingAnimation()
+                }
+            })
+        }
+        animation.start()
+    }
+
+    private fun stopRocketAnimation(){
+        binding.rocketAnimated.drawable.takeIf { it is AnimatedVectorDrawable }?.let { it as AnimatedVectorDrawable
+            it.stop()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                it.clearAnimationCallbacks()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        stopRocketAnimation()
+        super.onDestroy()
     }
 
     override fun onDetach() {

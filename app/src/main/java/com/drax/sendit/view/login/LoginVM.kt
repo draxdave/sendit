@@ -7,6 +7,7 @@ import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.network.model.SignInRequest
+import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
@@ -14,6 +15,7 @@ import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -35,21 +37,21 @@ class LoginVM(
 
         authRepository.signInDevice(signInRequest).collect {result->
 
-            _uiState.update {
                 when(result){
-                    is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode)
+                    is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode)}
                     is Resource.SUCCESS -> {
-                        result.data.data?.let {
-                            storeToken(it.token)
-                            storeDevices(it.device)
-                            storeUser(it.user)
-                        }
-                        result.data.data?.connections?.let { storeConnections(*it.toTypedArray()) }
-                        LoginUiState.LoginSucceed
+                        _uiState.update {   LoginUiState.LoginSucceed}
+                        delay(4000)
+                        result.data.data?.let { storeData(it)}
                     }
-                }
             }
         }
+    }
+    private fun storeData(signInResponse: SignInResponse) {
+        storeToken(signInResponse.token)
+        storeDevices(signInResponse.device)
+        storeUser(signInResponse.user)
+        signInResponse.connections?.let { storeConnections(*it.toTypedArray()) }
     }
 
     private fun storeToken(token: String){

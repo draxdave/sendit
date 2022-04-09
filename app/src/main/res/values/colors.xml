@@ -19,9 +19,19 @@
     <color name="warning">#FFB300</color>
     <color name="warning_warmer">#FB8C00</color>
     <color name="gray">#A8AAB6</color>
-    <color name="black">#24262E</color>
+    <color name="black">@color/raisin_black</color>
 
     <color name="main_text_light">#2B2B2B</color>
     <color name="main_text_lighter">#515151</color>
+
+
+
+    <!-- PALETTE -->
+    <color name="olivine" >#b6d094</color>
+    <color name="fawn" >#e1aa7d</color>
+    <color name="antique_brass">#be8a60</color>
+    <color name="wine" >#6a2e35</color>
+    <color name="raisin_black">#2e2836</color>
+    <color name="raisin_black_light">#3C3645</color>
 
 </resources>
