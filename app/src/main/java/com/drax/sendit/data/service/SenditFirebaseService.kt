@@ -8,10 +8,11 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 
 
@@ -23,7 +24,7 @@ class SenditFirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println("onMessageReceived")
-        println(Gson().toJson(remoteMessage.data))
+        println(Json.encodeToString(remoteMessage.data))
         if (remoteMessage.data.containsKey("op") &&
             remoteMessage.data.containsKey("data"))
             pushProcessor.process(remoteMessage.data["op"], remoteMessage.data["data"])?.send()

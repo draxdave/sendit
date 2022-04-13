@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DeviceStatus
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.Instant
 
@@ -20,16 +20,16 @@ data class Device (
     val region: String,
     val meta: String,
     val model: String,
-    @SerializedName("instance_id") val instanceId: String,
-    @SerializedName("icon_url") val iconUrl: String,
+    @SerialName("instance_id") val instanceId: String,
+    @SerialName("icon_url") val iconUrl: String,
 
-    @SerializedName("added_date") @Serializable(with = InstantSerializer::class) val addedDate: Instant,
-    @SerializedName("platform_version") val platformVersion: String,
-    @SerializedName("app_version") val appVersion: Int,
-    @SerializedName("user_id") val userId: String,
-    @SerializedName("language_code") val languageCode: String,
+    @SerialName("added_date") @Serializable(with = InstantSerializer::class) val addedDate: Instant,
+    @SerialName("platform_version") val platformVersion: String,
+    @SerialName("app_version") val appVersion: Int,
+    @SerialName("user_id") val userId: String,
+    @SerialName("language_code") val languageCode: String,
 
 
-    @SerializedName("last_touch") @Serializable(with = InstantSerializer::class) val lastTouch: Instant,
+    @SerialName("last_touch") @Serializable(with = InstantSerializer::class) val lastTouch: Instant,
     val isThisDevice: Boolean,
 )

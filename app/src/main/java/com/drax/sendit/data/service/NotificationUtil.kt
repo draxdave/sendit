@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.main.MainActivity
-import com.google.gson.Gson
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

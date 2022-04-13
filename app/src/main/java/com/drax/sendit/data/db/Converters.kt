@@ -2,11 +2,12 @@ package com.drax.sendit.data.db
 
 import androidx.room.TypeConverter
 import com.drax.sendit.data.model.InstantSerializer
+import com.drax.sendit.di.builder.Json
 import java.time.Instant
 
 
 class TimeConverters {
-    private val json = com.drax.sendit.di.builder.Json().build()
+    private val json = Json().build()
 
     @TypeConverter
     fun fromTimestamp(value: String?): Instant? {

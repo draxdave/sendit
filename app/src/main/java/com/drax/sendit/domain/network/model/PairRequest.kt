@@ -1,7 +1,7 @@
 package com.drax.sendit.domain.network.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class PairRequest(
-    @SerializedName("request_code") val requestCode: String
+    @SerialName("request_code") val requestCode: String
 )

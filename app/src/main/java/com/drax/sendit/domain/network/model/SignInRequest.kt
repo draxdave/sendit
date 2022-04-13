@@ -1,19 +1,19 @@
 package com.drax.sendit.domain.network.model
 
 import com.drax.sendit.domain.network.model.type.UserSex
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import java.time.Instant
 
 data class SignInRequest(
-    @SerializedName("first_name") val firstName: String,
-    @SerializedName("last_name") val lastName: String,
-    @SerializedName("full_name") val fullName: String,
+    @SerialName("first_name") val firstName: String,
+    @SerialName("last_name") val lastName: String,
+    @SerialName("full_name") val fullName: String,
     val email: String,
     @UserSex val sex: Int,
 
-    @SerializedName("birth_date") val birthDate: Instant,
-    @SerializedName("avatar_url") val avatarUrl: String,
-    @SerializedName("device_id") val deviceId: String,
-    @SerializedName("instance_id") val instanceId: String,
-    @SerializedName("id_token") val tokenId: String
+    @SerialName("birth_date") val birthDate: Instant,
+    @SerialName("avatar_url") val avatarUrl: String,
+    @SerialName("device_id") val deviceId: String,
+    @SerialName("instance_id") val instanceId: String,
+    @SerialName("id_token") val tokenId: String
 )

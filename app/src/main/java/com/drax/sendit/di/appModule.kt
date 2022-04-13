@@ -5,7 +5,6 @@ import com.drax.sendit.data.repo.*
 import com.drax.sendit.data.service.NotificationBuilder
 import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.PushProcessor
-import com.drax.sendit.di.builder.Gson
 import com.drax.sendit.di.builder.Json
 import com.drax.sendit.domain.network.*
 import com.drax.sendit.domain.repo.*
@@ -22,7 +21,6 @@ import org.koin.dsl.module
 
 val appModule = module {
     //DB
-    single                     {   Gson().build() }
     single                     {   Json().build() }
 
 
