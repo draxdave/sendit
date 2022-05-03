@@ -15,13 +15,9 @@ class AuthRepositoryImpl(
     private val authDao: AuthDao,
 ): AuthRepository {
 
-    override fun signInDevice(signInRequest: SignInRequest) = flow {
-        emit(
-            NetworkCall {
-                apiService.signIn(signInRequest)
-            }.fetch()
-        )
-    }
+    override suspend fun signInDevice(signInRequest: SignInRequest) = NetworkCall {
+        apiService.signIn(signInRequest)
+    }.fetch()
 
     override fun signOutDevice() = flow {
 

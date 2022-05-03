@@ -1,19 +1,17 @@
 package com.drax.sendit.view.main
 
-import com.drax.sendit.data.model.Resource
-import com.drax.sendit.domain.network.model.ShareRequest
-import com.drax.sendit.domain.network.model.type.TransactionContentType
-import com.drax.sendit.domain.repo.*
+import com.drax.sendit.domain.repo.DeviceRepository
+import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 
 class MainVM(
     userRepository: UserRepository,
     deviceRepository: DeviceRepository,
-    private val connectionRepository: ConnectionRepository,
-    private val pushRepository: PushRepository,
-    private val transactionRepository: TransactionRepository
 ) : ResViewModel() {
 
     private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Neutral)
@@ -30,42 +28,6 @@ class MainVM(
                         else -> MainUiState.UserSignedIn
                     }
                 }
-            }
-        }
-    }
-
-    fun displayShareModal(shareText: String){
-        job {
-            connectionRepository.getConnections().collect {connections->
-                _uiState.update {
-                    if (connections.isEmpty())
-                        MainUiState.NoConnectionModal
-                    else
-                        MainUiState.ShareModalDisplayed(shareText,connections)
-                }
-            }
-        }
-    }
-
-    fun share(content: String, connectionId: Long){
-        _uiState.update { MainUiState.Sharing}
-
-        job {
-            pushRepository.shareContent(ShareRequest(
-                connectionId = connectionId,
-                content = content,
-                type = TransactionContentType.TransactionType_CONTENT_TEXT
-            )).collect {shareResponse->
-                _uiState.update {
-                    when(shareResponse){
-                        is Resource.ERROR -> MainUiState.SharingFailed(shareResponse)
-                        is Resource.SUCCESS -> {
-                            shareResponse.data.data?.transaction?.let { transactionRepository.insertNewTransaction(it)}
-                            MainUiState.SharingDone
-                        }
-                    }
-                }
-
             }
         }
     }

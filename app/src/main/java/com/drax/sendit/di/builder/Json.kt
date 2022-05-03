@@ -6,7 +6,7 @@ class Json {
     fun build(): Json {
         return Json {
             ignoreUnknownKeys = true
-            explicitNulls = true
+            explicitNulls = false
         }
     }
 }

@@ -7,12 +7,4 @@ sealed class MainUiState{
     object Neutral: MainUiState()
     object UserSignedIn: MainUiState()
     object UserSignedOut: MainUiState()
-
-    data class ShareModalDisplayed(val shareText: String, val connections: List<Connection>): MainUiState()
-    object NoConnectionModal: MainUiState()
-
-    object Sharing: MainUiState()
-    object SharingDone: MainUiState()
-    data class SharingFailed(val reason: Resource.ERROR): MainUiState()
-
 }

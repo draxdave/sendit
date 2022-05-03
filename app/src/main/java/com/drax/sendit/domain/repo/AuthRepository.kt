@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun signInDevice(signInRequest: SignInRequest): Flow<Resource<ApiResponse<SignInResponse>>>
+    suspend fun signInDevice(signInRequest: SignInRequest): Resource<ApiResponse<SignInResponse>>
     fun signOutDevice(): Flow<Resource<ApiResponse<Unit>>>
 }

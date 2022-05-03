@@ -35,15 +35,12 @@ class LoginVM(
     fun login(signInRequest: SignInRequest) = viewModelScope.launch(Dispatchers.IO) {
         _uiState.update {LoginUiState.Loading}
 
-        authRepository.signInDevice(signInRequest).collect {result->
-
-                when(result){
-                    is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode)}
-                    is Resource.SUCCESS -> {
-                        _uiState.update {   LoginUiState.LoginSucceed}
-                        delay(4000)
-                        result.data.data?.let { storeData(it)}
-                    }
+        when(val result = authRepository.signInDevice(signInRequest)){
+            is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode)}
+            is Resource.SUCCESS -> {
+                _uiState.update {   LoginUiState.LoginSucceed}
+                delay(4000)
+                result.data.data?.let { storeData(it)}
             }
         }
     }

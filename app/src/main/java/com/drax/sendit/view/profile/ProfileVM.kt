@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 
 class ProfileVM(
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
     private val authRepository: AuthRepository
 ): ResViewModel() {
 

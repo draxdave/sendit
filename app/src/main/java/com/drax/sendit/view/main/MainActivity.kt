@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -15,6 +18,7 @@ import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_ANDROID
 import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_CHROME
+import com.drax.sendit.view.shareContent.ShareContentFragment
 import com.drax.sendit.view.util.modal
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ir.drax.modal.Modal
@@ -44,20 +48,11 @@ class MainActivity : AppCompatActivity() {
                     MainUiState.Neutral -> Unit
                     MainUiState.UserSignedIn -> userSignedIn(bottomNavigationView, navController)
                     MainUiState.UserSignedOut -> userSignedOut(bottomNavigationView, navController)
-                    MainUiState.NoConnectionModal -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
-                    is MainUiState.ShareModalDisplayed -> displayShareModal(uiState.shareText,uiState.connections)
-                    MainUiState.Sharing -> findViewById<View?>(R.id.loading).visibility = View.VISIBLE
-                    MainUiState.SharingDone -> {
-                        findViewById<View?>(R.id.loading).visibility = View.GONE
-                        modal(ModalMessage.Success(R.string.share_success))
-                    }
-                    is MainUiState.SharingFailed -> {
-                        findViewById<View?>(R.id.loading).visibility = View.GONE
-                        modal(ModalMessage.FromNetError(uiState.reason.errorCode))
-                    }
                 }
             }
         }
+
+        launchShareFragment("test text")
     }
 
     override fun onNewIntent(newIntent: Intent?) {
@@ -77,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             // check mime type
             if (receivedType.startsWith("text/")) {
                 newIntent.getStringExtra(Intent.EXTRA_TEXT)?.let {receivedText->
-                    mainVM.displayShareModal(receivedText)
+                    launchShareFragment(receivedText)
                 }
             }
 //            else if (receivedType.startsWith("image/")) {
@@ -89,27 +84,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayShareModal(receivedText: String, connections: List<Connection>) {
-        Modal.builder(this).apply {
-            title = getString(R.string.share_modal_title)
-            icon = R.drawable.ic_baseline_share_24
-            type = Modal.Type.List
-            blurEnabled = false
+    private fun launchShareFragment(receivedText: String) {
+        supportFragmentManager.setFragmentResultListener(ShareContentFragment.TAG, this) { _, _ ->
+            finishAndRemoveTask()
+        }
 
-            list = connections.map {connection->
-                MoButton(connection.name, platformToIcon(connection.platform)){
-                    mainVM.share(receivedText, connection.id)
-                    true
-                }
-            }
-        }.build().show()
-    }
-
-    private fun platformToIcon(@DevicePlatform platform: Int) = when(platform){
-        DevicePlatform_ANDROID -> R.drawable.ic_round_android_24
-        DevicePlatform_CHROME -> R.drawable.ic_google_icon
-        else -> R.drawable.ic_fragment_devices
-
+        ShareContentFragment().apply {
+            arguments = bundleOf(ShareContentFragment.SHARE_CONTENT_KEY to receivedText)
+            show(supportFragmentManager, ShareContentFragment.TAG)
+        }
     }
 
     private fun userSignedIn(bottomNavigationView: BottomNavigationView, navController: NavController){

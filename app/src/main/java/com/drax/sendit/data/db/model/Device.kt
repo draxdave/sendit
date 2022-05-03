@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DeviceStatus
+import kotlinx.serialization.SerialInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.Instant
@@ -31,5 +32,5 @@ data class Device (
 
 
     @SerialName("last_touch") @Serializable(with = InstantSerializer::class) val lastTouch: Instant,
-    val isThisDevice: Boolean,
+    val isThisDevice: Boolean = false,
 )
