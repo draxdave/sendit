@@ -3,29 +3,37 @@ package com.drax.sendit.view.connections
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.drax.sendit.R
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
+import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.network.model.UnpairRequest
+import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
+import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.login.LoginUiState
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import java.time.Instant
 import javax.inject.Inject
 
 class ConnectionsVM @Inject constructor(
     private val connectionRepository: ConnectionRepository,
     deviceRepository: DeviceRepository,
-    private val pushRepository: PushRepository
+    userRepository: UserRepository,
+    private val authRepository: AuthRepository,
 ) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<ConnectionUiState>(ConnectionUiState.Neutral)
     val uiState: StateFlow<ConnectionUiState> = _uiState
+
+    val user: LiveData<User?> = userRepository.getUser().asLiveData()
 
 
     val device: LiveData<Device?> = deviceRepository.getSelfDevice().asLiveData()
@@ -41,7 +49,6 @@ class ConnectionsVM @Inject constructor(
                 }
             }
         }
-
     }
 
     fun removeDevice(unpairRequest: UnpairRequest){
@@ -72,6 +79,12 @@ class ConnectionsVM @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun signOut(){
+        job {
+            authRepository.signOutDevice().collect()
         }
     }
 }

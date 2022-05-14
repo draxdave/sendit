@@ -1,17 +1,32 @@
 package com.drax.sendit.di
 
 import com.drax.sendit.data.db.AppDB
-import com.drax.sendit.data.repo.*
+import com.drax.sendit.data.repo.AuthRepositoryImpl
+import com.drax.sendit.data.repo.ConnectionRepositoryImpl
+import com.drax.sendit.data.repo.DeviceRepositoryImpl
+import com.drax.sendit.data.repo.PushRepositoryImpl
+import com.drax.sendit.data.repo.RegistryRepositoryImpl
+import com.drax.sendit.data.repo.TransactionRepositoryImpl
+import com.drax.sendit.data.repo.UserRepositoryImpl
 import com.drax.sendit.data.service.NotificationBuilder
 import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.PushProcessor
 import com.drax.sendit.di.builder.Json
-import com.drax.sendit.domain.network.*
-import com.drax.sendit.domain.repo.*
-import com.drax.sendit.view.main.MainVM
+import com.drax.sendit.domain.network.ApiService
+import com.drax.sendit.domain.network.AppRetrofit
+import com.drax.sendit.domain.network.AuthInterceptor
+import com.drax.sendit.domain.network.ErrorHandlerInterceptor
+import com.drax.sendit.domain.network.HeaderInterceptor
+import com.drax.sendit.domain.repo.AuthRepository
+import com.drax.sendit.domain.repo.ConnectionRepository
+import com.drax.sendit.domain.repo.DeviceRepository
+import com.drax.sendit.domain.repo.PushRepository
+import com.drax.sendit.domain.repo.RegistryRepository
+import com.drax.sendit.domain.repo.TransactionRepository
+import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.connections.ConnectionsVM
 import com.drax.sendit.view.login.LoginVM
-import com.drax.sendit.view.profile.ProfileVM
+import com.drax.sendit.view.main.MainVM
 import com.drax.sendit.view.qr.QrVM
 import com.drax.sendit.view.scanner.ScannerVM
 import com.drax.sendit.view.shareContent.ShareContentVM
@@ -31,11 +46,10 @@ val appModule = module {
     single                     {   get<AppDB>().connectionDao() }
     single                     {   get<AppDB>().authDao() }
 
-    viewModel                  {  ConnectionsVM(get(),get(),get())  }
+    viewModel                  {  ConnectionsVM(get(),get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  TransactionsVM(get(),get(),get())  }
     viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
-    viewModel                  {  ProfileVM(get(), get())  }
     viewModel                  {  MainVM(get(), get())  }
     viewModel                  {  ScannerVM()  }
     viewModel                  {  ShareContentVM(get(), get(), get())  }

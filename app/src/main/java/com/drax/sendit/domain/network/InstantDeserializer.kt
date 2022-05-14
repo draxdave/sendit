@@ -1,6 +1,5 @@
 package com.drax.sendit.domain.network
 
-import java.lang.reflect.Type
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -28,12 +27,11 @@ class InstantDeserializer {
 //
 //    }
 
-    fun serialize(instant: Instant): String{
+    fun serialize(instant: Instant): String {
         val formatter = DateTimeFormatter.ofPattern(TIMEZONE_DATE_FORMAT)
             .withLocale(Locale.getDefault())
             .withZone(ZoneId.systemDefault())
-        val instantStr = formatter.format(instant)
-        return instantStr
+        return formatter.format(instant)
     }
 
     companion object{

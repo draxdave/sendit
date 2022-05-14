@@ -10,12 +10,10 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.PushProcessor.Companion.INVITATION_RESPONSE
-import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.databinding.NewInvitationModalBinding
 import com.drax.sendit.databinding.QrFragmentBinding

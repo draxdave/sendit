@@ -30,7 +30,7 @@ class ErrorHandlerInterceptor(
                 BadRequest -> {
                     Exception("Error 400:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
-                        ConnectException,
+                        BadRequest,
                     )
                         .toResponse()
 
@@ -38,7 +38,7 @@ class ErrorHandlerInterceptor(
                 in UnControlledBadRequest -> {
                     Exception("Error 402:" + initResponse.body?.string()).printStackTrace()
                     ErrorResponse( // Missing Required field(s
-                        ConnectException,
+                        BadRequest,
                     )
                         .toResponse()
 

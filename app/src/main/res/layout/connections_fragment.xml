@@ -46,33 +46,80 @@
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        style="@style/light_text"
+                        style="@style/comment_text"
+                        android:id="@+id/lastUsed"
                         android:layout_margin="@dimen/_16sdp"
                         android:text="@{@string/last_used(model.device.lastTouch)}"
+                        tools:text="Last used: 5 May 10:35"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                     <TextView
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_margin="@dimen/_16sdp"
+                        app:layout_constraintStart_toEndOf="@id/deviceModelIcon"
+                        app:layout_constraintBottom_toBottomOf="@id/deviceModelIcon"
+                        app:layout_constraintTop_toTopOf="@id/deviceModelIcon"
                         style="@style/light_text"
+                        tools:text="Xiaomi redmi 9 pro"
+                        android:id="@+id/deviceName"
                         android:text="@{@string/device_name(model.device.name)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+
+
+                    <ImageView
+                        android:id="@+id/deviceModelIcon"
+                        app:layout_constraintBottom_toTopOf="@id/lastUsed"
+                        app:layout_constraintStart_toStartOf="@id/lastUsed"
+                        android:src="@drawable/ic_baseline_device_unknown_24"
+                        android:padding="4dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/colorPrimary" />
+
+                    <TextView
+                        app:layout_constraintStart_toEndOf="@id/profileIcon"
+                        app:layout_constraintTop_toTopOf="@id/profileIcon"
+                        app:layout_constraintBottom_toBottomOf="@id/profileIcon"
+                        android:layout_marginStart="4dp"
+                        style="@style/light_text"
+                        tools:text="ssialoft@mail.com"
+                        android:id="@+id/deviceUser"
+                        android:text="@{model.user.email}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/profileIcon"
+                        app:layout_constraintBottom_toTopOf="@id/deviceModelIcon"
+                        app:layout_constraintStart_toStartOf="@id/deviceModelIcon"
+                        android:src="@drawable/ic_fragment_profile"
+                        android:padding="4dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/colorPrimary" />
 
                     <ImageView
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/ic_launcher"
                         android:layout_margin="@dimen/_16sdp"
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         img="@{model.device.iconUrl}"
                         />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/menuIcon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/ic_baseline_more_vert_24"
+                        android:padding="@dimen/_16sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:tint="@color/colorPrimary" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -113,7 +160,7 @@
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/centerGuide"
-                        app:layout_constraintGuide_percent=".5"
+                        app:layout_constraintGuide_percent=".2"
                         android:orientation="horizontal"
                         android:layout_width="0dp"
                         android:layout_height="0dp"/>

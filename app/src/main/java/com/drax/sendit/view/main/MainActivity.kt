@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        launchShareFragment("test text")
     }
 
     override fun onNewIntent(newIntent: Intent?) {

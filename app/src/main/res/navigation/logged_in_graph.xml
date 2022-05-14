@@ -26,12 +26,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.drax.sendit.view.profile.ProfileFragment"
-        android:label="@string/fragment_profile"
-        tools:layout="@layout/profile_fragment" />
-
-    <fragment
         android:id="@+id/transmissionsFragment"
         android:name="com.drax.sendit.view.transmissions.TransactionsFragment"
         android:label="@string/fragment_transmitted"

@@ -84,6 +84,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="link" parent="heading2" >
+        <item name="android:fontFamily">@font/sf_pro</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="heading3" parent="TextAppearance.AppCompat.Headline" >
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">17sp</item>
@@ -108,6 +114,11 @@
 
     <style name="light_text" parent="AppTheme">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="comment_text" parent="light_text">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">11sp</item>
     </style>
 
     <dimen name="_12sp">12sp</dimen>

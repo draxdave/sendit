@@ -70,9 +70,9 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
 
                         viewModel.login(
                             SignInRequest(
-                                firstName = credential.givenName ?: "",
-                                lastName = credential.familyName ?: "",
-                                fullName = credential.displayName ?: "",
+                                firstName = credential.givenName ?: credential.displayName ?: "User Name",
+                                lastName = credential.familyName ?: credential.displayName ?: "N/A",
+                                fullName = credential.displayName ?: "N/A",
                                 email = credential.id,
                                 sex = UserSex.UserSex_NONE,
                                 birthDate = Instant.now(),
