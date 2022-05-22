@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drax.sendit.databinding.TransmissionsFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
+import com.drax.sendit.view.util.collect
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,9 +28,7 @@ class TransactionsFragment: BaseFragment<TransmissionsFragmentBinding, Transacti
             adapter = transitionAdapter
         }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.
-            uiState.collect {uiState->
+        collect(viewModel.uiState) {uiState->
                 when(uiState){
                     TransactionsUiState.Neutral -> Unit
                     TransactionsUiState.NoTransaction -> binding.emptyDialog.visibility = View.VISIBLE
@@ -38,7 +37,6 @@ class TransactionsFragment: BaseFragment<TransmissionsFragmentBinding, Transacti
                         transitionAdapter.submitList(uiState.transmissions)
                     }
                 }
-            }
         }
     }
 }

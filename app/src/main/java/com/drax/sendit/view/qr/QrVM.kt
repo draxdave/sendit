@@ -33,6 +33,7 @@ class QrVM(
                     requestQrUrl()
 
                 }else {
+                    println("uiState: updated")
                     _uiState.update { QrUiState.QrLoaded(qrUrl)}
                 }
             }
@@ -40,7 +41,10 @@ class QrVM(
     }
 
     private suspend fun requestQrUrl(){
+
+        println("uiState: updated")
         _uiState.update { QrUiState.QrLoading}
+        println("uiState: updated")
         _uiState.update {
             when(val result = deviceRepository.getQRUrlFromServer()){
                 is Resource.ERROR -> QrUiState.QrLoadFailedFromNet(result)
@@ -57,10 +61,14 @@ class QrVM(
     }
 
     fun sendPairRequest(requestCode: String){
+
+        println("uiState: updated")
         _uiState.update { QrUiState.InvitationSending }
 
         job {
             connectionRepository.sendInvitation(PairRequest(requestCode)).collect {response->
+
+                println("uiState: updated")
                 _uiState.update {
                     when(response){
                         is Resource.ERROR -> when(response.errorCode) {

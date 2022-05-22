@@ -14,6 +14,7 @@ import com.drax.sendit.databinding.ConnectionsFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.connections.adapter.ConnectionsAdapter
+import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.modal
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,8 +35,7 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
     }
 
     private fun initView() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect {
+        collect(viewModel.uiState) {
                 binding.refresh.isRefreshing = false
                 when(it){
                     ConnectionUiState.Neutral -> Unit
@@ -44,7 +44,6 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
                     is ConnectionUiState.ConnectionsLoaded -> adapter.newList(it.connectionList)
                     is ConnectionUiState.RefreshConnectionListFailed -> modal(ModalMessage.FromNetError(it.error.errorCode))
                 }
-            }
         }
         binding.list.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)

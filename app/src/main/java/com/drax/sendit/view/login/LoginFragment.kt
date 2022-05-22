@@ -29,6 +29,7 @@ import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.network.model.type.UserSex
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
+import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.modal
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -104,8 +105,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             launchOneTapSignIn()
         }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect {uiState->
+        collect(viewModel.uiState) {uiState->
                 when(uiState){
                     is LoginUiState.LoginFailed -> modal(
                         if (uiState.errorCode in 1..799)
@@ -124,7 +124,6 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                     LoginUiState.Loading -> Unit
                 }
             }
-        }
     }
 
     private fun launchOneTapSignIn(){

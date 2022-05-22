@@ -12,6 +12,7 @@ import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.databinding.QrFragmentBinding
 import com.drax.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
+import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
 import kotlinx.coroutines.flow.collect
@@ -27,8 +28,7 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
     private lateinit var codeScanner: CodeScanner
 
     private fun initView() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect{
+        collect(viewModel.uiState) {
                 when(it){
                     ScannerUiState.Neutral -> Unit
                 }

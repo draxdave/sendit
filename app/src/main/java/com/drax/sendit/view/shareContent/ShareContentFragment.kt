@@ -18,6 +18,7 @@ import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseBottomSheet
 import com.drax.sendit.view.base.BaseFragment
+import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
 import kotlinx.coroutines.flow.collect
@@ -48,8 +49,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
     }
 
     private fun initView() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.uiState.collect { uiState ->
+        collect(viewModel.uiState) { uiState ->
                 when(uiState){
                     ShareContentUiState.Loading -> Unit
                     is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {
@@ -63,7 +63,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
                     }
                     is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
                 }
-            }
+
         }
 
         binding.list.apply {
