@@ -8,7 +8,5 @@ sealed class ConnectionUiState {
     object NoConnection : ConnectionUiState()
     data class ConnectionsLoaded(val connectionList: List<Connection>) : ConnectionUiState()
     object RefreshingConnectionList : ConnectionUiState()
-    data class RefreshConnectionListSucceed(val connectionList: List<Connection>) : ConnectionUiState()
-    object RefreshConnectionListSucceedButEmpty : ConnectionUiState()
     data class RefreshConnectionListFailed(val error: Resource.ERROR) : ConnectionUiState()
 }

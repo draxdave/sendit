@@ -24,7 +24,7 @@ class SenditFirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println("onMessageReceived")
-        println(Json.encodeToString(remoteMessage.data))
+//        println(Json.encodeToString(remoteMessage.data))
         if (remoteMessage.data.containsKey("op") &&
             remoteMessage.data.containsKey("data"))
             pushProcessor.process(remoteMessage.data["op"], remoteMessage.data["data"])?.send()

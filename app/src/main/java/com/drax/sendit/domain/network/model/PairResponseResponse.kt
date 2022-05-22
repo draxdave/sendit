@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PairResponseResponse(
-    val connection: Connection
+    val connection: ConnectionModel
 )

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PairResponse(
-    val connection: Connection
+    val connection: ConnectionModel
 ){
     companion object{
         const val WAITING_FOR_PEER = 1322

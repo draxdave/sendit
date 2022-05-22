@@ -18,6 +18,7 @@ class ConnectionRepositoryImpl(
     override fun getConnections() = connectionDao.getList()
 
     override suspend fun addConnection(vararg connection: Connection) = connectionDao.add(*connection)
+    override suspend fun emptyConnections(): Unit = connectionDao.deleteAll()
 
     override fun sendInvitation(pairRequest: PairRequest) = flow {
         emit(

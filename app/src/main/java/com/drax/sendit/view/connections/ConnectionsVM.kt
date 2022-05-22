@@ -1,11 +1,8 @@
 package com.drax.sendit.view.connections
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.drax.sendit.R
-import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
@@ -13,14 +10,11 @@ import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
-import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.UserRepository
-import com.drax.sendit.view.login.LoginUiState
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import java.time.Instant
 import javax.inject.Inject
 
 class ConnectionsVM @Inject constructor(
@@ -68,11 +62,14 @@ class ConnectionsVM @Inject constructor(
                             val newConnections = getConnections.data.data?.connections
                             when {
                                 newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(Resource.ERROR(errorCode = R.string.unknown_error))
-                                newConnections.isEmpty() -> ConnectionUiState.RefreshConnectionListSucceedButEmpty
-                                else -> {
-                                    connectionRepository.clearDb()
+                                newConnections.isNotEmpty() -> {
+                                    emptyConnections()
                                     connectionRepository.addConnection(*newConnections.toTypedArray())
-                                    ConnectionUiState.RefreshConnectionListSucceed(newConnections)
+                                    ConnectionUiState.ConnectionsLoaded(newConnections)
+                                }
+                                else -> {
+                                    emptyConnections()
+                                    ConnectionUiState.NoConnection
                                 }
                             }
                         }
@@ -87,4 +84,6 @@ class ConnectionsVM @Inject constructor(
             authRepository.signOutDevice().collect()
         }
     }
+
+    private suspend fun emptyConnections() = connectionRepository.emptyConnections()
 }

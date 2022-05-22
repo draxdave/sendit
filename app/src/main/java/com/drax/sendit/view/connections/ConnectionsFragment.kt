@@ -39,13 +39,10 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
                 binding.refresh.isRefreshing = false
                 when(it){
                     ConnectionUiState.Neutral -> Unit
-                    ConnectionUiState.RefreshConnectionListSucceedButEmpty -> Unit
                     ConnectionUiState.RefreshingConnectionList -> Unit
                     ConnectionUiState.NoConnection -> Unit
                     is ConnectionUiState.ConnectionsLoaded -> adapter.newList(it.connectionList)
                     is ConnectionUiState.RefreshConnectionListFailed -> modal(ModalMessage.FromNetError(it.error.errorCode))
-
-                    is ConnectionUiState.RefreshConnectionListSucceed -> adapter.newList(it.connectionList)
                 }
             }
         }
@@ -61,12 +58,12 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
         binding.menuIcon.setOnClickListener {
             showPopup(it)
         }
+
+        viewModel.getConnectionsFromServer()
     }
 
     private fun showPopup(view: View){
         val popupMenu = PopupMenu(requireContext(), view)
-
-        // Inflating popup menu from popup_menu.xml file
 
         // Inflating popup menu from popup_menu.xml file
         popupMenu.menuInflater.inflate(R.menu.connections_top_menu, popupMenu.menu)
@@ -76,7 +73,6 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
             }
             true
         }
-        // Showing the popup menu
         // Showing the popup menu
         popupMenu.show()
     }
