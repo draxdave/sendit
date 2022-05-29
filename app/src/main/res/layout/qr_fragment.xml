@@ -43,7 +43,7 @@
             app:layout_constraintVertical_bias=".3"
             app:cardUseCompatPadding="true"
             app:cardElevation="7dp"
-            android:visibility="gone"
+            android:visibility="@{model.qrImageUrl.length() > 0 ? View.VISIBLE: View.GONE}"
             app:cardCornerRadius="@dimen/_8sdp"
             android:layout_margin="32dp"
             android:layout_width="match_parent"
@@ -51,6 +51,7 @@
             <ImageView
                 android:id="@+id/deviceQr"
                 android:padding="16dp"
+                app:img="@{model.qrImageUrl}"
                 android:scaleType="fitCenter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -105,7 +106,7 @@
 
 
         <include layout="@layout/loading_layout"
-            app:isShowing="@{model.uiState == QrUiState.InvitationSending.INSTANCE || model.uiState == QrUiState.InvitationResponseSending.INSTANCE}"
+            app:isShowing="@{model.uiState == QrUiState.QrLoading.INSTANCE}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

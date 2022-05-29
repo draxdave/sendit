@@ -56,41 +56,37 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun initView() {
-        println("uiState: initView")
-
         collect(viewModel.uiState){
-            println("uiState: launchWhenCreated")
             viewModel.uiState.collect{
-                println("uiState: $it")
                 when(it){
                     QrUiState.Neutral -> Unit
-                    is QrUiState.QrLoadFailed -> modal(ModalMessage.Failed(it.reason))
-                    is QrUiState.QrLoaded -> {
-                        binding.deviceQr.loadImageFromUri(it.qrUrl)
-                        binding.deviceQrContainer.visibility = View.VISIBLE
-                    }
                     QrUiState.QrLoading -> Unit
-                    is QrUiState.QrLoadFailedFromNet -> modal(ModalMessage.FromNetError(it.reason.errorCode))
-                    is QrUiState.InvitationFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
-                    QrUiState.InvitationSending -> Unit
-                    QrUiState.InvitationSent -> modal(
-                        ModalMessage.Full(
-                            mTitle = R.string.invitation_sent_title,
-                            mDescription = R.string.invitation_sent_desc,
-                            mIcon = R.drawable.tick,
-                            mFromTop = true,
-                            mLock = false
-                        )
-                    )
-                    QrUiState.InvitationResponseSending -> Unit
-                    is QrUiState.InvitationResponseFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
-                    QrUiState.InvitationResponseSent -> modal(ModalMessage.Success(R.string.new_invitation_accept_sent))
-
-                    QrUiState.InvitationResponseAlreadyActive -> modal(ModalMessage.Neutral(R.string.invitation_already_active))
-                    QrUiState.InvitationResponseRejected -> modal(ModalMessage.Neutral(R.string.invitation_rejected))
-                    QrUiState.InvitationResponseWaiting ->
-                        modal(ModalMessage.Neutral(R.string.invitation_waiting_for_peer))
                 }
+            }
+        }
+
+        collect(viewModel.state) {
+            when(it){
+                is QrState.QrLoadFailed -> modal(ModalMessage.Failed(it.reason))
+                is QrState.QrLoaded -> Unit
+                is QrState.QrLoadFailedFromNet -> modal(ModalMessage.FromNetError(it.reason.errorCode))
+                is QrState.InvitationFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
+                QrState.InvitationSent -> modal(
+                    ModalMessage.Full(
+                        mTitle = R.string.invitation_sent_title,
+                        mDescription = R.string.invitation_sent_desc,
+                        mIcon = R.drawable.tick,
+                        mFromTop = true,
+                        mLock = false
+                    )
+                )
+                is QrState.InvitationResponseFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
+                QrState.InvitationResponseSent -> modal(ModalMessage.Success(R.string.new_invitation_accept_sent))
+
+                QrState.InvitationResponseAlreadyActive -> modal(ModalMessage.Neutral(R.string.invitation_already_active))
+                QrState.InvitationResponseRejected -> modal(ModalMessage.Neutral(R.string.invitation_rejected))
+                QrState.InvitationResponseWaiting ->
+                    modal(ModalMessage.Neutral(R.string.invitation_waiting_for_peer))
             }
         }
 

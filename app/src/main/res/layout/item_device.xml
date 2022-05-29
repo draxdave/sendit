@@ -5,6 +5,7 @@
     <data>
         <variable name="deviceWrapper" type="com.drax.sendit.view.DeviceWrapper"/>
         <import type="android.view.View"/>
+        <import type="com.drax.sendit.domain.network.model.type.ConnectionStatus"/>
     </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/cvItem"
@@ -40,6 +41,20 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                android:layout_marginTop="4dp"
+                style="@style/body_lighter"
+                android:textColor="@color/warning_warmer"
+                android:visibility="@{deviceWrapper.connection.status == ConnectionStatus.ConnectionStatus_PENDING ? View.VISIBLE: View.GONE }"
+                android:background="@color/blur"
+                android:padding="4dp"
+                android:text="@string/devices_status_pending"
+                app:layout_constraintBottom_toBottomOf="@id/icon" />
+
+            <TextView
                 android:id="@+id/tvTitle"
                 android:textSize="13sp"
                 android:layout_width="match_parent"
@@ -59,7 +74,7 @@
                 android:layout_marginStart="16dp"
                 style="@style/body_lighter"
                 android:textSize="10sp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:layout_marginEnd="16dp"
                 android:text="@{@string/devices_item_device_added_date(String.valueOf(deviceWrapper.addedDate))}"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle" />

@@ -29,9 +29,8 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
 
     private fun initView() {
         collect(viewModel.uiState) {
-                when(it){
-                    ScannerUiState.Neutral -> Unit
-                }
+            when(it){
+                ScannerUiState.Neutral -> Unit
             }
         }
 

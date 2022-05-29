@@ -5,19 +5,20 @@ import com.drax.sendit.data.model.Resource
 sealed class QrUiState {
     object Neutral: QrUiState()
     object QrLoading: QrUiState()
-    data class QrLoaded(val qrUrl: String): QrUiState()
-    data class QrLoadFailed(val reason: Int): QrUiState()
-    data class QrLoadFailedFromNet(val reason: Resource.ERROR): QrUiState()
+}
 
-    object InvitationSending: QrUiState()
-    data class InvitationFailed(val reason: Resource.ERROR): QrUiState()
-    object InvitationSent: QrUiState()
+sealed class QrState {
+    data class QrLoaded(val qrUrl: String): QrState()
+    data class QrLoadFailed(val reason: Int): QrState()
+    data class QrLoadFailedFromNet(val reason: Resource.ERROR): QrState()
 
-    object InvitationResponseSending: QrUiState()
-    object InvitationResponseSent: QrUiState()
-    data class InvitationResponseFailed(val reason: Resource.ERROR): QrUiState()
+    data class InvitationFailed(val reason: Resource.ERROR): QrState()
+    object InvitationSent: QrState()
 
-    object InvitationResponseAlreadyActive: QrUiState()
-    object InvitationResponseRejected: QrUiState()
-    object InvitationResponseWaiting: QrUiState()
+    object InvitationResponseSent: QrState()
+    data class InvitationResponseFailed(val reason: Resource.ERROR): QrState()
+
+    object InvitationResponseAlreadyActive: QrState()
+    object InvitationResponseRejected: QrState()
+    object InvitationResponseWaiting: QrState()
 }
