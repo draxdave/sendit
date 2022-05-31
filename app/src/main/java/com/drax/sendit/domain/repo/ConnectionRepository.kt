@@ -13,5 +13,5 @@ interface ConnectionRepository: BaseStorageRepository{
 
     fun sendInvitation(pairRequest: PairRequest): Flow<Resource<ApiResponse<PairResponse>>>
     fun invitationResponse(pairResponseRequest: PairResponseRequest): Flow<Resource<ApiResponse<PairResponseResponse>>>
-    fun unpair(unpairRequest: UnpairRequest): Flow<Resource<ApiResponse<UnpairResponse>>>
+    fun unpair(unpairRequest: UnpairRequest): Flow<Resource<ApiResponse<Unit>>>
 }

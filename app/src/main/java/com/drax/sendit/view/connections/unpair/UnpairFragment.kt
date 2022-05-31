@@ -26,7 +26,7 @@ import com.drax.sendit.view.util.modal
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UnpairFragment (private val request: UnpairRequest):
+class UnpairFragment(private val request: UnpairRequest):
     BaseBottomSheet<ConnectionUnpairFragmentBinding, UnpairVM>(ConnectionUnpairFragmentBinding::inflate) {
     override val viewModel: UnpairVM by viewModel()
 

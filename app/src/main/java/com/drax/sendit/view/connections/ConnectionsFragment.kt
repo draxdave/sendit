@@ -66,12 +66,10 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
     }
 
     private fun showUnpairBottomSheet(connectionId: Long) {
-        setFragmentResultListener(UnpairFragment.TAG) { tag, result ->
+        childFragmentManager.setFragmentResultListener(UnpairFragment.TAG, this) { _, _ ->
             viewModel.getConnectionsFromServer()
         }
-        UnpairFragment(UnpairRequest(connectionId)).apply {
-            show(childFragmentManager, UnpairFragment.TAG)
-        }
+        UnpairFragment(UnpairRequest(connectionId)).show(childFragmentManager, UnpairFragment.TAG)
     }
 
     private fun showPopup(view: View){

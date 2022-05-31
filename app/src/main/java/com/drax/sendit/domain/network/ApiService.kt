@@ -27,7 +27,7 @@ interface ApiService {
     @POST("/device/unpair")
     suspend fun unpair(
         @Body request: UnpairRequest
-    ): Response<ApiResponse<UnpairResponse>>
+    ): Response<ApiResponse<Unit>>
 
     @POST("/device/signout")
     suspend fun signOut(): Response<ApiResponse<Unit>>

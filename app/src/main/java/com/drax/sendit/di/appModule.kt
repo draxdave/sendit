@@ -25,6 +25,7 @@ import com.drax.sendit.domain.repo.RegistryRepository
 import com.drax.sendit.domain.repo.TransactionRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.connections.ConnectionsVM
+import com.drax.sendit.view.connections.unpair.UnpairVM
 import com.drax.sendit.view.login.LoginVM
 import com.drax.sendit.view.main.MainVM
 import com.drax.sendit.view.qr.QrVM
@@ -53,6 +54,7 @@ val appModule = module {
     viewModel                  {  MainVM(get(), get())  }
     viewModel                  {  ScannerVM()  }
     viewModel                  {  ShareContentVM(get(), get(), get())  }
+    viewModel                  {  UnpairVM(get())  }
 
     single<DeviceRepository>  { DeviceRepositoryImpl(get(), get()) }
     single<PushRepository>     { PushRepositoryImpl(get(),get(),get()) }

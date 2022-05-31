@@ -8,8 +8,3 @@ import kotlinx.serialization.Serializable
 data class UnpairRequest(
     @SerialName("connection_id") val connectionId: Long
 )
-
-@Serializable
-data class UnpairResponse(
-    val connection: Connection
-)
