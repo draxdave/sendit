@@ -4,24 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.DecodeCallback
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
-import com.drax.sendit.databinding.QrFragmentBinding
-import com.drax.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.databinding.ShareContentFragmentBinding
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseBottomSheet
-import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.collect
-import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
@@ -58,7 +49,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
                     ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
                     ShareContentUiState.SharingDone -> {
                         modal(ModalMessage.Success(R.string.share_success)) {
-                            setResultAndDismiss()
+                            setResultAndDismiss(bundleOf())
                         }
                     }
                     is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
@@ -70,13 +61,6 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mAdapter
         }
-    }
-
-
-
-    private fun setResultAndDismiss(){
-        setFragmentResult(TAG, bundleOf())
-        dismissAllowingStateLoss()
     }
 
     private fun platformToIcon(@DevicePlatform platform: Int) = when(platform){

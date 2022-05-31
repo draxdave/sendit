@@ -6,7 +6,9 @@ import com.drax.sendit.R
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
+import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.network.model.UnpairRequest
+import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
@@ -45,12 +47,6 @@ class ConnectionsVM @Inject constructor(
         }
     }
 
-    fun removeDevice(unpairRequest: UnpairRequest){
-        job {
-            connectionRepository.unpair(unpairRequest)
-        }
-    }
-
     fun getConnectionsFromServer(){
         _uiState.update { ConnectionUiState.RefreshingConnectionList }
         job {
@@ -76,6 +72,42 @@ class ConnectionsVM @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun acceptInvitation(connectionId: Long) {
+        _uiState.update { ConnectionUiState.RefreshingConnectionList }
+        job {
+            connectionRepository.invitationResponse(PairResponseRequest(connectionId, PairResponseType.PairResponseType_ACCEPT))
+                .collect { response ->
+                    _uiState.update {
+                        when(response) {
+                            is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(response)
+                            is Resource.SUCCESS -> {
+                                getConnectionsFromServer()
+                                ConnectionUiState.RefreshingConnectionList
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    fun declineInvitation(connectionId: Long) {
+        _uiState.update { ConnectionUiState.RefreshingConnectionList }
+        job {
+            connectionRepository.invitationResponse(PairResponseRequest(connectionId, PairResponseType.PairResponseType_DECLINE))
+                .collect { response ->
+                    _uiState.update {
+                        when(response) {
+                            is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(response)
+                            is Resource.SUCCESS -> {
+                                getConnectionsFromServer()
+                                ConnectionUiState.RefreshingConnectionList
+                            }
+                        }
+                    }
+                }
         }
     }
 

@@ -107,6 +107,21 @@
         <item name="android:textSize">@dimen/_12sp</item>
     </style>
 
+    <style name="lightBtn" parent="body_lighter" >
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/receiverTextBackground</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="positiveBtn" parent="lightBtn" >
+        <item name="android:background">@drawable/colored_btn_bg</item>
+    </style>
+
+    <style name="negativeBtn" parent="lightBtn" >
+        <item name="android:background">@drawable/colored_btn_bg_negative</item>
+    </style>
+
     <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="fontFamily">@font/roboto_bold</item>

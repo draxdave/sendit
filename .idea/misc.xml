@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/add_device.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/app_icon.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/colored_btn_bg.xml" value="0.1395" />
+        <entry key="app/src/main/res/drawable/colored_btn_bg_negative.xml" value="0.159" />
         <entry key="app/src/main/res/drawable/curved3dp.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/ic_add_device_qr_24.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/ic_baseline_connect_without_contact_24.xml" value="0.1395" />
@@ -35,6 +36,7 @@
         <entry key="app/src/main/res/drawable/tag.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/warning.xml" value="0.1395" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/connection_unpair_fragment.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/connections_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/devices_fragment.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/item_device.xml" value="0.35520833333333335" />

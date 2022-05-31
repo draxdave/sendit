@@ -18,7 +18,7 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="fragment_login">Login</string>
     <string name="devices_item_device_added_date">Paired since %s</string>
-    <string name="devices_status_pending">Pending</string>
+    <string name="devices_status_pending">Pending Response</string>
     <string name="sign_out">Sign out</string>
     <string name="signin_google_error">Signing in failed! Try again please.</string>
     <string name="signin_google_error_no_account">A Google account is required to use SendIt app! Please create one and then try again.</string>
@@ -31,7 +31,9 @@
     <string name="new_invitation">New Pair Request</string>
     <string name="new_invitation_desc"><b>%s</b> wants to connect and send you messages.\nDo you accept the invitation?</string>
     <string name="new_invitation_accept"><b>Yes</b>, Accept the invitation</string>
+    <string name="invitation_accept">Accept Invitation</string>
     <string name="new_invitation_decline">No, Decline the request</string>
+    <string name="invitation_decline">Decline</string>
     <string name="new_invitation_accept_sent">Your response is sent!</string>
     <string name="permission_needed">Permission Is Required</string>
     <string name="permission_needed_camera">SendIt Needs Camera permission to scan the barcodes. Please provide it.</string>
@@ -46,4 +48,7 @@
     <string name="share">Send it</string>
     <string name="qr_help_desc">Use this QR code to connect to other devices. Or you can scan QR code on your other devices.</string>
     <string name="learn_more">Learn More</string>
+    <string name="unpair">Unpair connection</string>
+    <string name="unpair_modal_description">You are removin this connection from your network. Proceed?</string>
+    <string name="cancel">Cancel</string>
 </resources>
