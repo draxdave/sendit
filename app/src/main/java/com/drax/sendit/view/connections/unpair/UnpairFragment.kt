@@ -38,7 +38,7 @@ class UnpairFragment(private val request: UnpairRequest):
     private fun initView() {
         collect(viewModel.uiState) { uiState ->
                 when(uiState){
-                    UnpairUiState.Done -> setResultAndDismiss(bundleOf())
+                    UnpairUiState.Done -> setResultAndDismiss(TAG, bundleOf())
                     is UnpairUiState.Failed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
                     UnpairUiState.Loading -> Unit
                     UnpairUiState.Neutral -> Unit

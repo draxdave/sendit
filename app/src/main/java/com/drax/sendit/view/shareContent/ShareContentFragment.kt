@@ -49,7 +49,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
                     ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
                     ShareContentUiState.SharingDone -> {
                         modal(ModalMessage.Success(R.string.share_success)) {
-                            setResultAndDismiss(bundleOf())
+                            setResultAndDismiss(TAG, bundleOf())
                         }
                     }
                     is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))

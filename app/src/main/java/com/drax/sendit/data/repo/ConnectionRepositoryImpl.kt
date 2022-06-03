@@ -15,7 +15,9 @@ class ConnectionRepositoryImpl(
     private val connectionDao: ConnectionDao,
 )
     : ConnectionRepository {
-    override fun getConnections() = connectionDao.getList()
+    override fun getConnections(onlyActive: Boolean) =
+        if (onlyActive) connectionDao.getActiveConnections()
+        else connectionDao.getAll()
 
     override suspend fun addConnection(vararg connection: Connection) = connectionDao.add(*connection)
     override suspend fun emptyConnections(): Unit = connectionDao.deleteAll()

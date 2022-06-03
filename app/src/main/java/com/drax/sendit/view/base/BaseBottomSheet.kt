@@ -34,8 +34,8 @@ abstract class  BaseBottomSheet<out T: ViewDataBinding, E : ViewModel>(
     }
 
 
-    fun setResultAndDismiss(bundleOf: Bundle){
-        setFragmentResult(UnpairFragment.TAG, bundleOf)
+    fun setResultAndDismiss(tag: String, bundleOf: Bundle){
+        setFragmentResult(tag, bundleOf)
         dismissAllowingStateLoss()
     }
 

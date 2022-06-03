@@ -36,7 +36,7 @@ class ConnectionsVM @Inject constructor(
 
     init {
         job(Dispatchers.Default) {
-            connectionRepository.getConnections().collect {connectionsList->
+            connectionRepository.getConnections(onlyActive = false).collect {connectionsList->
                 _uiState.update {
                     when(connectionsList.isEmpty()){
                         true -> ConnectionUiState.NoConnection

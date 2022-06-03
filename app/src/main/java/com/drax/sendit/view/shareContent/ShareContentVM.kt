@@ -28,7 +28,7 @@ class ShareContentVM(
 
     init {
         job {
-            connectionRepository.getConnections().collect {connections->
+            connectionRepository.getConnections(onlyActive = true).collect {connections->
                 _uiState.update {
                     if (connections.isEmpty())
                         ShareContentUiState.NoConnectionsAvailable

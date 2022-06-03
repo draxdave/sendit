@@ -21,7 +21,7 @@ class TransactionsVM(
     init {
         job {
             deviceRepository.getSelfDevice().filterNotNull().collect {thisDevice->
-                connectionRepository.getConnections().collect {connections->
+                connectionRepository.getConnections(onlyActive = false).collect {connections->
 
                     transactionRepository.getAllTransactions().collect {transactionsList->
                         _uiState.update {

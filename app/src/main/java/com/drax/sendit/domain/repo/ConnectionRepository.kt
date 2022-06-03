@@ -6,7 +6,7 @@ import com.drax.sendit.domain.network.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface ConnectionRepository: BaseStorageRepository{
-    fun getConnections(): Flow<List<Connection>>
+    fun getConnections(onlyActive: Boolean): Flow<List<Connection>>
     fun getConnectionsFromServer(): Flow<Resource<ApiResponse<GetConnectionsResponse>>>
     suspend fun addConnection(vararg connection: Connection)
     suspend fun emptyConnections()
