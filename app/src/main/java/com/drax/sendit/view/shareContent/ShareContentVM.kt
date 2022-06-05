@@ -1,15 +1,11 @@
 package com.drax.sendit.view.shareContent
 
-import com.drax.sendit.BuildConfig
-import com.drax.sendit.R
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.type.TransactionContentType
 import com.drax.sendit.domain.repo.ConnectionRepository
-import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.TransactionRepository
-import com.drax.sendit.view.main.MainUiState
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.flow.MutableStateFlow

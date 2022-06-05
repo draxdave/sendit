@@ -4,8 +4,6 @@ import androidx.annotation.IntDef
 import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_ACTIVE
 import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_BLOCKED
 import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_SIGNOUT
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_ACTIVE
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_BLOCKED
 
 @IntDef(DeviceStatus_ACTIVE, DeviceStatus_BLOCKED, DeviceStatus_SIGNOUT)
 @Retention(AnnotationRetention.SOURCE)

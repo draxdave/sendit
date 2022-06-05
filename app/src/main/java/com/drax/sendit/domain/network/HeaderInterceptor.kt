@@ -1,8 +1,6 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.BuildConfig
-import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 import com.drax.sendit.view.util.DeviceInfoHelper
 import okhttp3.Headers

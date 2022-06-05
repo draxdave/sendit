@@ -1,15 +1,16 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.data.db.AuthDao
-import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.UserRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 
 class AuthInterceptor(
-    private val authDao: AuthDao
+    private val authDao: AuthDao,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(chain.request()).also {
@@ -18,8 +19,10 @@ class AuthInterceptor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun unAuthorizedAccessDetected(){
-        GlobalScope.launch(Dispatchers.Default) {
+
+        GlobalScope.launch(defaultDispatcher) {
             authDao.clearDeviceData()
             authDao.clearUserData()
             authDao.clearHistoryData()

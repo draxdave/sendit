@@ -5,24 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.drax.sendit.R
-import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.model.ModalMessage
-import com.drax.sendit.domain.network.model.type.DevicePlatform
-import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_ANDROID
-import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_CHROME
 import com.drax.sendit.view.shareContent.ShareContentFragment
-import com.drax.sendit.view.util.modal
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ir.drax.modal.Modal
-import ir.drax.modal.model.MoButton
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -64,21 +54,19 @@ class MainActivity : AppCompatActivity() {
     private fun onSharedIntent(newIntent: Intent) {
         val receivedAction = newIntent.action
         val receivedType = newIntent.type
+        // check mime type
+        //            else if (receivedType.startsWith("image/")) {
+        //                val receiveUri: Uri? = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri?
+        //                if (receiveUri != null) {
+        //                    //do your stuff
+        //                }
+        //            }
         if (receivedAction == Intent.ACTION_SEND &&
-            receivedType != null) {
-
-            // check mime type
-            if (receivedType.startsWith("text/")) {
-                newIntent.getStringExtra(Intent.EXTRA_TEXT)?.let {receivedText->
-                    launchShareFragment(receivedText)
-                }
+                receivedType != null && receivedType.startsWith("text/")
+        ) {
+            newIntent.getStringExtra(Intent.EXTRA_TEXT)?.let {receivedText->
+                launchShareFragment(receivedText)
             }
-//            else if (receivedType.startsWith("image/")) {
-//                val receiveUri: Uri? = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri?
-//                if (receiveUri != null) {
-//                    //do your stuff
-//                }
-//            }
         }
     }
 

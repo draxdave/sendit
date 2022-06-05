@@ -5,13 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.db.model.Transaction
-import com.drax.sendit.databinding.ItemDeviceBinding
 import com.drax.sendit.databinding.ItemShareConnectionBinding
-import com.drax.sendit.databinding.ItemTransactionBinding
 import com.drax.sendit.view.DeviceWrapper
-import com.drax.sendit.view.TransactionWrapper
 
 class ShareConnectionsAdapter(
     private val onClick: (DeviceWrapper) -> Unit,

@@ -3,7 +3,6 @@ package com.drax.sendit.view.connections
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage

@@ -2,15 +2,16 @@ package com.drax.sendit.view.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build.*
+import android.os.Build.ID
+import android.os.Build.MANUFACTURER
+import android.os.Build.MODEL
+import android.os.Build.USER
+import android.os.Build.VERSION
 import android.provider.Settings
-import android.telephony.TelephonyManager
-import androidx.core.content.ContextCompat.getSystemService
-import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import java.math.BigInteger
 import java.security.MessageDigest
-import java.util.*
+import java.util.Locale
 
 
 object DeviceInfoHelper {

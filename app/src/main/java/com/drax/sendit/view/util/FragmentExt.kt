@@ -1,5 +1,6 @@
 package com.drax.sendit.view.util
 
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.drax.sendit.data.model.ModalMessage
 import ir.drax.modal.Listener
@@ -29,4 +30,8 @@ fun Fragment.modal(message: ModalMessage, onDismiss: () -> Unit = {}){
     }
         .build()
         .show()
+}
+
+fun Fragment.toast(message: CharSequence) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }

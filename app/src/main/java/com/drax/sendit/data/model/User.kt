@@ -6,7 +6,7 @@ import com.drax.sendit.domain.network.model.type.UserType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.Instant
-import java.util.*
+import java.util.Locale
 
 
 @Serializable

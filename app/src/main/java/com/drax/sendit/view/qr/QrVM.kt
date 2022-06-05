@@ -1,9 +1,5 @@
 package com.drax.sendit.view.qr
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.data.model.Resource
@@ -12,17 +8,14 @@ import com.drax.sendit.domain.network.model.PairResponse
 import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
-import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class QrVM(

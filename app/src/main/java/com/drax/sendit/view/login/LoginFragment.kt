@@ -1,6 +1,5 @@
 package com.drax.sendit.view.login
 
-import android.animation.Animator
 import android.app.Activity
 import android.content.IntentSender
 import android.graphics.drawable.Animatable2
@@ -11,17 +10,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.BounceInterpolator
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
-import com.drax.sendit.data.model.*
+import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.domain.network.model.SignInRequest
@@ -34,7 +30,6 @@ import com.drax.sendit.view.util.modal
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant

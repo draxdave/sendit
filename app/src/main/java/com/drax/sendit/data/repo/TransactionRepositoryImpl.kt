@@ -18,6 +18,8 @@ class TransactionRepositoryImpl(
         transactionsDao.add(transaction)
     }
 
+    override fun removeLocally(transaction: Transaction) = transactionsDao.delete(transaction)
+
     /*
     emit(
             object : NetworkCall<ApiResponse<PairResponse>>() {

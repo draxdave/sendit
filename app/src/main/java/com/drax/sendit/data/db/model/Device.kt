@@ -1,11 +1,8 @@
 package com.drax.sendit.data.db.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DeviceStatus
-import kotlinx.serialization.SerialInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.Instant

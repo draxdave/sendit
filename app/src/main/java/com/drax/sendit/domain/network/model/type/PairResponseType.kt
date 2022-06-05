@@ -3,8 +3,6 @@ package com.drax.sendit.domain.network.model.type
 import androidx.annotation.IntDef
 import com.drax.sendit.domain.network.model.type.PairResponseType.Companion.PairResponseType_ACCEPT
 import com.drax.sendit.domain.network.model.type.PairResponseType.Companion.PairResponseType_DECLINE
-import com.drax.sendit.domain.network.model.type.UserType.Companion.UserType_NORMAL
-import com.drax.sendit.domain.network.model.type.UserType.Companion.UserType_VIP
 
 @IntDef(PairResponseType_ACCEPT, PairResponseType_DECLINE)
 @Retention(AnnotationRetention.SOURCE)

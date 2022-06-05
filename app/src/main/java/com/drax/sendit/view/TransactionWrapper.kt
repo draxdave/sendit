@@ -1,12 +1,12 @@
 package com.drax.sendit.view
 
-import androidx.room.Ignore
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.db.model.Transaction
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 data class TransactionWrapper(
     val transaction: Transaction,

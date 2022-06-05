@@ -1,6 +1,11 @@
 package com.drax.sendit.data.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.domain.network.model.type.ConnectionStatus
 import kotlinx.coroutines.flow.Flow

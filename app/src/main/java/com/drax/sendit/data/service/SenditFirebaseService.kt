@@ -11,8 +11,6 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 
 
@@ -41,7 +39,6 @@ class SenditFirebaseService : FirebaseMessagingService() {
         updateDeviceInstanceId(token)
     }
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     private fun updateDeviceInstanceId(instanceId: String) {
         GlobalScope.launch(Dispatchers.IO) {
             deviceRepository.storeInstanceId(instanceId)

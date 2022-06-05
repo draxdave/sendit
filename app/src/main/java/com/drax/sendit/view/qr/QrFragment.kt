@@ -9,9 +9,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
@@ -24,12 +21,10 @@ import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.scanner.ScannerFragment
 import com.drax.sendit.view.util.allPermissionsGranted
 import com.drax.sendit.view.util.collect
-import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
 import ir.drax.modal.Modal
 import ir.drax.modal.model.MoButton
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::inflate) {

@@ -1,7 +1,5 @@
 package com.drax.sendit.domain.network
 
-import android.content.res.Resources
-import com.drax.sendit.R
 import com.drax.sendit.domain.network.model.ErrorResponse
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -3,7 +3,6 @@ package com.drax.sendit.view.shareContent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
@@ -41,20 +40,19 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
 
     private fun initView() {
         collect(viewModel.uiState) { uiState ->
-                when(uiState){
-                    ShareContentUiState.Loading -> Unit
-                    is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {
-                        DeviceWrapper(it)
-                    })
-                    ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
-                    ShareContentUiState.SharingDone -> {
-                        modal(ModalMessage.Success(R.string.share_success)) {
-                            setResultAndDismiss(TAG, bundleOf())
-                        }
+            when(uiState){
+                ShareContentUiState.Loading -> Unit
+                is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {
+                    DeviceWrapper(it)
+                })
+                ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
+                ShareContentUiState.SharingDone -> {
+                    modal(ModalMessage.Success(R.string.share_success)) {
+                        setResultAndDismiss(TAG, bundleOf())
                     }
-                    is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
                 }
-
+                is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
+            }
         }
 
         binding.list.apply {
@@ -63,6 +61,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
         }
     }
 
+    @Suppress("unused")
     private fun platformToIcon(@DevicePlatform platform: Int) = when(platform){
         DevicePlatform.DevicePlatform_ANDROID -> R.drawable.ic_round_android_24
         DevicePlatform.DevicePlatform_CHROME -> R.drawable.ic_google_icon

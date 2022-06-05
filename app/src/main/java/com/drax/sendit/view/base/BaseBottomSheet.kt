@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModel
 import com.drax.sendit.BR
-import com.drax.sendit.view.connections.unpair.UnpairFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class  BaseBottomSheet<out T: ViewDataBinding, E : ViewModel>(

@@ -7,8 +7,6 @@ import com.drax.sendit.domain.network.model.type.TransactionStatus.Companion.Tra
 import com.drax.sendit.domain.network.model.type.TransactionStatus.Companion.TransactionStatus_OPENNED
 import com.drax.sendit.domain.network.model.type.TransactionStatus.Companion.TransactionStatus_RESEND
 import com.drax.sendit.domain.network.model.type.TransactionStatus.Companion.TransactionStatus_SENT
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_ACTIVE
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_BLOCKED
 
 @IntDef(
     TransactionStatus_DELETED,

@@ -1,18 +1,18 @@
 package com.drax.sendit.data.service
 
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.drax.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.data.service.models.PushOp
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.TransactionRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 
 class PushProcessor (

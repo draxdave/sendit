@@ -5,11 +5,6 @@ import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.Device
 import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_CHROME
 import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_IOS
 import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.DevicePlatform_WEB
-import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_ACTIVE
-import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_BLOCKED
-import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceStatus_SIGNOUT
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_ACTIVE
-import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus_BLOCKED
 
 @IntDef(
     DevicePlatform_ANDROID,

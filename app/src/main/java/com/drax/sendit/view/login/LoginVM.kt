@@ -1,6 +1,5 @@
 package com.drax.sendit.view.login
 
-import androidx.lifecycle.viewModelScope
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
@@ -14,13 +13,10 @@ import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class LoginVM(
     private val authRepository: AuthRepository,
@@ -32,7 +28,7 @@ class LoginVM(
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Neutral)
     val uiState: StateFlow<LoginUiState> = _uiState
 
-    fun login(signInRequest: SignInRequest) = viewModelScope.launch(Dispatchers.IO) {
+    fun login(signInRequest: SignInRequest) = job {
         _uiState.update {LoginUiState.Loading}
 
         when(val result = authRepository.signInDevice(signInRequest)){

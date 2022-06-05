@@ -7,7 +7,6 @@ import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.network.model.PairResponseRequest
-import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
@@ -16,7 +15,10 @@ import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 class ConnectionsVM @Inject constructor(

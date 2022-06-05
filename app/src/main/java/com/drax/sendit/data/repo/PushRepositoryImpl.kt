@@ -2,7 +2,7 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.*
+import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.RegistryRepository

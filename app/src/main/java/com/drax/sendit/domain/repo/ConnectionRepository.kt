@@ -2,7 +2,13 @@ package com.drax.sendit.domain.repo
 
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.model.Resource
-import com.drax.sendit.domain.network.model.*
+import com.drax.sendit.domain.network.model.ApiResponse
+import com.drax.sendit.domain.network.model.GetConnectionsResponse
+import com.drax.sendit.domain.network.model.PairRequest
+import com.drax.sendit.domain.network.model.PairResponse
+import com.drax.sendit.domain.network.model.PairResponseRequest
+import com.drax.sendit.domain.network.model.PairResponseResponse
+import com.drax.sendit.domain.network.model.UnpairRequest
 import kotlinx.coroutines.flow.Flow
 
 interface ConnectionRepository: BaseStorageRepository{

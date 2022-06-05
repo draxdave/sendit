@@ -7,5 +7,7 @@ interface TransactionRepository: BaseStorageRepository {
 
     fun getAllTransactions(): Flow<List<Transaction>>
     suspend fun insertNewTransaction(transaction: Transaction)
+
+    fun removeLocally(transaction: Transaction)
 }
 

@@ -8,11 +8,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.db.model.Transaction
-import com.drax.sendit.data.model.User
-import com.drax.sendit.view.util.DeviceInfoHelper
 
 /**
  * Main database description.
@@ -52,16 +49,6 @@ abstract class AppDB : RoomDatabase() {
             }
             return instance!!
         }
-        private fun getIfExists(): AppDB?{
-            if(instance !=  null)
-                return  instance
-            return null
-        }
-        /**
-         * fill database with tests data
-         */
-        @Suppress("UNUSED_PARAMETER")
-        private fun fillInDb(context: Context, db: AppDB) { // Test data will be added here
-        }
+
     }
 }
