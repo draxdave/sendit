@@ -8,15 +8,15 @@ import java.time.Instant
 import java.util.Calendar
 import java.util.Locale
 
-data class TransactionWrapper(
-    val transaction: Transaction,
+data class MessageWrapper(
+    val message: Transaction,
 
     val thisDevice: Device?,
     val connection: Connection?,
     val isSender: Boolean
 ){
     val addedDate: String by lazy {
-        getDateFromMilliseconds(transaction.sendDate)
+        getDateFromMilliseconds(message.sendDate)
     }
 
     private fun getDateFromMilliseconds(instant: Instant): String {

@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <variable name="model" type="com.drax.sendit.view.transmissions.TransactionsVM" />
+        <variable name="model" type="com.drax.sendit.view.messages.MessagesVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"

@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.main.MainActivity
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class NotificationUtil(
@@ -33,9 +32,14 @@ class NotificationUtil(
 
         val pendingIntent = PendingIntent.getActivity(context,0,
             Intent(context, MainActivity::class.java).apply {
-                putExtra(ITEM,json.encodeToString(notificationModel))
+                putExtra(NOTIFICATION_DATA, notificationModel)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
+        )
 
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
@@ -73,7 +77,7 @@ class NotificationUtil(
     }
 
     companion object{
-        const val ITEM = "notif_service_object"
+        const val NOTIFICATION_DATA = "notif_service_object"
         private const val CHANNEL_NAME = "Sendit Main Notification Channel"
         private val CHANNEL_DESCRIPTION = "Sendit general notifications channel. You will not see new contents notifications if you mute this channel."
         private val CHANNEL_ID = "SenditMain"

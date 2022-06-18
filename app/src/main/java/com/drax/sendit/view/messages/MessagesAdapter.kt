@@ -1,4 +1,4 @@
-package com.drax.sendit.view.transmissions
+package com.drax.sendit.view.messages
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.drax.sendit.R
 import com.drax.sendit.databinding.ItemTransactionBinding
-import com.drax.sendit.view.TransactionWrapper
+import com.drax.sendit.view.MessageWrapper
 
 class TransactionAdapter(
-    private val copy: (TransactionWrapper) -> Unit,
-    private val remove: (TransactionWrapper) -> Unit,
-    private val share: (TransactionWrapper) -> Unit,
-) : ListAdapter<TransactionWrapper, RecyclerView.ViewHolder>(
+    private val copy: (MessageWrapper) -> Unit,
+    private val remove: (MessageWrapper) -> Unit,
+    private val share: (MessageWrapper) -> Unit,
+) : ListAdapter<MessageWrapper, RecyclerView.ViewHolder>(
     diffCallback
 )
 {
@@ -31,29 +31,28 @@ class TransactionAdapter(
 
     companion object {
         //This diff callback informs the PagedListAdapter how to compute list differences when new
-        private val diffCallback = object : DiffUtil.ItemCallback<TransactionWrapper>() {
-            override fun areItemsTheSame(oldItem: TransactionWrapper, newItem: TransactionWrapper): Boolean =
-                oldItem.transaction.id == newItem.transaction.id
+        private val diffCallback = object : DiffUtil.ItemCallback<MessageWrapper>() {
+            override fun areItemsTheSame(oldItem: MessageWrapper, newItem: MessageWrapper): Boolean =
+                oldItem.message.id == newItem.message.id
 
-            override fun areContentsTheSame(oldItem: TransactionWrapper, newItem: TransactionWrapper): Boolean =
+            override fun areContentsTheSame(oldItem: MessageWrapper, newItem: MessageWrapper): Boolean =
                 oldItem == newItem
         }
     }
 
 }
 class TransactionViewHolder(private val binding: ItemTransactionBinding,
-                            private val copy: (TransactionWrapper) -> Unit,
-                            private val remove: (TransactionWrapper) -> Unit,
-                            private val share: (TransactionWrapper) -> Unit
+                            private val copy: (MessageWrapper) -> Unit,
+                            private val remove: (MessageWrapper) -> Unit,
+                            private val share: (MessageWrapper) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     init {
-        binding.root.setOnLongClickListener {
+        binding.root.setOnClickListener {
             showPopup(it)
-            false
         }
     }
 
-    fun bindTo(deviceItem : TransactionWrapper) {
+    fun bindTo(deviceItem : MessageWrapper) {
         with(binding) {
             transaction = deviceItem
             executePendingBindings()

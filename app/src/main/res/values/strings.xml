@@ -23,7 +23,7 @@
     <string name="signin_google_error">Signing in failed! Try again please.</string>
     <string name="signin_google_error_no_account">A Google account is required to use SendIt app! Please create one and then try again.</string>
     <string name="device_name">Device Name: %s</string>
-    <string name="last_used">Last used:</string>
+    <string name="last_used">Last used: %s</string>
     <string name="scan">Scan</string>
     <string name="scanner">Scanner</string>
     <string name="invitation_sent_title">Invitation sent successfully.</string>

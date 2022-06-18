@@ -31,7 +31,7 @@ import com.drax.sendit.view.main.MainVM
 import com.drax.sendit.view.qr.QrVM
 import com.drax.sendit.view.scanner.ScannerVM
 import com.drax.sendit.view.shareContent.ShareContentVM
-import com.drax.sendit.view.transmissions.TransactionsVM
+import com.drax.sendit.view.messages.MessagesVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -49,7 +49,7 @@ val appModule = module {
 
     viewModel                  {  ConnectionsVM(get(),get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
-    viewModel                  {  TransactionsVM(get(),get(),get())  }
+    viewModel                  {  MessagesVM(get(),get(),get())  }
     viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
     viewModel                  {  MainVM(get(), get())  }
     viewModel                  {  ScannerVM()  }
