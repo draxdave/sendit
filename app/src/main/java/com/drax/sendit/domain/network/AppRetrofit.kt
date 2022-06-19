@@ -20,7 +20,7 @@ class AppRetrofit(
     fun getRetrofitClient(): Retrofit {
         return Retrofit.Builder()
             .client(buildClient())
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(getBaseUrl())
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
@@ -43,6 +43,15 @@ class AppRetrofit(
 
         }.build()
 
+
+    }
+
+    companion object{
+        fun getBaseUrl(): String =
+            if (BuildConfig.DEBUG)
+                BuildConfig.BASE_URL_DBG
+            else
+                BuildConfig.BASE_URL_PRD
 
     }
 }

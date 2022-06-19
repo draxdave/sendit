@@ -1,8 +1,8 @@
 package com.drax.sendit.view.qr
 
-import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.data.model.Resource
+import com.drax.sendit.domain.network.AppRetrofit
 import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
 import com.drax.sendit.domain.network.model.PairResponseRequest
@@ -54,7 +54,7 @@ class QrVM(
                 is Resource.SUCCESS -> when(val qrUrl = result.data.data?.qrUrl){
                     null -> QrState.QrLoadFailed(R.string.unknown_error)
                     else -> {
-                        val fullUrl = BuildConfig.BASE_URL + qrUrl
+                        val fullUrl = AppRetrofit.getBaseUrl() + qrUrl
                         deviceRepository.storeQRUrl(fullUrl)
                         QrState.QrLoaded(fullUrl)
                     }
