@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.drax.sendit.view.login.LoginUiState"/>
+        <variable name="model" type="com.drax.sendit.view.login.LoginVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/top_banner"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/login_moving_bg"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+
+           <TextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/mid_title_1"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="38sp"
+            android:fontFamily="@font/dosis_bold"
+            app:layout_constraintTop_toBottomOf="@id/top_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/rocket_animated"
+            android:src="@drawable/login_rocket_animated"
+            android:padding="@dimen/_16sdp"
+            android:alpha="0.9"
+            app:layout_constraintTop_toBottomOf="@id/mid_title_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/sign_in_google"
+            android:layout_width="186dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/sign_in_google"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/sign_in_with_google"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:padding="@dimen/_8sdp"
+            style="@style/heading"
+            android:background="@drawable/overlay_button_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="7dp"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            app:drawableStartCompat="@drawable/ic_google_icon" />
+
+        <TextView
+            android:id="@+id/versionText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/_16sdp"
+            android:text="@{model.versionText}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/gray"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/loading_layout"
+            app:isShowing="@{model.uiState == LoginUiState.Loading.INSTANCE}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,42 @@
+package com.drax.sendit.data.db.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.drax.sendit.data.model.InstantSerializer
+import com.drax.sendit.domain.network.model.type.TransactionContentType
+import com.drax.sendit.domain.network.model.type.TransactionStatus
+import com.drax.sendit.domain.network.model.type.TransactionType
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.time.Instant
+
+@Entity
+@Serializable
+data class Transaction(
+    @PrimaryKey(autoGenerate = true)  val iid: Long=0,
+
+    val id: Long,
+    @SerialName("broadcaster_id")
+    val broadcasterId: Long,
+
+    @SerialName("connection_id")
+    val connectionId: Long,
+
+    @SerialName("send_date")
+    @Serializable(with = InstantSerializer::class) val sendDate: Instant,
+
+    @SerialName("deliver_date")
+    @Serializable(with = InstantSerializer::class) val deliverDate: Instant?,
+    val content: String,
+    @TransactionStatus val status: Int,
+
+    @SerialName("last_update")
+    @Serializable(with = InstantSerializer::class)  val lastUpdate: Instant,
+    val meta: String,
+
+    @TransactionContentType
+    @SerialName("content_type")
+    val contentType: Int,
+
+    @TransactionType val type: Int,
+): java.io.Serializable

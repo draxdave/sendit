@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#EDEDED</color>
+    <color name="colorPrimaryDark">#587C2E</color>
+    <color name="colorAccent">#349A4F</color>
+    <color name="colorPrimaryText">#333131</color>
+    <color name="colorSecondaryText">#349a4f</color>
+
+    <color name="darkerGray">#37383C</color>
+    <color name="blur">#1AFFFFFF</color>
+    <color name="darkBlur">#1A000000</color>
+    <color name="darkerBlur">#8A000000</color>
+
+    <color name="lightAqua">#30BC96</color>
+    <color name="aqua200">#448AFF</color>
+    <color name="receiverTextBackground">#ffffff</color>
+    <color name="senderTextBackground">#e7ffdb</color>
+    <color name="blueA200">#40C4FF</color>
+    <color name="white">#E3E3E3</color>
+    <color name="warning">#FFB300</color>
+    <color name="warning_warmer">#FB8C00</color>
+    <color name="gray">#A8AAB6</color>
+    <color name="black">@color/raisin_black</color>
+
+    <color name="main_text_light">#2B2B2B</color>
+    <color name="main_text_lighter">#515151</color>
+
+
+
+    <!-- PALETTE -->
+    <color name="olivine" >#b6d094</color>
+    <color name="fawn" >#e1aa7d</color>
+    <color name="antique_brass">#be8a60</color>
+    <color name="wine" >#6a2e35</color>
+    <color name="raisin_black">#2e2836</color>
+    <color name="raisin_black_light">#3C3645</color>
+
 </resources>

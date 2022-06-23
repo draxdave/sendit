@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.drax.sendit.view.qr.QrUiState"/>
+        <variable name="model" type="com.drax.sendit.view.qr.QrVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/deviceQrPlaceHolder"
+            app:layout_constraintTop_toTopOf="@id/deviceQrContainer"
+            app:layout_constraintStart_toStartOf="@id/deviceQrContainer"
+            app:layout_constraintEnd_toEndOf="@id/deviceQrContainer"
+            app:layout_constraintBottom_toBottomOf="@id/deviceQrContainer"
+            android:padding="32dp"
+            android:background="@drawable/circle_filled_accent"
+            android:src="@drawable/ic_add_device_qr_24"
+            android:layout_width="128dp"
+            android:layout_height="128dp"/>
+
+        <ProgressBar
+            app:layout_constraintTop_toTopOf="@id/deviceQrPlaceHolder"
+            app:layout_constraintBottom_toBottomOf="@id/deviceQrPlaceHolder"
+            app:layout_constraintStart_toStartOf="@id/deviceQrPlaceHolder"
+            app:layout_constraintEnd_toEndOf="@id/deviceQrPlaceHolder"
+            android:indeterminate="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/deviceQrContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/scanBtn"
+            app:layout_constraintVertical_bias=".3"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="7dp"
+            android:visibility="@{model.qrImageUrl.length() > 0 ? View.VISIBLE: View.GONE}"
+            app:cardCornerRadius="@dimen/_8sdp"
+            android:layout_margin="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/deviceQr"
+                android:padding="16dp"
+                app:img="@{model.qrImageUrl}"
+                android:scaleType="fitCenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/qrDesc"
+            app:layout_constraintTop_toBottomOf="@id/deviceQrContainer"
+            app:layout_constraintStart_toStartOf="@id/scanBtn"
+            app:layout_constraintEnd_toEndOf="@id/scanBtn"
+            app:layout_constraintBottom_toTopOf="@id/scanBtn"
+            android:layout_marginBottom="@dimen/_16sdp"
+            app:layout_constraintVertical_bias=".8"
+            android:text="@string/qr_help_desc"
+            style="@style/body_light"
+            android:fontFamily="@font/sf_pro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@id/qrDesc"
+            app:layout_constraintEnd_toEndOf="@id/qrDesc"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:text="@string/learn_more"
+            style="@style/link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/scanBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="32dp"
+            android:elevation="7dp"
+            android:text="@string/scan"
+            style="@style/buttonColoredActive"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+
+        <ImageView
+            app:layout_constraintTop_toTopOf="@id/scanBtn"
+            app:layout_constraintBottom_toBottomOf="@id/scanBtn"
+            app:layout_constraintStart_toStartOf="@id/scanBtn"
+            app:layout_constraintEnd_toEndOf="@id/scanBtn"
+            app:layout_constraintHorizontal_bias=".9"
+            android:elevation="7dp"
+            android:src="@drawable/ic_scan_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <include layout="@layout/loading_layout"
+            app:isShowing="@{model.uiState == QrUiState.QrLoading.INSTANCE}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

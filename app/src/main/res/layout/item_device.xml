@@ -1,0 +1,124 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="deviceWrapper" type="com.drax.sendit.view.DeviceWrapper"/>
+        <import type="android.view.View"/>
+        <import type="com.drax.sendit.domain.network.model.type.ConnectionStatus"/>
+        <import type="com.drax.sendit.domain.network.model.type.ConnectionRole"/>
+    </data>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvItem"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/_8sdp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/icon"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_baseline_phonelink_64"
+                app:img="@{deviceWrapper.connection.iconUrl}"
+                android:layout_margin="@dimen/_16sdp"
+                android:padding="@dimen/_16sdp"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/remove"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:src="@drawable/ic_baseline_delete_outline_24"
+                android:padding="@dimen/_16sdp"
+                app:tint="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="@{deviceWrapper.connection.status == ConnectionStatus.ConnectionStatus_PENDING ? deviceWrapper.connection.role == ConnectionRole.ROLE_CONNECTEE ? View.VISIBLE: View.GONE: View.GONE }"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/darkerBlur"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/icon"
+                />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                android:layout_marginTop="4dp"
+                style="@style/body_lighter"
+                android:textColor="@color/warning"
+                android:visibility="@{deviceWrapper.connection.status == ConnectionStatus.ConnectionStatus_PENDING ? deviceWrapper.connection.role == ConnectionRole.ROLE_CONNECTOR? View.VISIBLE: View.GONE: View.GONE }"
+                android:padding="4dp"
+                android:text="@string/devices_status_pending"
+                app:layout_constraintBottom_toBottomOf="@id/icon" />
+
+            <Button
+                android:id="@+id/tvAcceptBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/icon"
+                app:layout_constraintStart_toStartOf="@id/icon"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/positiveBtn"
+                android:visibility="@{deviceWrapper.connection.status == ConnectionStatus.ConnectionStatus_PENDING ? deviceWrapper.connection.role == ConnectionRole.ROLE_CONNECTEE ? View.VISIBLE: View.GONE: View.GONE }"
+                android:text="@string/invitation_accept"
+                app:layout_constraintTop_toTopOf="@id/icon"
+                app:layout_constraintBottom_toBottomOf="@id/icon" />
+
+            <Button
+                android:id="@+id/tvDeclineBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/icon"
+                app:layout_constraintStart_toStartOf="@id/icon"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="8dp"
+                style="@style/negativeBtn"
+                android:visibility="@{deviceWrapper.connection.status == ConnectionStatus.ConnectionStatus_PENDING ? deviceWrapper.connection.role == ConnectionRole.ROLE_CONNECTEE ? View.VISIBLE: View.GONE: View.GONE }"
+                android:text="@string/invitation_decline"
+                app:layout_constraintTop_toBottomOf="@id/tvAcceptBtn"
+                />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:textSize="13sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:minLines="2"
+                android:layout_margin="16dp"
+                style="@style/heading2"
+                android:text="@{deviceWrapper.connection.name}"
+                app:layout_constraintTop_toBottomOf="@id/icon" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                style="@style/body_lighter"
+                android:textSize="10sp"
+                android:padding="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{@string/devices_item_device_added_date(String.valueOf(deviceWrapper.addedDate))}"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

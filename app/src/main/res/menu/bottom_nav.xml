@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/qrFragment"
+        android:icon="@drawable/ic_fragment_qr"
+        android:title="@string/fragment_qr"
+        />
+    <item android:id="@+id/devicesFragment"
+        android:icon="@drawable/ic_fragment_devices"
+        android:title="@string/fragment_devices"
+        />
+    <item android:id="@+id/transmissionsFragment"
+        android:icon="@drawable/ic_fragment_transmitted"
+        android:title="@string/fragment_transmitted"
+        />
+</menu>
