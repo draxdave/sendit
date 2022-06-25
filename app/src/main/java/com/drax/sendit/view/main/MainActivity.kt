@@ -11,18 +11,22 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.drax.sendit.R
+import com.drax.sendit.data.service.Analytics
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.models.NotificationData
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.shareContent.ShareContentFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.collect
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
     private val mainVM: MainVM by viewModel()
     private lateinit var navController: NavController
+    private val analytics: Analytics by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +61,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleNewIntent(newIntent: Intent) {
         if (newIntent.action == Intent.ACTION_SEND) {
+            analytics.set(Event.Share.Requested)
             onSharedIntent(newIntent)
 
         } else {
+            analytics.set(Event.Notification.Clicked(newIntent.extras.toString()))
             newIntent.extras?.let { extra ->
                 (extra.getSerializable(NotificationUtil.NOTIFICATION_DATA) as? NotificationModel)
                     ?.data?.let { notificationData ->

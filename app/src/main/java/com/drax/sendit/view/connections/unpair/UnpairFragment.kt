@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.databinding.ConnectionUnpairFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseBottomSheet
@@ -23,7 +24,10 @@ class UnpairFragment(private val request: UnpairRequest):
     private fun initView() {
         collect(viewModel.uiState) { uiState ->
                 when(uiState){
-                    UnpairUiState.Done -> setResultAndDismiss(TAG, bundleOf())
+                    UnpairUiState.Done -> {
+                        analytics.set(Event.Connections.Unpaired)
+                        setResultAndDismiss(TAG, bundleOf())
+                    }
                     is UnpairUiState.Failed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
                     UnpairUiState.Loading -> Unit
                     UnpairUiState.Neutral -> Unit

@@ -8,6 +8,7 @@ import com.drax.sendit.data.repo.PushRepositoryImpl
 import com.drax.sendit.data.repo.RegistryRepositoryImpl
 import com.drax.sendit.data.repo.TransactionRepositoryImpl
 import com.drax.sendit.data.repo.UserRepositoryImpl
+import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.NotificationBuilder
 import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.PushProcessor
@@ -28,10 +29,12 @@ import com.drax.sendit.view.connections.ConnectionsVM
 import com.drax.sendit.view.connections.unpair.UnpairVM
 import com.drax.sendit.view.login.LoginVM
 import com.drax.sendit.view.main.MainVM
+import com.drax.sendit.view.messages.MessagesVM
 import com.drax.sendit.view.qr.QrVM
 import com.drax.sendit.view.scanner.ScannerVM
 import com.drax.sendit.view.shareContent.ShareContentVM
-import com.drax.sendit.view.messages.MessagesVM
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -50,7 +53,7 @@ val appModule = module {
     viewModel                  {  ConnectionsVM(get(),get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  MessagesVM(get(),get(),get())  }
-    viewModel                  {  LoginVM(get(),get(),get(),get(),)  }
+    viewModel                  {  LoginVM(get(),get(),get(),get(),get())  }
     viewModel                  {  MainVM(get(), get())  }
     viewModel                  {  ScannerVM()  }
     viewModel                  {  ShareContentVM(get(), get(), get())  }
@@ -68,10 +71,11 @@ val appModule = module {
         .create(ApiService::class.java)}
     single                     { AuthInterceptor(get()) }
     single                     { HeaderInterceptor( get()) }
-    single                     { ErrorHandlerInterceptor( get()) }
+    single                     { ErrorHandlerInterceptor( get(), get()) }
 
     single                     { PushProcessor(get(),get(),get(),get(),)}
     single                     { NotificationUtil(androidContext(), get()) }
     single                     { NotificationBuilder(get(),) }
+    single                     { Analytics(Firebase.analytics) }
 
 }

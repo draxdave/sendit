@@ -6,6 +6,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.databinding.ConnectionsFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.network.model.type.PairResponseType
@@ -22,12 +23,19 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
     override val viewModel: ConnectionsVM by viewModel()
 
     private val adapter : ConnectionsAdapter by lazy { ConnectionsAdapter( unpair = { connectionId ->
+        analytics.set(Event.Connections.UnpairRequested)
         showUnpairBottomSheet(connectionId)
 
     }) { connectionId, response ->
         when (response) {
-            PairResponseType.PairResponseType_ACCEPT -> viewModel.acceptInvitation(connectionId)
-            PairResponseType.PairResponseType_DECLINE -> viewModel.declineInvitation(connectionId)
+            PairResponseType.PairResponseType_ACCEPT -> {
+                analytics.set(Event.Connections.Accepted)
+                viewModel.acceptInvitation(connectionId)
+            }
+            PairResponseType.PairResponseType_DECLINE -> {
+                analytics.set(Event.Connections.Rejected)
+                viewModel.declineInvitation(connectionId)
+            }
         }
     }
     }
@@ -42,10 +50,13 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
             binding.refresh.isRefreshing = false
             when(it){
                 ConnectionUiState.Neutral -> Unit
-                ConnectionUiState.RefreshingConnectionList -> Unit
+                ConnectionUiState.RefreshingConnectionList -> analytics.set(Event.Connections.RefreshedList)
                 ConnectionUiState.NoConnection -> Unit
                 is ConnectionUiState.ConnectionsLoaded -> adapter.newList(it.connectionList)
-                is ConnectionUiState.RefreshConnectionListFailed -> modal(ModalMessage.FromNetError(it.error.errorCode))
+                is ConnectionUiState.RefreshConnectionListFailed -> {
+                    analytics.set(Event.Connections.RefreshFailed)
+                    modal(ModalMessage.FromNetError(it.error.errorCode))
+                }
             }
         }
         binding.list.apply {
@@ -72,12 +83,14 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
     }
 
     private fun showPopup(view: View){
+        analytics.set(Event.Connections.PopupShown)
         val popupMenu = PopupMenu(requireContext(), view)
 
         // Inflating popup menu from popup_menu.xml file
         popupMenu.menuInflater.inflate(R.menu.connections_top_menu, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             if (it.itemId == R.id.sign_out){
+                analytics.set(Event.Connections.Logout)
                 viewModel.signOut()
             }
             true

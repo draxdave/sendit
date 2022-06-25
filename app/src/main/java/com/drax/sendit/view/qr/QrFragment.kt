@@ -12,6 +12,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.PushProcessor.Companion.INVITATION_RESPONSE
 import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.databinding.NewInvitationModalBinding
@@ -42,6 +43,8 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 launchScanner()
+            } else {
+                analytics.set(Event.QR.CameraPermissionRejected)
             }
         }
 
@@ -62,24 +65,38 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
 
         collect(viewModel.state) {
             when(it){
-                is QrState.QrLoadFailed -> modal(ModalMessage.Failed(it.reason))
+                is QrState.QrLoadFailed -> {
+                    analytics.set(Event.QR.LoadQRFailed)
+                    modal(ModalMessage.Failed(it.reason))
+                }
                 is QrState.QrLoaded -> Unit
-                is QrState.QrLoadFailedFromNet -> modal(ModalMessage.FromNetError(it.reason.errorCode))
+                is QrState.QrLoadFailedFromNet -> {
+                    analytics.set(Event.QR.LoadQRFailedFromNet)
+                    modal(ModalMessage.FromNetError(it.reason.errorCode))
+                }
                 is QrState.InvitationFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
-                QrState.InvitationSent -> modal(
-                    ModalMessage.Full(
-                        mTitle = R.string.invitation_sent_title,
-                        mDescription = R.string.invitation_sent_desc,
-                        mIcon = R.drawable.tick,
-                        mFromTop = true,
-                        mLock = false
+                QrState.InvitationSent -> {
+                    analytics.set(Event.QR.InvitationSent)
+                    modal(
+                        ModalMessage.Full(
+                            mTitle = R.string.invitation_sent_title,
+                            mDescription = R.string.invitation_sent_desc,
+                            mIcon = R.drawable.tick,
+                            mFromTop = true,
+                            mLock = false
+                        )
                     )
-                )
-                is QrState.InvitationResponseFailed -> modal(ModalMessage.FromNetError(it.reason.errorCode))
+                }
+                is QrState.InvitationResponseFailed -> {
+                    analytics.set(Event.QR.ReceivedInvitationFailedToSend)
+                    modal(ModalMessage.FromNetError(it.reason.errorCode))
+                }
                 QrState.InvitationResponseSent -> modal(ModalMessage.Success(R.string.new_invitation_accept_sent))
 
                 QrState.InvitationResponseAlreadyActive -> modal(ModalMessage.Neutral(R.string.invitation_already_active))
-                QrState.InvitationResponseRejected -> modal(ModalMessage.Neutral(R.string.invitation_rejected))
+                QrState.InvitationResponseRejected -> {
+                    modal(ModalMessage.Neutral(R.string.invitation_rejected))
+                }
                 QrState.InvitationResponseWaiting ->
                     modal(ModalMessage.Neutral(R.string.invitation_waiting_for_peer))
             }
@@ -132,6 +149,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun launchScanner(){
+        analytics.set(Event.QR.ScannerRequested)
         setFragmentResultListener(ScannerFragment.REQUEST_KEY) { _, bundle ->
             bundle.getString(ScannerFragment.RESPONSE_KEY)?.let { qrResponse ->
                 if (qrResponse.isNotEmpty() && qrResponse.contains("::"))
@@ -147,18 +165,19 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun showInvitationModal(deviceName: String, connectionId: Long){
+        analytics.set(Event.QR.ReceivedInvitationDialogShown)
         Modal.builder(requireView()).apply {
-
-
             type = Modal.Type.Custom
             contentView = NewInvitationModalBinding.inflate(layoutInflater).apply {
                 setDeviceName(deviceName)
                 acceptBtn.setOnClickListener {
+                    analytics.set(Event.QR.ReceivedInvitationAccepted)
                     viewModel.sendInvitationResponse(connectionId, PairResponseType.PairResponseType_ACCEPT)
                     Modal.hide(requireView())
                 }
 
                 declineBtn.setOnClickListener {
+                    analytics.set(Event.QR.ReceivedInvitationRejected)
                     viewModel.sendInvitationResponse(connectionId, PairResponseType.PairResponseType_DECLINE)
                     Modal.hide(requireView())
                 }

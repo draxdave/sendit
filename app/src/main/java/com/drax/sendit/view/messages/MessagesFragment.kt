@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drax.sendit.R
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.databinding.TransmissionsFragmentBinding
 import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.base.BaseFragment
@@ -21,12 +22,15 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
     private val transitionAdapter: TransactionAdapter by lazy {
         TransactionAdapter(
             copy = {
+                analytics.set(Event.Messages.Copy)
                 copyToClipboard(it)
             },
             remove = {
+                analytics.set(Event.Messages.Remove)
                 viewModel.removeTransaction(it)
             },
             share = {
+                analytics.set(Event.Messages.Share)
                 shareTransaction(it)
             }
         )

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.drax.sendit.BuildConfig
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.domain.network.model.SignInRequest
@@ -60,10 +62,10 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             when {
                 idToken != null -> {
                     SenditFirebaseService.token({
+                        analytics.set(Event.SignIn.Failed("Token is missing"))
                         viewModel.googleSignInFailed(R.string.signin_google_error)
 
                     }) {instanceId->
-
                         viewModel.login(
                             SignInRequest(
                                 firstName = credential.givenName ?: credential.displayName ?: "User Name",
@@ -85,10 +87,12 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 else -> {
                     // Shouldn't happen.
                     Log.d("TAG", "No ID token or password!")
+                    analytics.set(Event.SignIn.Failed("No ID token or password!"))
                     viewModel.googleSignInFailed(R.string.signin_google_error)
                 }
             }
-        }else{
+        } else {
+            analytics.set(Event.SignIn.Failed("Negative Result"))
             viewModel.googleSignInFailed(R.string.signin_google_error)
         }
     }
@@ -97,28 +101,39 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
         super.onViewCreated(view, savedInstanceState)
 
         binding.signInGoogle.setOnClickListener {
+            analytics.set(Event.View.Clicked.SigninWithGoogle)
             launchOneTapSignIn()
         }
 
         collect(viewModel.uiState) {uiState->
                 when(uiState){
-                    is LoginUiState.LoginFailed -> modal(
-                        if (uiState.errorCode in 1..799)
-                            ModalMessage.FromNetError(uiState.errorCode)
-                        else
-                            ModalMessage.Failed(
-                                when(uiState.errorCode){
-                                    SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                                    SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
-                                    else -> R.string.error_internal
-                                }
-                            ))
+                    is LoginUiState.LoginFailed -> {
+                        analytics.set(Event.SignIn.Failed("REQUEST FAILED"))
+                        modal(
+                            if (uiState.errorCode in 1..799)
+                                ModalMessage.FromNetError(uiState.errorCode)
+                            else
+                                ModalMessage.Failed(
+                                    when(uiState.errorCode){
+                                        SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
+                                        SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                                        else -> R.string.error_internal
+                                    }
+                                ))
+                    }
                     LoginUiState.Neutral -> Unit
-                    LoginUiState.LoginSucceed -> Unit
+                    LoginUiState.LoginSucceed -> analytics.set(Event.SignIn.Succeed)
                     is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                     LoginUiState.Loading -> Unit
                 }
             }
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                analytics.set(Event.SignIn.LeftSignIn)
+                this.remove()
+            }
+        })
     }
 
     private fun launchOneTapSignIn(){
@@ -141,6 +156,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
 
         oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener(requireActivity()) { result ->
+                analytics.set(Event.SignIn.SsoDone)
                 try {
                     signInActivityResult.launch(
                         IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
@@ -152,6 +168,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 }
             }
             .addOnFailureListener(requireActivity()) { e ->
+                analytics.set(Event.SignIn.SignInFlowFailed)
                 // No saved credentials found. Launch the One Tap sign-up flow, or
                 // do nothing and continue presenting the signed-out UI.
                 Log.d(TAG, "Errorrrrr "+e.localizedMessage)
@@ -160,6 +177,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
     }
 
     private fun showSignupFlow() {
+        analytics.set(Event.SignIn.SignUpFlowStarted)
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -173,6 +191,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
 
         oneTapClient.beginSignIn(signUpRequest)
             .addOnSuccessListener(requireActivity()) { result ->
+                analytics.set(Event.SignIn.SsoDone)
                 try {
                     signupActivityResult.launch(
                         IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
@@ -184,6 +203,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 }
             }
             .addOnFailureListener(requireActivity()) { e ->
+                analytics.set(Event.SignIn.SignInFlowFailed)
                 // No Google Accounts found. Just continue presenting the signed-out UI.
                 viewModel.googleSignInFailed(R.string.signin_google_error_no_account)
                 Log.d(TAG, e.localizedMessage)
@@ -205,10 +225,11 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 override fun onAnimationEnd(drawable: Drawable?) {
                     super.onAnimationEnd(drawable)
                     if (lifecycleScope.isActive && !this@LoginFragment.isDetached)
-                        if(viewModel.uiState.value == LoginUiState.LoginSucceed)
+                        if(viewModel.uiState.value == LoginUiState.LoginSucceed) {
                             startRocketPreLaunchingAnimation()
-                        else
+                        } else {
                             startRocketAnimation()
+                        }
                 }
             })
         }

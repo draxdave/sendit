@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drax.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.databinding.ShareContentFragmentBinding
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.view.DeviceWrapper
@@ -47,11 +48,15 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
                 })
                 ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
                 ShareContentUiState.SharingDone -> {
+                    analytics.set(Event.Share.Sent)
                     modal(ModalMessage.Success(R.string.share_success)) {
                         setResultAndDismiss(TAG, bundleOf())
                     }
                 }
-                is ShareContentUiState.SharingFailed -> modal(ModalMessage.FromNetError(uiState.reason.errorCode))
+                is ShareContentUiState.SharingFailed -> {
+                    analytics.set(Event.Share.Failed(uiState.reason.errorCode.toString()))
+                    modal(ModalMessage.FromNetError(uiState.reason.errorCode))
+                }
             }
         }
 

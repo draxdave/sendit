@@ -1,5 +1,7 @@
 package com.drax.sendit.domain.network
 
+import com.drax.sendit.data.service.Analytics
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.ErrorResponse
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -14,12 +16,14 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class ErrorHandlerInterceptor(
-    private val json: Json
+    private val json: Json,
+    private val analytics: Analytics
     ): Interceptor {
     private lateinit var request: Request
 
     override fun intercept(chain: Interceptor.Chain): Response {
         request = chain.request()
+        analytics.set(Event.Network.ApiRequest(request.url.fragment))
 
         val response = try {
             val initResponse = chain.proceed(request)
@@ -86,6 +90,8 @@ class ErrorHandlerInterceptor(
     }
 
     private fun ErrorResponse.toResponse(): Response {
+        analytics.set(Event.Network.ApiError(type.toString() ,request.url.fragment))
+
         val responseStr = "{\"statusCode\":$type," +
                 "\"error\":"+json.encodeToString(this) +
                 "}"

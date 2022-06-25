@@ -18,11 +18,12 @@ class SenditFirebaseService : FirebaseMessagingService() {
 
     private val pushProcessor: PushProcessor by inject()
     private val deviceRepository: DeviceRepository by inject()
+    private val analytics: Analytics by inject()
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println("onMessageReceived")
-//        println(Json.encodeToString(remoteMessage.data))
+        analytics.set(Event.Notification.Any(remoteMessage.data))
         if (remoteMessage.data.containsKey("op") &&
             remoteMessage.data.containsKey("data"))
             pushProcessor.process(remoteMessage.data["op"], remoteMessage.data["data"])?.send()

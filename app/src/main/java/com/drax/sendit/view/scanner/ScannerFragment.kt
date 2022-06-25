@@ -7,6 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.collect
@@ -30,7 +31,8 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
 
         codeScanner = CodeScanner(requireContext(), binding.scannerView)
         codeScanner.decodeCallback = DecodeCallback {
-            requireView().post {
+            analytics.set(Event.QR.Scanned)
+            view?.post {
                 submitResultAndDismiss(it.text)
             }
         }
