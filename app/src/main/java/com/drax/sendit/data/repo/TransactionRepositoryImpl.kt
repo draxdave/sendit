@@ -3,7 +3,9 @@ package com.drax.sendit.data.repo
 import com.drax.sendit.data.db.TransactionsDao
 import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.domain.network.ApiService
+import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.repo.TransactionRepository
+import kotlinx.coroutines.flow.flow
 
 class TransactionRepositoryImpl(
     private val transactionsDao: TransactionsDao,
@@ -20,6 +22,13 @@ class TransactionRepositoryImpl(
 
     override fun removeLocally(transaction: Transaction) = transactionsDao.delete(transaction)
 
+    override fun getAllTransactionsFromServer() = flow {
+        emit(
+            NetworkCall{
+                apiService.getTransactions(1)
+            }.fetch()
+        )
+    }
     /*
     emit(
             object : NetworkCall<ApiResponse<PairResponse>>() {

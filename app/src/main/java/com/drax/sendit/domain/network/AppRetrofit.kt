@@ -47,12 +47,12 @@ class AppRetrofit(
     }
 
     companion object{
-        fun getBaseUrl(): String =
-            if (BuildConfig.DEBUG)
-                BuildConfig.BASE_URL_DBG
+        fun getBaseUrl(): String = "${
+            if(BuildConfig.DEBUG)
+                BuildConfig.BASE_URL_DBG 
             else
                 BuildConfig.BASE_URL_PRD
-
+        }/api/${BuildConfig.API_VERSION}/"
     }
 }
 
