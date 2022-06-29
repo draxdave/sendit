@@ -23,7 +23,7 @@ class ErrorHandlerInterceptor(
 
     override fun intercept(chain: Interceptor.Chain): Response {
         request = chain.request()
-        analytics.set(Event.Network.ApiRequest(request.url.fragment))
+        analytics.set(Event.Network.ApiRequest(request.url.fragment ?: ""))
 
         val response = try {
             val initResponse = chain.proceed(request)
@@ -90,7 +90,7 @@ class ErrorHandlerInterceptor(
     }
 
     private fun ErrorResponse.toResponse(): Response {
-        analytics.set(Event.Network.ApiError(type.toString() ,request.url.fragment))
+        analytics.set(Event.Network.ApiError(type.toString() ,request.url.fragment ?: ""))
 
         val responseStr = "{\"statusCode\":$type," +
                 "\"error\":"+json.encodeToString(this) +
@@ -98,7 +98,7 @@ class ErrorHandlerInterceptor(
 
         return Response.Builder()
             .request(request)
-            .protocol(Protocol.HTTP_1_1)
+            .protocol(Protocol.HTTP_2)
             .code(200)
             .message("")
             .body( responseStr.toResponseBody())

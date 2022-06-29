@@ -13,6 +13,7 @@ class AppRetrofit(
     private val authInterceptor: AuthInterceptor,
     private val headerInterceptor: HeaderInterceptor,
     private val errorHandlerInterceptor: ErrorHandlerInterceptor,
+    private val apiInterceptor: ApiInterceptor,
     private val json: Json
 ) {
 
@@ -20,7 +21,7 @@ class AppRetrofit(
     fun getRetrofitClient(): Retrofit {
         return Retrofit.Builder()
             .client(buildClient())
-            .baseUrl(getBaseUrl())
+            .baseUrl(BaseUrl)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
@@ -34,6 +35,7 @@ class AppRetrofit(
             addInterceptor(headerInterceptor)
             addInterceptor(errorHandlerInterceptor)
             addInterceptor(authInterceptor)
+            addInterceptor(apiInterceptor)
 
             if (BuildConfig.DEBUG)
                 addInterceptor(HttpLoggingInterceptor().apply {
@@ -47,12 +49,12 @@ class AppRetrofit(
     }
 
     companion object{
-        fun getBaseUrl(): String = "${
+        val BaseUrl =
             if(BuildConfig.DEBUG)
-                BuildConfig.BASE_URL_DBG 
+                BuildConfig.BASE_URL_DBG
             else
                 BuildConfig.BASE_URL_PRD
-        }/api/${BuildConfig.API_VERSION}/"
+        const val UrlVersion = "/api/${BuildConfig.API_VERSION}"
     }
 }
 

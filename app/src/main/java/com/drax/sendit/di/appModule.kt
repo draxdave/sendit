@@ -13,6 +13,7 @@ import com.drax.sendit.data.service.NotificationBuilder
 import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.PushProcessor
 import com.drax.sendit.di.builder.Json
+import com.drax.sendit.domain.network.ApiInterceptor
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.AppRetrofit
 import com.drax.sendit.domain.network.AuthInterceptor
@@ -67,11 +68,12 @@ val appModule = module {
     single<AuthRepository>     { AuthRepositoryImpl(get(), get()) }
     single<ConnectionRepository>     { ConnectionRepositoryImpl(get(), get()) }
 
-    single<ApiService>         {   AppRetrofit(get(), get(), get(), get()).getRetrofitClient()
+    single<ApiService>         {   AppRetrofit(get(), get(), get(), get(), get()).getRetrofitClient()
         .create(ApiService::class.java)}
     single                     { AuthInterceptor(get()) }
     single                     { HeaderInterceptor( get()) }
     single                     { ErrorHandlerInterceptor( get(), get()) }
+    single                     { ApiInterceptor() }
 
     single                     { PushProcessor(get(),get(),get(),get(),)}
     single                     { NotificationUtil(androidContext(), get()) }

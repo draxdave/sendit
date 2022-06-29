@@ -54,7 +54,7 @@ class QrVM(
                 is Resource.SUCCESS -> when(val qrUrl = result.data.data?.qrUrl){
                     null -> QrState.QrLoadFailed(R.string.unknown_error)
                     else -> {
-                        val fullUrl = AppRetrofit.getBaseUrl() + qrUrl
+                        val fullUrl = AppRetrofit.BaseUrl + qrUrl
                         deviceRepository.storeQRUrl(fullUrl)
                         QrState.QrLoaded(fullUrl)
                     }

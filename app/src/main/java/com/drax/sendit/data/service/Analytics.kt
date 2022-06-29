@@ -2,14 +2,17 @@ package com.drax.sendit.data.service
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import com.drax.sendit.BuildConfig
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class Analytics(
     private val firebaseAnalytics: FirebaseAnalytics
 ) {
 
-    fun set(event: Event) =
-        firebaseAnalytics.logEvent(event.category, event.params)
+    fun set(event: Event){
+        if (!BuildConfig.DEBUG)
+            firebaseAnalytics.logEvent(event.category, event.params)
+    }
 }
 
 sealed class Event {
@@ -102,7 +105,7 @@ sealed class Event {
         data class Any(val data: Map<String, String>): Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "All",
-                "DATA" to data
+                "DATA" to data.toList()
             )
         }
         object ConnectionRequest: Notification() {
@@ -117,7 +120,7 @@ sealed class Event {
             )
         }
 
-        data class Clicked(val notificationData: String?): Notification() {
+        data class Clicked(val notificationData: String): Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Clicked",
                 "DATA" to notificationData
@@ -271,14 +274,14 @@ sealed class Event {
     }
 
     sealed class Network(override val category: String = "Network"): Event() {
-        data class ApiRequest(val apiName: String?): Network() {
+        data class ApiRequest(val apiName: String): Network() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ApiCalled",
                 "NAME" to apiName
             )
         }
 
-        data class ApiError(val errorCode: String?, val request: String?): Network() {
+        data class ApiError(val errorCode: String, val request: String): Network() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ApiError",
                 "CODE" to errorCode,
