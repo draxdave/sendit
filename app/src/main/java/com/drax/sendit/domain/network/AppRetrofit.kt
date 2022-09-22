@@ -49,11 +49,7 @@ class AppRetrofit(
     }
 
     companion object{
-        val BaseUrl =
-            if(BuildConfig.DEBUG)
-                BuildConfig.BASE_URL_DBG
-            else
-                BuildConfig.BASE_URL_PRD
+        val BaseUrl = BuildConfig.BASE_URL
         const val UrlVersion = "/api/${BuildConfig.API_VERSION}"
     }
 }

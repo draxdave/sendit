@@ -23,15 +23,17 @@ android {
         versionName "1.0"
         buildConfigField "String", "F_API_KEY", localProperties['fApiKey']
         buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
-        buildConfigField "String", "BASE_URL_DBG", localProperties['local_server_ip']
-        buildConfigField "String", "BASE_URL_PRD", localProperties['production_server_url']
         buildConfigField "String", "API_VERSION", localProperties['api_version']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", localProperties['local_server_ip']
+        }
         release {
+            buildConfigField "String", "BASE_URL", localProperties['production_server_url']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
