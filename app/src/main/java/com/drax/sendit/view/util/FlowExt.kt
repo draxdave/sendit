@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 public inline fun <T> Fragment.collect(flow: Flow<T>, crossinline action: suspend (value: T) -> Unit): Unit {
     lifecycleScope.launch {
         viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED){
-            flow.collect(action)
+            flow.collect {
+                action.invoke(it)
+            }
         }
     }
 }
