@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.NotificationUtil

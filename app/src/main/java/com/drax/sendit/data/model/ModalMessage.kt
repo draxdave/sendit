@@ -1,6 +1,6 @@
 package com.drax.sendit.data.model
 
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.domain.network.AuthInterceptor.Companion.UNAUTHORIZED_ACCESS
 import com.drax.sendit.domain.network.ErrorHandlerInterceptor
 import com.drax.sendit.domain.network.ErrorHandlerInterceptor.Companion.BadRequest

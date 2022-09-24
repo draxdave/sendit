@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.databinding.ConnectionUnpairFragmentBinding
+import app.siamak.sendit.databinding.ConnectionUnpairFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseBottomSheet
 import com.drax.sendit.view.util.collect

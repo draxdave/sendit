@@ -2,7 +2,7 @@ package com.drax.sendit.data.service
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.drax.sendit.BuildConfig
+import app.siamak.sendit.BuildConfig
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class Analytics(

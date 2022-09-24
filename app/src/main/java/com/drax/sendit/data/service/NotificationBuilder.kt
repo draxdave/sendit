@@ -1,6 +1,6 @@
 package com.drax.sendit.data.service
 
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.data.service.models.NotificationData
 import com.drax.sendit.data.service.models.NotificationModel

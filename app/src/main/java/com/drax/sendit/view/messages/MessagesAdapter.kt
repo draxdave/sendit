@@ -7,8 +7,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.drax.sendit.R
-import com.drax.sendit.databinding.ItemTransactionBinding
+import app.siamak.sendit.R
+import app.siamak.sendit.databinding.ItemTransactionBinding
 import com.drax.sendit.view.MessageWrapper
 
 class TransactionAdapter(

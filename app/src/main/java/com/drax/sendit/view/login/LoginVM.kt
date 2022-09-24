@@ -1,6 +1,6 @@
 package com.drax.sendit.view.login
 
-import com.drax.sendit.BuildConfig
+import app.siamak.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource

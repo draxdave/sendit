@@ -2,7 +2,7 @@ package com.drax.sendit.view.connections
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User

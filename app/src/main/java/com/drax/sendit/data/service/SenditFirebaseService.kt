@@ -2,7 +2,7 @@ package com.drax.sendit.data.service
 
 import android.content.Intent
 import android.os.Bundle
-import com.drax.sendit.BuildConfig
+import app.siamak.sendit.BuildConfig
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import com.drax.sendit.BR
+import app.siamak.sendit.BR
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import org.koin.android.ext.android.inject

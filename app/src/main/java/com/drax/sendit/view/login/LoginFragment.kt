@@ -1,6 +1,7 @@
 package com.drax.sendit.view.login
 
 import android.app.Activity
+import android.content.Intent
 import android.content.IntentSender
 import android.graphics.drawable.Animatable2
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -14,14 +15,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import com.drax.sendit.BuildConfig
-import com.drax.sendit.R
+import app.siamak.sendit.BuildConfig
+import app.siamak.sendit.R
+import app.siamak.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.SenditFirebaseService
-import com.drax.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.domain.network.model.SignInRequest
 import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.network.model.type.UserSex
@@ -32,9 +34,15 @@ import com.drax.sendit.view.util.modal
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import java.time.Instant
 import kotlinx.coroutines.isActive
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Instant
 
 
 class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
@@ -52,6 +60,15 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
     private val signupActivityResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         checkResult(it)
     }
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private val googleAuthCallback =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
+                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleSignInResult(task)
+            }
+        }
 
     private fun checkResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
@@ -134,6 +151,7 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 this.remove()
             }
         })
+        googleAuthInit()
     }
 
     private fun launchOneTapSignIn(){
@@ -205,11 +223,53 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
             .addOnFailureListener(requireActivity()) { e ->
                 analytics.set(Event.SignIn.SignInFlowFailed)
                 // No Google Accounts found. Just continue presenting the signed-out UI.
-                viewModel.googleSignInFailed(R.string.signin_google_error_no_account)
                 Log.d(TAG, e.localizedMessage)
+                googleAuth()
             }
     }
 
+    private fun googleAuthInit(){
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestId()
+            .requestIdToken(BuildConfig.ONETAP_CLIENT_ID)
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+    private fun googleAuth(){
+        googleAuthCallback.launch(mGoogleSignInClient.signInIntent)
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val credential: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
+            loginApi(credential)
+
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.statusCode)
+            viewModel.googleSignInFailed(R.string.signin_google_error_no_account)
+        }
+    }
+
+private fun loginApi(credential: GoogleSignInAccount) {
+    if (credential.email!=null)
+    viewModel.login(
+        SignInRequest(
+            firstName = credential.givenName ?: credential.displayName ?: "User Name",
+            lastName = credential.familyName ?: credential.displayName ?: "N/A",
+            fullName = credential.displayName ?: "N/A",
+            email = credential.email ?: return,
+            sex = UserSex.UserSex_NONE,
+            birthDate = Instant.now(),
+            avatarUrl = credential.photoUrl.toString(),
+            deviceId = DeviceInfoHelper.getId(requireContext()),
+            instanceId = credential.id ?: "",
+            tokenId = credential.idToken ?: ""
+        )
+    )
+}
     override fun onStart() {
         super.onStart()
         startRocketAnimation()
@@ -285,6 +345,10 @@ class LoginFragment: BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBi
                 it.clearAnimationCallbacks()
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {

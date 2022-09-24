@@ -1,6 +1,6 @@
 package com.drax.sendit.domain.network
 
-import com.drax.sendit.BuildConfig
+import app.siamak.sendit.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

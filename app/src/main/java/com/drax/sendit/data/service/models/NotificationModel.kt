@@ -1,6 +1,6 @@
 package com.drax.sendit.data.service.models
 
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import kotlinx.serialization.Serializable
 
 @Serializable

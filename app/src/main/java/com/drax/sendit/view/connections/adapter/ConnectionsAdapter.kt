@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.databinding.ItemDeviceBinding
+import app.siamak.sendit.databinding.ItemDeviceBinding
 import com.drax.sendit.domain.network.model.type.ConnectionStatus
 import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.DeviceWrapper

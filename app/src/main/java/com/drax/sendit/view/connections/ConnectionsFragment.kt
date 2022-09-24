@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.databinding.ConnectionsFragmentBinding
+import app.siamak.sendit.databinding.ConnectionsFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.base.BaseFragment

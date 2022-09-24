@@ -7,9 +7,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.databinding.TransmissionsFragmentBinding
+import app.siamak.sendit.databinding.TransmissionsFragmentBinding
 import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.collect

@@ -1,6 +1,6 @@
 package com.drax.sendit.view.qr
 
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.AppRetrofit
 import com.drax.sendit.domain.network.model.PairRequest

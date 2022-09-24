@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.databinding.ShareContentFragmentBinding
+import app.siamak.sendit.databinding.ShareContentFragmentBinding
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseBottomSheet

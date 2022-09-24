@@ -10,13 +10,13 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.drax.sendit.R
+import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.PushProcessor.Companion.INVITATION_RESPONSE
 import com.drax.sendit.data.service.models.NewInvitation
-import com.drax.sendit.databinding.NewInvitationModalBinding
-import com.drax.sendit.databinding.QrFragmentBinding
+import app.siamak.sendit.databinding.NewInvitationModalBinding
+import app.siamak.sendit.databinding.QrFragmentBinding
 import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.scanner.ScannerFragment
