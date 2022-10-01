@@ -1,6 +1,8 @@
 package com.drax.sendit.view.qr
 
+import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.model.Resource
+import com.drax.sendit.domain.network.model.ConnectionModel
 
 sealed class QrUiState {
     object Neutral: QrUiState()
@@ -12,13 +14,10 @@ sealed class QrState {
     data class QrLoadFailed(val reason: Int): QrState()
     data class QrLoadFailedFromNet(val reason: Resource.ERROR): QrState()
 
-    data class InvitationFailed(val reason: Resource.ERROR): QrState()
-    object InvitationSent: QrState()
+    data class PairDone(val newConnection: ConnectionModel): QrState()
+    data class PairFailed(val reason: Resource.ERROR): QrState()
 
-    object InvitationResponseSent: QrState()
-    data class InvitationResponseFailed(val reason: Resource.ERROR): QrState()
-
-    object InvitationResponseAlreadyActive: QrState()
-    object InvitationResponseRejected: QrState()
+    object ConnectionAlreadyActive: QrState()
+    object RequestRejected: QrState()
     object InvitationResponseWaiting: QrState()
 }

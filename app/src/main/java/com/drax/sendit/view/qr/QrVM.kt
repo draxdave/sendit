@@ -5,7 +5,6 @@ import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.AppRetrofit
 import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
-import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.view.util.ResViewModel
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 
 class QrVM(
@@ -68,36 +66,24 @@ class QrVM(
         _uiState.update { QrUiState.QrLoading }
 
         job {
-            connectionRepository.sendInvitation(PairRequest(requestCode)).collect {response->
+            connectionRepository.sendPairRequest(PairRequest(requestCode)).collect { response->
 
+                _uiState.update { QrUiState.Neutral}
                 _state.tryEmit(
                     when(response){
                         is Resource.ERROR -> when(response.errorCode) {
-                            PairResponse.ALREADY_ACTIVE -> QrState.InvitationResponseAlreadyActive
-                            PairResponse.REJECTED -> QrState.InvitationResponseRejected
+                            PairResponse.ALREADY_ACTIVE -> QrState.ConnectionAlreadyActive
+                            PairResponse.REJECTED -> QrState.RequestRejected
                             PairResponse.WAITING_FOR_PEER -> QrState.InvitationResponseWaiting
-                            else -> QrState.InvitationResponseFailed(response)
+                            else -> QrState.PairFailed(response)
                         }
-                        is Resource.SUCCESS -> QrState.InvitationSent
+                        is Resource.SUCCESS -> QrState.PairDone(
+                            response.data.data?.connection
+                                ?: return@collect
+                        )
                     }
                 )
             }
-            _uiState.update { QrUiState.Neutral}
-        }
-    }
-
-    fun sendInvitationResponse(connectionId: Long, response: Int){
-        _uiState.update { QrUiState.QrLoading }
-        job {
-            connectionRepository.invitationResponse(PairResponseRequest(connectionId, response)).collect {invResponse->
-                _state.tryEmit(
-                    when(invResponse){
-                        is Resource.ERROR -> QrState.InvitationResponseFailed(invResponse)
-                        is Resource.SUCCESS ->QrState.InvitationResponseSent
-                    }
-                )
-            }
-            _uiState.update { QrUiState.Neutral}
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.domain.network.model.ApiResponse
+import com.drax.sendit.domain.network.model.GetConnectionResponse
 import com.drax.sendit.domain.network.model.GetConnectionsResponse
 import com.drax.sendit.domain.network.model.GetQRResponse
 import com.drax.sendit.domain.network.model.GetTransactionsResponse
@@ -33,12 +34,6 @@ interface ApiService {
         @Body request: PairRequest
     ): Response<ApiResponse<PairResponse>>
 
-
-    @POST("/device/pair/response")
-    suspend fun pairResponse(
-        @Body request: PairResponseRequest
-    ): Response<ApiResponse<PairResponseResponse>>
-
     @POST("/device/unpair")
     suspend fun unpair(
         @Body request: UnpairRequest
@@ -60,6 +55,11 @@ interface ApiService {
 
     @GET("/connections")
     suspend fun getConnections(): Response<ApiResponse<GetConnectionsResponse>>
+
+    @GET("/connection/id")
+    suspend fun getConnection(
+        @Query("id") id: String
+    ): Response<ApiResponse<GetConnectionResponse>>
 
     @GET("/device/pair/qr")
     suspend fun getQr(): Response<ApiResponse<GetQRResponse>>

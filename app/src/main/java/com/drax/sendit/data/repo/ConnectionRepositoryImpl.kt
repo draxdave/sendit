@@ -2,12 +2,16 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.ConnectionDao
 import com.drax.sendit.data.db.model.Connection
+import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
+import com.drax.sendit.domain.network.model.ApiResponse
+import com.drax.sendit.domain.network.model.GetConnectionResponse
 import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.repo.ConnectionRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ConnectionRepositoryImpl(
@@ -22,18 +26,10 @@ class ConnectionRepositoryImpl(
     override suspend fun addConnection(vararg connection: Connection) = connectionDao.add(*connection)
     override suspend fun emptyConnections(): Unit = connectionDao.deleteAll()
 
-    override fun sendInvitation(pairRequest: PairRequest) = flow {
+    override fun sendPairRequest(pairRequest: PairRequest) = flow {
         emit(
             NetworkCall {
                 apiService.pair(pairRequest)
-            }.fetch()
-        )
-    }
-
-    override fun invitationResponse(pairResponseRequest: PairResponseRequest) = flow {
-        emit(
-            NetworkCall {
-                apiService.pairResponse(pairResponseRequest)
             }.fetch()
         )
     }
@@ -52,6 +48,14 @@ class ConnectionRepositoryImpl(
         emit(
             NetworkCall{
                 apiService.getConnections()
+            }.fetch()
+        )
+    }
+
+    override fun getConnectionFromServer(id: String) = flow {
+        emit(
+            NetworkCall{
+                apiService.getConnection(id)
             }.fetch()
         )
     }

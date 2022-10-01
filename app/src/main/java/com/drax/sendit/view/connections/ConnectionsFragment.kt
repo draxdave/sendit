@@ -22,21 +22,10 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
 
     override val viewModel: ConnectionsVM by viewModel()
 
-    private val adapter : ConnectionsAdapter by lazy { ConnectionsAdapter( unpair = { connectionId ->
+    private val adapter : ConnectionsAdapter by lazy { ConnectionsAdapter { connectionId ->
         analytics.set(Event.Connections.UnpairRequested)
         showUnpairBottomSheet(connectionId)
 
-    }) { connectionId, response ->
-        when (response) {
-            PairResponseType.PairResponseType_ACCEPT -> {
-                analytics.set(Event.Connections.Accepted)
-                viewModel.acceptInvitation(connectionId)
-            }
-            PairResponseType.PairResponseType_DECLINE -> {
-                analytics.set(Event.Connections.Rejected)
-                viewModel.declineInvitation(connectionId)
-            }
-        }
     }
     }
 

@@ -75,7 +75,7 @@ val appModule = module {
     single                     { ErrorHandlerInterceptor( get(), get()) }
     single                     { ApiInterceptor() }
 
-    single                     { PushProcessor(get(),get(),get(),get(),)}
+    single                     { PushProcessor(get(),get(),get(),get(),get(),)}
     single                     { NotificationUtil(androidContext(), get()) }
     single                     { NotificationBuilder(get(),) }
     single                     { Analytics(Firebase.analytics) }

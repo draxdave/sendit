@@ -30,15 +30,12 @@ class ConnectionsVM @Inject constructor(
 
     private val _uiState = MutableStateFlow<ConnectionUiState>(ConnectionUiState.Neutral)
     val uiState: StateFlow<ConnectionUiState> = _uiState
-
     val user: LiveData<User?> = userRepository.getUser().asLiveData()
-
-
     val device: LiveData<Device?> = deviceRepository.getSelfDevice().asLiveData()
 
     init {
         job(Dispatchers.Default) {
-            connectionRepository.getConnections(onlyActive = false).collect {connectionsList->
+            connectionRepository.getConnections(onlyActive = false).collect { connectionsList ->
                 _uiState.update {
                     when(connectionsList.isEmpty()){
                         true -> ConnectionUiState.NoConnection
@@ -74,42 +71,6 @@ class ConnectionsVM @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    fun acceptInvitation(connectionId: Long) {
-        _uiState.update { ConnectionUiState.RefreshingConnectionList }
-        job {
-            connectionRepository.invitationResponse(PairResponseRequest(connectionId, PairResponseType.PairResponseType_ACCEPT))
-                .collect { response ->
-                    _uiState.update {
-                        when(response) {
-                            is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(response)
-                            is Resource.SUCCESS -> {
-                                getConnectionsFromServer()
-                                ConnectionUiState.RefreshingConnectionList
-                            }
-                        }
-                    }
-                }
-        }
-    }
-
-    fun declineInvitation(connectionId: Long) {
-        _uiState.update { ConnectionUiState.RefreshingConnectionList }
-        job {
-            connectionRepository.invitationResponse(PairResponseRequest(connectionId, PairResponseType.PairResponseType_DECLINE))
-                .collect { response ->
-                    _uiState.update {
-                        when(response) {
-                            is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(response)
-                            is Resource.SUCCESS -> {
-                                getConnectionsFromServer()
-                                ConnectionUiState.RefreshingConnectionList
-                            }
-                        }
-                    }
-                }
         }
     }
 

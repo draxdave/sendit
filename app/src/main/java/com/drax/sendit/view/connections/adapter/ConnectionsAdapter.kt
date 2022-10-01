@@ -12,14 +12,13 @@ import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.DeviceWrapper
 
 class ConnectionsAdapter(
-    private val unpair : (Long) -> Unit,
-    private val response : (Long, Int) -> Unit,
+    private val unpair : (Long) -> Unit
 ) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
     diffCallback
 )
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = DeviceViewHolder(ItemDeviceBinding.inflate(LayoutInflater.from(parent.context)), unpair, response)
+            = DeviceViewHolder(ItemDeviceBinding.inflate(LayoutInflater.from(parent.context)), unpair)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
@@ -43,22 +42,15 @@ class ConnectionsAdapter(
     }
 
 }
-class DeviceViewHolder(private val binding: ItemDeviceBinding, private val unpair: (Long) -> Unit,
-                       private val response: (Long, Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class DeviceViewHolder(private val binding: ItemDeviceBinding, private val unpair: (Long) -> Unit)
+    : RecyclerView.ViewHolder(binding.root) {
 
     fun bindTo(deviceItem : DeviceWrapper) {
         with(binding) {
             deviceWrapper = deviceItem
             remove.setOnClickListener {
-                if (deviceItem.connection.status == ConnectionStatus.ConnectionStatus_PENDING) {
-                    response(deviceItem.connection.id, PairResponseType.PairResponseType_DECLINE)
-                } else {
-                    unpair(deviceItem.connection.id)
-                }
+                unpair(deviceItem.connection.id)
             }
-
-            tvAcceptBtn.setOnClickListener { response(deviceItem.connection.id, PairResponseType.PairResponseType_ACCEPT) }
-            tvDeclineBtn.setOnClickListener { response(deviceItem.connection.id, PairResponseType.PairResponseType_DECLINE) }
             executePendingBindings()
         }
     }
