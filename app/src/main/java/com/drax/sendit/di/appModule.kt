@@ -34,8 +34,10 @@ import com.drax.sendit.view.messages.MessagesVM
 import com.drax.sendit.view.qr.QrVM
 import com.drax.sendit.view.scanner.ScannerVM
 import com.drax.sendit.view.shareContent.ShareContentVM
+import com.drax.sendit.view.util.DeviceInfoHelper
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -45,7 +47,7 @@ val appModule = module {
     single                     {   Json().build() }
 
 
-    single                     {   AppDB.get(androidContext()) }
+    single                     {   AppDB.get(androidApplication()) }
     single                     {   get<AppDB>().registryDao() }
     single                     {   get<AppDB>().transactionDao() }
     single                     {   get<AppDB>().connectionDao() }
@@ -71,13 +73,14 @@ val appModule = module {
     single<ApiService>         {   AppRetrofit(get(), get(), get(), get(), get()).getRetrofitClient()
         .create(ApiService::class.java)}
     single                     { AuthInterceptor(get()) }
-    single                     { HeaderInterceptor( get()) }
+    single                     { HeaderInterceptor( get(),get()) }
     single                     { ErrorHandlerInterceptor( get(), get()) }
     single                     { ApiInterceptor() }
 
     single                     { PushProcessor(get(),get(),get(),get(),get(),)}
-    single                     { NotificationUtil(androidContext(), get()) }
+    single                     { NotificationUtil(androidApplication(), get()) }
     single                     { NotificationBuilder(get(),) }
     single                     { Analytics(Firebase.analytics) }
+    single                     { DeviceInfoHelper(androidApplication()) }
 
 }

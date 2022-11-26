@@ -35,3 +35,5 @@ fun Fragment.modal(message: ModalMessage, onDismiss: () -> Unit = {}){
 fun Fragment.toast(message: CharSequence) {
     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
+
+fun Fragment.isActive() : Boolean = isAdded && context != null && activity != null

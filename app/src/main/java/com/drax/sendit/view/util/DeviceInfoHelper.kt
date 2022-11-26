@@ -12,9 +12,13 @@ import com.drax.sendit.domain.network.model.type.DevicePlatform
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Locale
+import javax.inject.Singleton
 
 
-object DeviceInfoHelper {
+@Singleton
+data class DeviceInfoHelper(
+    private val context: Context
+) {
 
     val platform = DevicePlatform.DevicePlatform_ANDROID
 
@@ -25,7 +29,7 @@ object DeviceInfoHelper {
     val deviceId: String = ID
 
     @SuppressLint("HardwareIds")
-    fun getId(context: Context): String {
+    fun getId(): String {
         val androidId = try {
             Settings.Secure.getString(
                 context.contentResolver,

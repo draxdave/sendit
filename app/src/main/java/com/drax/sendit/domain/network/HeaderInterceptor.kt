@@ -10,6 +10,7 @@ import okhttp3.Response
 
 class HeaderInterceptor(
     private val registryRepository: RegistryRepository,
+    private val deviceInfoHelper: DeviceInfoHelper,
 ): Interceptor {
 
     private val apiToken: String
@@ -20,9 +21,9 @@ class HeaderInterceptor(
             "lang" , "en",
             "app-version", BuildConfig.VERSION_CODE.toString(),
             "region","hk",
-            "device-platform", DeviceInfoHelper.platform.toString(),
-            "device-platform-version", DeviceInfoHelper.platformVersion.toString(),
-            "device-model", DeviceInfoHelper.model
+            "device-platform", deviceInfoHelper.platform.toString(),
+            "device-platform-version", deviceInfoHelper.platformVersion.toString(),
+            "device-model", deviceInfoHelper.model
         )
     }
 
