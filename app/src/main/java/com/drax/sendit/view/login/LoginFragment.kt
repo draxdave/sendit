@@ -2,33 +2,29 @@ package com.drax.sendit.view.login
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import app.siamak.sendit.R
-import app.siamak.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.data.service.SenditFirebaseService
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
-import com.drax.sendit.view.base.BaseVBFragment
+import com.drax.sendit.view.base.BaseComposeFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.isActive
-import com.drax.sendit.view.util.md5
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
-import com.drax.sendit.view.util.toast
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
+class LoginFragment : BaseComposeFragment() {
 
-    override val viewModel: LoginVM by viewModel()
+    private val viewModel: LoginVM by viewModel()
     private val deviceInfoHelper: DeviceInfoHelper by inject()
 
     private val ssoHandler: SsoHandler = SsoHandler(analytics, deviceInfoHelper) { event ->
@@ -52,13 +48,28 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
         initUI()
     }
 
+    @Composable
+    fun MessageCard(message: String){
+        Text(message)
+    }
+
+
+    @Preview
+    @Composable
+    fun Prev(){
+        MessageCard(message = "another test!")
+    }
+
+
+
     private fun initUI() {
         setupListeners()
         setupUI()
-        setupObservers()
+//        setupObservers()
     }
 
-    private fun setupObservers(): Unit = with(binding) {
+
+    /*private fun setupObservers(): Unit = with(binding) {
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.loadingLayout.isShowing = it == LoginUiState.Loading
         }
@@ -96,7 +107,14 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     signInGoogle.isVisible = false
                 }
             }
-        }
+        }*/
+
+    private fun setupUI() {
+//        binding.versionText.text = viewModel.versionText
+//        binding.tvForgotAction.paint.isUnderlineText = true
+//
+//        RocketAnimationHandler(binding.rocketAnimated, lifecycle, viewModel.uiState)
+//            .startAnimation()
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
@@ -130,16 +148,8 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
         }
     }
 
-    private fun setupUI() {
-        binding.versionText.text = viewModel.versionText
-        binding.tvForgotAction.paint.isUnderlineText = true
-
-        RocketAnimationHandler(binding.rocketAnimated, lifecycle, viewModel.uiState)
-            .startAnimation()
-    }
-
     private fun setupListeners() {
-        binding.tvBottomAction.setOnClickListener {
+        /*binding.tvBottomAction.setOnClickListener {
             viewModel.updateSigninFormState(
                 if (binding.tvBottomAction.text.equals(getString(R.string.login_bottom_action_signin))) {
                     SigninFormState.Signin
@@ -171,16 +181,16 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     analytics.set(Event.SignIn.LeftSignIn)
                     this.remove()
                 }
-            })
+            })*/
     }
 
     private fun clearPasswordInputs(){
-        binding.etPassword.setText("")
-        binding.etConfirmPassword.setText("")
+//        binding.etPassword.setText("")
+//        binding.etConfirmPassword.setText("")
     }
 
     private fun handleSignup() {
-        if (binding.emailTextField.isValid(
+        /*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             ) &&
@@ -219,11 +229,11 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     deviceId = deviceInfoHelper.getId()
                 )
             }
-        }
+        }*/
     }
 
     private fun handleSignin() {
-        if (binding.emailTextField.isValid(
+        /*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             ) &&
@@ -250,18 +260,18 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     deviceId = deviceInfoHelper.getId()
                 )
             }
-        }
+        }*/
     }
 
     private fun handleForgot() {
-        if (binding.emailTextField.isValid(
+        /*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             )
         ) {
             val email = binding.etEmail.text.toString()
             viewModel.forgetPassword(email)
-        }
+        }*/
     }
 
     private fun trySso(signInRequest: SignInSsoRequest?) {

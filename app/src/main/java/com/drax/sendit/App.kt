@@ -7,7 +7,9 @@ import com.drax.sendit.di.appModule
 import ir.drax.modal.Modal
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 
 class App: Application() {
@@ -20,7 +22,7 @@ class App: Application() {
         startKoin {
 //            androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
 
-
+            androidLogger()
             // declare used Android context
             androidContext(this@App)
 
