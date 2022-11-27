@@ -8,7 +8,9 @@ import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PushRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val registryRepository: RegistryRepository,

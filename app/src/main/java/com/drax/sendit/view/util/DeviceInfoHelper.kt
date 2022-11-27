@@ -9,15 +9,17 @@ import android.os.Build.USER
 import android.os.Build.VERSION
 import android.provider.Settings
 import com.drax.sendit.domain.network.model.type.DevicePlatform
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Locale
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
-data class DeviceInfoHelper(
-    private val context: Context
+data class DeviceInfoHelper @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
 
     val platform = DevicePlatform.DevicePlatform_ANDROID

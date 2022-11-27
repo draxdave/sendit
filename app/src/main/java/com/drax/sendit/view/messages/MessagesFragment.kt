@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
@@ -17,10 +18,11 @@ import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.observe
 import com.drax.sendit.view.util.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(TransmissionsFragmentBinding::inflate) {
-    override val viewModel: MessagesVM by viewModel()
+    override val viewModel: MessagesVM by viewModels()
 
     private val transitionAdapter: TransactionAdapter by lazy {
         TransactionAdapter(

@@ -3,6 +3,7 @@ package com.drax.sendit.view.shareContent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.ShareContentFragmentBinding
@@ -16,7 +17,7 @@ import com.drax.sendit.view.util.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
-    override val viewModel: ShareContentVM by viewModel()
+    override val viewModel: ShareContentVM by viewModels()
 
     private val contentToShare: String? by lazy {
         arguments?.getString(SHARE_CONTENT_KEY)

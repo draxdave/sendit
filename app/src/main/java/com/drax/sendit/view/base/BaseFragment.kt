@@ -10,7 +10,8 @@ import androidx.lifecycle.ViewModel
 import app.siamak.sendit.BR
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
+
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -18,7 +19,7 @@ abstract class  BaseFragment<out T: ViewDataBinding, E : ViewModel>(
     private val inflate:Inflate<T>
 ) : Fragment(){
 
-    val analytics: Analytics by inject()
+    @Inject lateinit var analytics: Analytics
     protected abstract val viewModel: E
 
     private var _binding: T? = null

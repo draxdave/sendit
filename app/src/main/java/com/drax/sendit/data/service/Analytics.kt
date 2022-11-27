@@ -1,17 +1,37 @@
 package com.drax.sendit.data.service
 
+import android.content.Context
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import app.siamak.sendit.BuildConfig
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Analytics(
+
+class Analytics @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
 ) {
 
     fun set(event: Event){
 //        if (!BuildConfig.DEBUG)
             firebaseAnalytics.logEvent(event.category, event.params)
+    }
+
+    companion object {
+
+        private var INSTANCE: Analytics? = null
+
+        @Synchronized
+        fun getInstance(context: Context): Analytics {
+            return INSTANCE ?: synchronized(this){
+                 Analytics(FirebaseAnalytics.getInstance(context)).also {
+                    INSTANCE = it
+                }
+            }
+        }
     }
 }
 

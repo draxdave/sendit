@@ -3,6 +3,7 @@ package com.drax.sendit.view.connections.unpair
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.ConnectionUnpairFragmentBinding
@@ -10,11 +11,10 @@ import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseBottomSheet
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UnpairFragment(private val request: UnpairRequest):
     BaseBottomSheet<ConnectionUnpairFragmentBinding, UnpairVM>(ConnectionUnpairFragmentBinding::inflate) {
-    override val viewModel: UnpairVM by viewModel()
+    override val viewModel: UnpairVM by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

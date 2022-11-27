@@ -6,13 +6,16 @@ import com.drax.sendit.domain.repo.TransactionRepository
 import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-class MessagesVM(
+@HiltViewModel
+class MessagesVM @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository,
     private val deviceRepository: DeviceRepository,

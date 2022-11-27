@@ -3,6 +3,7 @@ package com.drax.sendit.view.connections
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.ConnectionsFragmentBinding
@@ -18,13 +19,13 @@ import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-class ConnectionsFragment :
-    BaseFragment<ConnectionsFragmentBinding, ConnectionsVM>(ConnectionsFragmentBinding::inflate) {
+@AndroidEntryPoint
+class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsVM>(ConnectionsFragmentBinding::inflate) {
 
-    override val viewModel: ConnectionsVM by viewModel()
+    override val viewModel: ConnectionsVM by viewModels()
 
     private val adapter: ConnectionsAdapter by lazy {
         ConnectionsAdapter { connectionId ->

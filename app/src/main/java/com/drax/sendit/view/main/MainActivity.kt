@@ -3,6 +3,7 @@ package com.drax.sendit.view.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -19,14 +20,17 @@ import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.shareContent.ShareContentFragment
 import com.drax.sendit.view.util.observe
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val mainVM: MainVM by viewModel()
+    private val mainVM: MainVM by viewModels()
     private lateinit var navController: NavController
-    private val analytics: Analytics by inject()
+    @Inject lateinit var analytics: Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

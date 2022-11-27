@@ -3,14 +3,14 @@ package com.drax.sendit.view.login
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
-import app.siamak.sendit.BuildConfig
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
+import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
@@ -21,21 +21,25 @@ import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LoginFragment : BaseComposeFragment() {
 
-    private val viewModel: LoginVM by viewModel()
-    private val deviceInfoHelper: DeviceInfoHelper by inject()
+    private val viewModel: LoginVM by viewModels()
 
-    private val ssoHandler: SsoHandler = SsoHandler(analytics, deviceInfoHelper) { event ->
-        if (!isActive()) return@SsoHandler
+    @Inject
+    lateinit var deviceInfoHelper: DeviceInfoHelper
 
-        when (event) {
-            is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
-            is SsoEvent.SignSucceed -> trySso(event.request)
+    private val ssoHandler: SsoHandler by lazy {
+        SsoHandler(this, analytics, deviceInfoHelper) { event ->
+            if (isActive()) return@SsoHandler
+
+            when (event) {
+                is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
+                is SsoEvent.SignSucceed -> tryLoginToServer(event.request)
+            }
         }
     }
 
@@ -52,17 +56,16 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     @Composable
-    fun MessageCard(message: String){
+    fun MessageCard(message: String) {
         Text(message)
     }
 
 
     @Preview
     @Composable
-    fun Prev(){
+    fun Prev() {
         MessageCard(message = "another test!")
     }
-
 
 
     private fun initUI() {
@@ -114,11 +117,6 @@ class LoginFragment : BaseComposeFragment() {
         }*/
 
     private fun setupUI() {
-//        binding.versionText.text = viewModel.versionText
-//        binding.tvForgotAction.paint.isUnderlineText = true
-//
-//        RocketAnimationHandler(binding.rocketAnimated, lifecycle, viewModel.uiState)
-//            .startAnimation()
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {

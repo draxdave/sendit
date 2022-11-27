@@ -4,15 +4,15 @@ import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.update
 
-class MainVM(
+@HiltViewModel
+class MainVM @Inject constructor(
     userRepository: UserRepository,
     deviceRepository: DeviceRepository,
 ) : ResViewModel() {

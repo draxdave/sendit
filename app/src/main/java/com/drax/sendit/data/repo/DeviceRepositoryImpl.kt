@@ -6,9 +6,11 @@ import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class DeviceRepositoryImpl(
+@Singleton
+class DeviceRepositoryImpl @Inject constructor(
     private val registryRepository: RegistryRepository,
     private val apiService: ApiService
 

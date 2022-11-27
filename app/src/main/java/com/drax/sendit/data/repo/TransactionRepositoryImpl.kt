@@ -5,9 +5,12 @@ import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.repo.TransactionRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.flow
 
-class TransactionRepositoryImpl(
+@Singleton
+class TransactionRepositoryImpl @Inject constructor(
     private val transactionsDao: TransactionsDao,
     private val apiService: ApiService
 ): TransactionRepository {

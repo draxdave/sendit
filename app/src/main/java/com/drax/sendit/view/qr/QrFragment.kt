@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.QrFragmentBinding
@@ -15,12 +16,13 @@ import com.drax.sendit.view.scanner.ScannerFragment
 import com.drax.sendit.view.util.allPermissionsGranted
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
+import dagger.hilt.android.AndroidEntryPoint
 import ir.drax.modal.Modal
 import ir.drax.modal.model.MoButton
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@AndroidEntryPoint
 class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::inflate) {
-    override val viewModel: QrVM by viewModel()
+    override val viewModel: QrVM by viewModels()
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
