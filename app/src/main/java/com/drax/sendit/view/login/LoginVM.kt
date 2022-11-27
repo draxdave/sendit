@@ -18,12 +18,16 @@ import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.job
 
-class LoginVM(
+@HiltViewModel
+class LoginVM @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val deviceRepository: DeviceRepository,

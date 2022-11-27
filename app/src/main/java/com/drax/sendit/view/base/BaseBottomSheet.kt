@@ -11,12 +11,14 @@ import app.siamak.sendit.BR
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
+
 
 abstract class  BaseBottomSheet<out T: ViewDataBinding, E : ViewModel>(
     private val inflate:Inflate<T>
 ) : BottomSheetDialogFragment(){
-    val analytics: Analytics by inject()
+    @Inject
+    lateinit var analytics: Analytics
 
     protected abstract val viewModel: E
 

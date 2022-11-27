@@ -4,8 +4,11 @@ import app.siamak.sendit.R
 import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.data.service.models.NotificationData
 import com.drax.sendit.data.service.models.NotificationModel
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NotificationBuilder(
+@Singleton
+class NotificationBuilder @Inject constructor(
     private val notificationUtil: NotificationUtil
 ) {
 

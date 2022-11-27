@@ -11,10 +11,13 @@ import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.repo.ConnectionRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class ConnectionRepositoryImpl(
+@Singleton
+class ConnectionRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val connectionDao: ConnectionDao,
 )

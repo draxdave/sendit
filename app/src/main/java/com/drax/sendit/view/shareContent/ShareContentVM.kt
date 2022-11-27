@@ -8,12 +8,15 @@ import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.TransactionRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 
-class ShareContentVM(
+@HiltViewModel
+class ShareContentVM @Inject constructor(
     private val pushRepository: PushRepository,
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository

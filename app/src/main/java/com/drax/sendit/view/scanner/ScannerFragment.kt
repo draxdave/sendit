@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
@@ -11,10 +12,12 @@ import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.observe
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.drax.sendit.view.util.collect
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFragmentBinding::inflate) {
-    override val viewModel: ScannerVM by viewModel()
+    override val viewModel: ScannerVM by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

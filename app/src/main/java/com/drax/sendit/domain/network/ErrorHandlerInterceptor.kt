@@ -14,11 +14,14 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ErrorHandlerInterceptor(
+@Singleton
+class ErrorHandlerInterceptor @Inject constructor(
     private val json: Json,
     private val analytics: Analytics
-    ): Interceptor {
+) : Interceptor {
     private lateinit var request: Request
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -40,7 +43,7 @@ class ErrorHandlerInterceptor(
             e.printStackTrace()
             ErrorResponse(SocketTimeoutException).toResponse()
 
-        }catch (e : UnknownHostException){
+        } catch (e: UnknownHostException) {
             e.printStackTrace()
             ErrorResponse(UnknownHostException).toResponse()
 
@@ -53,10 +56,10 @@ class ErrorHandlerInterceptor(
     }
 
     private fun ErrorResponse.toResponse(): Response {
-        analytics.set(Event.Network.ApiError(type.toString() ,request.url.fragment ?: ""))
+        analytics.set(Event.Network.ApiError(type.toString(), request.url.fragment ?: ""))
 
         val responseStr = "{\"statusCode\":$type," +
-                "\"error\":"+json.encodeToString(this) +
+                "\"error\":" + json.encodeToString(this) +
                 "}"
 
         return Response.Builder()
@@ -64,14 +67,14 @@ class ErrorHandlerInterceptor(
             .protocol(Protocol.HTTP_2)
             .code(200)
             .message("")
-            .body( responseStr.toResponseBody())
+            .body(responseStr.toResponseBody())
             .build()
     }
 
     companion object {
-        const val ConnectException=600
-        const val SocketTimeoutException=601
-        const val UnknownHostException=602
+        const val ConnectException = 600
+        const val SocketTimeoutException = 601
+        const val UnknownHostException = 602
         const val Exception = 603
         const val BadRequest = 400
         val UnControlledBadRequest = 402..499

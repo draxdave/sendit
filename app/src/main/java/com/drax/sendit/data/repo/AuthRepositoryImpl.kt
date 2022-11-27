@@ -10,9 +10,12 @@ import com.drax.sendit.domain.network.model.auth.SignUpRequest
 import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.domain.repo.AuthRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.flow
 
-class AuthRepositoryImpl(
+@Singleton
+class AuthRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val authDao: AuthDao,
 ): AuthRepository {

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'androidx.navigation.safeargs.kotlin'
@@ -156,9 +157,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
 
 
-    //Koin
-    // Koin Core features
-    implementation "io.insert-koin:koin-android:$koin_version"
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 
     //kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
@@ -198,4 +199,8 @@ dependencies {
     // Optional - Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
 
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

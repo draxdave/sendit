@@ -8,6 +8,8 @@ import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.data.service.models.PushOp
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.TransactionRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +19,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 
-class PushProcessor(
+@Singleton
+class PushProcessor @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository,
     private val notificationBuilder: NotificationBuilder,

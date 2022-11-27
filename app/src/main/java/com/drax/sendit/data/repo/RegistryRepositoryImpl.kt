@@ -5,6 +5,8 @@ import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.repo.RegistryRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.decodeFromString
@@ -17,7 +19,8 @@ import kotlinx.serialization.json.Json
  * Just define a constant number as record key and then save the value as a String value.
  * Use Gson to make sure the data stays the same while saving and loading.
  */
-class RegistryRepositoryImpl(
+@Singleton
+class  RegistryRepositoryImpl @Inject constructor(
     private val registryDao: RegistryDao,
     private val json: Json,
 ) : RegistryRepository {

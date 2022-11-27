@@ -8,8 +8,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class AppRetrofit(
+class AppRetrofit @Inject constructor(
     private val authInterceptor: AuthInterceptor,
     private val headerInterceptor: HeaderInterceptor,
     private val errorHandlerInterceptor: ErrorHandlerInterceptor,

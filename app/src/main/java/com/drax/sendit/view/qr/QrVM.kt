@@ -9,6 +9,8 @@ import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 
-class QrVM(
+@HiltViewModel
+class QrVM @Inject constructor(
     private val connectionRepository: ConnectionRepository,
     private val deviceRepository: DeviceRepository
 ): ResViewModel() {

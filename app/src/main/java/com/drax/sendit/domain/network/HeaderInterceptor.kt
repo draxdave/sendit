@@ -3,14 +3,17 @@ package com.drax.sendit.domain.network
 import app.siamak.sendit.BuildConfig
 import com.drax.sendit.domain.repo.RegistryRepository
 import com.drax.sendit.view.util.DeviceInfoHelper
+import javax.inject.Inject
+import javax.inject.Singleton
 import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-class HeaderInterceptor(
+@Singleton
+class HeaderInterceptor @Inject constructor(
     private val registryRepository: RegistryRepository,
-    private val deviceInfoHelper: DeviceInfoHelper,
+                                            private val deviceInfoHelper: DeviceInfoHelper,
 ): Interceptor {
 
     private val apiToken: String

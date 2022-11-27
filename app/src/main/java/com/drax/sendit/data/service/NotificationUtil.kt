@@ -10,10 +10,14 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.main.MainActivity
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 
-class NotificationUtil(
-    private val context: Context,
+@Singleton
+class NotificationUtil @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val json: Json,
 ){
     private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
