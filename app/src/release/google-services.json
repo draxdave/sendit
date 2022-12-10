@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1053466188545",
+    "project_id": "sendit-94ff6",
+    "storage_bucket": "sendit-94ff6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053466188545:android:4ddb033e3c9580a4449900",
+        "android_client_info": {
+          "package_name": "app.siamak.sendit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053466188545-e2sk9rpg3nr285clvjkl9bskk3nprn1t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.siamak.sendit",
+            "certificate_hash": "032c0694d4b053a24cc1192d8498e190fc9f6366"
+          }
+        },
+        {
+          "client_id": "1053466188545-lna1nu5m0ogrgchr61lmigodc81ld33f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO1qmdDmmBzVTBnsPCZtQKCZU8d2ZUbvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053466188545-lna1nu5m0ogrgchr61lmigodc81ld33f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

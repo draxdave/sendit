@@ -34,6 +34,16 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+//            System.out( keystoreProperties['storeFile'])
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     defaultConfig {
         applicationId "app.siamak"
 
