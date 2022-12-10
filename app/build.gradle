@@ -29,7 +29,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URL", localProperties['production_server_url']
+            buildConfigField "String", "BASE_URL", localProperties['dev_server_url']
         }
         release {
             buildConfigField "String", "BASE_URL", localProperties['production_server_url']
