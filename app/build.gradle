@@ -22,7 +22,6 @@ android {
 
     signingConfigs {
         release {
-//            System.out( keystoreProperties['storeFile'])
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
             keyAlias keystoreProperties['keyAlias']
@@ -32,6 +31,7 @@ android {
 
     defaultConfig {
         applicationId "app.siamak.sendit"
+
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -45,8 +45,20 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", localProperties['dev_server_url']
+            applicationIdSuffix '.debug'
+            versionNameSuffix "-debug"
+            externalNativeBuild {
+                cmake {
+                    arguments "-DANDROID_PACKAGE_NAME=${android.defaultConfig.applicationId}${applicationIdSuffix}"
+                }
+            }
         }
         release {
+            externalNativeBuild {
+                cmake {
+                    arguments "-DANDROID_PACKAGE_NAME=${android.defaultConfig.applicationId}"
+                }
+            }
             buildConfigField "String", "BASE_URL", localProperties['production_server_url']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

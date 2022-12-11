@@ -15,4 +15,4 @@
 local.properties
 .idea/inspectionProfiles/
 .ssh/*
-.idea/inspectionProfiles/
+.idea/deploymentTargetDropDown.xml
