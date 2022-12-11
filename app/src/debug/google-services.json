@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:376299383261:android:f7eb70d60b7a5b6cc72e34",
+        "mobilesdk_app_id": "1:376299383261:android:99216d2c375477b5c72e34",
         "android_client_info": {
-          "package_name": "app.siamak.sendit"
+          "package_name": "app.siamak.sendit.debug"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "376299383261-areidojq69tmk5b4hhqgjtb0ds6h1s9p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "app.siamak.sendit",
-            "certificate_hash": "06f91ce25e0784c9d233aac6965696b77baa605e"
-          }
-        },
         {
           "client_id": "376299383261-811vj0h5tv67m8lr8bp7onh322g94c4c.apps.googleusercontent.com",
           "client_type": 3
@@ -35,7 +27,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "376299383261-811vj0h5tv67m8lr8bp7onh322g94c4c.apps.googleusercontent.com",
+              "client_id": "376299383261-03ultr47mdig1h9rprcajkma1uh14b67.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
