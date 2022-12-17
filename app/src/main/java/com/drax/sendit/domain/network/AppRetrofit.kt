@@ -37,7 +37,7 @@ class AppRetrofit(
             addInterceptor(authInterceptor)
             addInterceptor(apiInterceptor)
 
-            if (BuildConfig.DEBUG)
+//            if (BuildConfig.DEBUG)
                 addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })

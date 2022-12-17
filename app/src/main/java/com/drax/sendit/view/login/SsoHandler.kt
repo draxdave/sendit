@@ -3,7 +3,6 @@ package com.drax.sendit.view.login
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
-import android.preference.PreferenceManager.OnActivityResultListener
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -11,9 +10,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.FragmentActivity
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import com.drax.sendit.data.service.Analytics
@@ -36,7 +33,6 @@ import com.google.android.gms.tasks.Task
 import java.time.Instant
 
 class SsoHandler(
-    private val fragment: Fragment,
     private val analytics: Analytics,
     private val deviceInfoHelper: DeviceInfoHelper,
     private val onEvent: (SsoEvent) -> Unit,
@@ -53,13 +49,8 @@ class SsoHandler(
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var googleAuthCallback: ActivityResultLauncher<Intent>
 
-    init {
-        register()
-        googleAuthInit()
-    }
-
-    fun launchOneTapSignIn() {
-        oneTapClient = Identity.getSignInClient(fragment.activity ?: return)
+    fun launchOneTapSignIn(activity: Activity) {
+        oneTapClient = Identity.getSignInClient(activity)
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(
                 BeginSignInRequest.PasswordRequestOptions.builder()
@@ -80,7 +71,7 @@ class SsoHandler(
             .build()
 
         oneTapClient.beginSignIn(signInRequest)
-            .addOnSuccessListener(fragment.activity ?: return) { result ->
+            .addOnSuccessListener(activity) { result ->
                 analytics.set(Event.SignIn.SsoDone)
                 try {
                     signInActivityResult.launch(
@@ -92,16 +83,16 @@ class SsoHandler(
                     Log.e(tag, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener(fragment.activity ?: return) { e ->
+            .addOnFailureListener(activity) { e ->
                 analytics.set(Event.SignIn.SignInFlowFailed)
                 // No saved credentials found. Launch the One Tap sign-up flow, or
                 // do nothing and continue presenting the signed-out UI.
                 Log.d(tag, "Errorrrrr " + e.localizedMessage)
-                showSignupFlow()
+                showSignupFlow(activity)
             }
     }
 
-    private fun showSignupFlow() {
+    private fun showSignupFlow(activity: Activity) {
         analytics.set(Event.SignIn.SignUpFlowStarted)
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
@@ -116,7 +107,7 @@ class SsoHandler(
             .build()
 
         oneTapClient.beginSignIn(signUpRequest)
-            .addOnSuccessListener(fragment.activity ?: return) { result ->
+            .addOnSuccessListener(activity) { result ->
                 analytics.set(Event.SignIn.SsoDone)
                 try {
                     signupActivityResult.launch(
@@ -128,7 +119,7 @@ class SsoHandler(
                     Log.e(tag, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener(fragment.activity ?: return) { e ->
+            .addOnFailureListener(activity) { e ->
                 analytics.set(Event.SignIn.SignInFlowFailed)
                 // No Google Accounts found. Just continue presenting the signed-out UI.
                 Log.d(tag, e.localizedMessage)
@@ -137,23 +128,23 @@ class SsoHandler(
     }
 
 
-    fun googleAuthInit() {
+    fun googleAuthInit(activity: FragmentActivity?) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestId()
             .requestIdToken(BuildConfig.ONETAP_CLIENT_ID)
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(fragment.activity ?: return, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(activity ?: return, gso)
     }
 
     private fun googleAuth() {
         googleAuthCallback.launch(mGoogleSignInClient.signInIntent)
     }
 
-    private fun checkResult(result: ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK) {
+    private fun checkResult(activity: Activity?, result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK && activity != null) {
 
-            val credential = Identity.getSignInClient(fragment.activity ?: return)
+            val credential = Identity.getSignInClient(activity)
                 .getSignInCredentialFromIntent(result.data)
             val idToken = credential.googleIdToken
 
@@ -195,14 +186,14 @@ class SsoHandler(
         googleAuthCallback.unregister()
     }
 
-    fun register() {
+    fun register(fragment: Fragment) {
         signInActivityResult =
             fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-                checkResult(it)
+                checkResult(fragment.activity,it)
             }
         signupActivityResult =
             fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-                checkResult(it)
+                checkResult(fragment.activity, it)
             }
         googleAuthCallback =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
