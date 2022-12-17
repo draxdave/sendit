@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
@@ -62,6 +63,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
         viewModel.uiState.observe(viewLifecycleOwner) {
             binding.loadingLayout.isShowing = it == LoginUiState.Loading
         }
+        BuildConfig.BASE_URL
 
         viewModel.signinFormState.observe(viewLifecycleOwner) { formState ->
             when (formState) {
