@@ -1,8 +1,10 @@
 package com.drax.sendit.view.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
@@ -23,19 +25,24 @@ class LoginFragment : BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentB
     override val viewModel: LoginVM by viewModel()
     private val deviceInfoHelper: DeviceInfoHelper by inject()
 
-    private val ssoHandler: SsoHandler = SsoHandler(this, analytics, deviceInfoHelper) { event ->
+    private val ssoHandler: SsoHandler = SsoHandler(analytics, deviceInfoHelper) { event ->
         if (!isActive()) return@SsoHandler
 
-        when(event){
+        when (event) {
             is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
             is SsoEvent.SignSucceed -> tryLoginToServer(event.request)
         }
     }
 
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        ssoHandler.register(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ssoHandler.googleAuthInit(activity)
         initUI()
     }
 
@@ -47,8 +54,9 @@ class LoginFragment : BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentB
     private fun setupUI() {
         binding.signInGoogle.setOnClickListener {
             analytics.set(Event.View.Clicked.SigninWithGoogle)
-            ssoHandler.launchOneTapSignIn()
+            ssoHandler.launchOneTapSignIn(activity ?: return@setOnClickListener)
         }
+        BuildConfig.BASE_URL
 
         RocketAnimationHandler(binding.rocketAnimated,lifecycle, viewModel.uiState)
             .startAnimation()

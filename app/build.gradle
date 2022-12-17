@@ -30,13 +30,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "app.siamak.sendit"
+        applicationId "app.siamak"
 
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
-        buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
+        versionCode 10101
+        versionName "1.1.1"
         buildConfigField "String", "API_VERSION", localProperties['api_version']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -45,7 +44,8 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", localProperties['dev_server_url']
-            applicationIdSuffix '.debug'
+            buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientIdDev']
+            applicationIdSuffix '.senditdebug'
             versionNameSuffix "-debug"
             externalNativeBuild {
                 cmake {
@@ -59,8 +59,11 @@ android {
                     arguments "-DANDROID_PACKAGE_NAME=${android.defaultConfig.applicationId}"
                 }
             }
+            applicationIdSuffix '.sendit'
             buildConfigField "String", "BASE_URL", localProperties['production_server_url']
+            buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
             minifyEnabled false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
