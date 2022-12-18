@@ -7,17 +7,17 @@ import com.drax.sendit.domain.network.model.GetQRResponse
 import com.drax.sendit.domain.network.model.GetTransactionsResponse
 import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
-import com.drax.sendit.domain.network.model.PairResponseRequest
-import com.drax.sendit.domain.network.model.PairResponseResponse
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.ShareResponse
 import com.drax.sendit.domain.network.model.SignInRequest
 import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.domain.network.model.UnpairRequest
+import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 
@@ -63,6 +63,9 @@ interface ApiService {
 
     @GET("/device/pair/qr")
     suspend fun getQr(): Response<ApiResponse<GetQRResponse>>
+
+    @PUT("/user/instanceId")
+    suspend fun updateInstanceId(@Body request: UpdateInstanceIdRequest): Response<ApiResponse<Unit>>
 }
 
 

@@ -11,7 +11,7 @@ interface DeviceRepository: BaseStorageRepository{
     suspend fun addOrUpdateDevice(device: Device)
     fun getSelfDevice(): Flow<Device?>
     suspend fun storeToken(token: String)
-    suspend fun storeInstanceId(instanceId: String)
+    suspend fun updateInstanceId(instanceId: String)
     fun getApiToken(): String?
     suspend fun getQRUrlFromServer(): Resource<ApiResponse<GetQRResponse>>
 

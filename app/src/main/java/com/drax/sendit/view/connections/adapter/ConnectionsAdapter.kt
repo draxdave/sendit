@@ -37,8 +37,8 @@ class ConnectionsAdapter(
         }
     }
 
-    fun newList(connectionList: List<Connection>) {
-        submitList(connectionList.map {connection-> DeviceWrapper(connection) })
+    fun newList(connectionList: List<DeviceWrapper>) {
+        submitList(connectionList)
     }
 
 }

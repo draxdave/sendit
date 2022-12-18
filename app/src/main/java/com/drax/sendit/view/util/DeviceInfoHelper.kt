@@ -36,7 +36,7 @@ data class DeviceInfoHelper(
                 Settings.Secure.ANDROID_ID
             )
         } catch (e:Exception){
-            ID
+            deviceId
         }
 
 //        return  md5(androidId)

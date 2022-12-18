@@ -12,6 +12,7 @@ import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
+import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 class ConnectionsVM @Inject constructor(
     private val connectionRepository: ConnectionRepository,
@@ -37,30 +39,46 @@ class ConnectionsVM @Inject constructor(
         job(Dispatchers.Default) {
             connectionRepository.getConnections(onlyActive = false).collect { connectionsList ->
                 _uiState.update {
-                    when(connectionsList.isEmpty()){
+                    when (connectionsList.isEmpty()) {
                         true -> ConnectionUiState.NoConnection
-                        false -> ConnectionUiState.ConnectionsLoaded(connectionsList)
+                        false -> ConnectionUiState.ConnectionsLoaded(
+                            connectionsList.map { connection ->
+                                DeviceWrapper(
+                                    connection
+                                )
+                            }
+                        )
                     }
                 }
             }
         }
     }
 
-    fun getConnectionsFromServer(){
+    fun getConnectionsFromServer() {
         _uiState.update { ConnectionUiState.RefreshingConnectionList }
         job {
-            connectionRepository.getConnectionsFromServer().collect {getConnections->
+            connectionRepository.getConnectionsFromServer().collect { getConnections ->
                 _uiState.update {
-                    when(getConnections){
-                        is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(getConnections)
+                    when (getConnections) {
+                        is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(
+                            getConnections
+                        )
                         is Resource.SUCCESS -> {
                             val newConnections = getConnections.data.data?.connections
                             when {
-                                newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(Resource.ERROR(errorCode = R.string.unknown_error))
+                                newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(
+                                    Resource.ERROR(errorCode = R.string.unknown_error)
+                                )
                                 newConnections.isNotEmpty() -> {
                                     emptyConnections()
                                     connectionRepository.addConnection(*newConnections.toTypedArray())
-                                    ConnectionUiState.ConnectionsLoaded(newConnections)
+                                    ConnectionUiState.ConnectionsLoaded(
+                                        newConnections.map { connection ->
+                                            DeviceWrapper(
+                                                connection
+                                            )
+                                        }
+                                    )
                                 }
                                 else -> {
                                     emptyConnections()
@@ -74,7 +92,7 @@ class ConnectionsVM @Inject constructor(
         }
     }
 
-    fun signOut(){
+    fun signOut() {
         job {
             authRepository.signOutDevice().collect()
         }

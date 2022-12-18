@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 
 class UnpairVM(
     private val connectionRepository: ConnectionRepository
-    ): ResViewModel() {
+): ResViewModel() {
 
     private val _uiState = MutableStateFlow<UnpairUiState>(UnpairUiState.Neutral)
     val uiState: StateFlow<UnpairUiState> = _uiState
