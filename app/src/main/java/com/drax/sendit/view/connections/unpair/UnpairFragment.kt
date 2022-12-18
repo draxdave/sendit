@@ -8,8 +8,8 @@ import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.ConnectionUnpairFragmentBinding
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseBottomSheet
-import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.modal
+import com.drax.sendit.view.util.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UnpairFragment(private val request: UnpairRequest):
@@ -22,7 +22,7 @@ class UnpairFragment(private val request: UnpairRequest):
     }
 
     private fun initView() {
-        collect(viewModel.uiState) { uiState ->
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
                 when(uiState){
                     UnpairUiState.Done -> {
                         analytics.set(Event.Connections.Unpaired)

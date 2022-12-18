@@ -1,26 +1,20 @@
 package com.drax.sendit.view.qr
 
 import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import app.siamak.sendit.R
+import app.siamak.sendit.databinding.QrFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.data.service.PushProcessor.Companion.NEW_CONNECTION
-import com.drax.sendit.data.service.models.NewInvitation
-import app.siamak.sendit.databinding.QrFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.scanner.ScannerFragment
 import com.drax.sendit.view.util.allPermissionsGranted
-import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.modal
+import com.drax.sendit.view.util.observe
 import ir.drax.modal.Modal
 import ir.drax.modal.model.MoButton
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,7 +37,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun initView() {
-        collect(viewModel.uiState){
+        viewModel.uiState.observe(viewLifecycleOwner){
             viewModel.uiState.collect{
                 when(it){
                     QrUiState.Neutral -> Unit
@@ -52,7 +46,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
             }
         }
 
-        collect(viewModel.state) {
+        viewModel.state.observe(viewLifecycleOwner) {
             when(it){
                 is QrState.QrLoadFailed -> {
                     analytics.set(Event.QR.LoadQRFailed)

@@ -10,7 +10,7 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
-import com.drax.sendit.view.util.collect
+import com.drax.sendit.view.util.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFragmentBinding::inflate) {
@@ -23,7 +23,7 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
     private lateinit var codeScanner: CodeScanner
 
     private fun initView() {
-        collect(viewModel.uiState) {
+        viewModel.uiState.observe(viewLifecycleOwner) {
             when(it){
                 ScannerUiState.Neutral -> Unit
             }

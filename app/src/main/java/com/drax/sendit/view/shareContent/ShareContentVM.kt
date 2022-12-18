@@ -17,7 +17,7 @@ class ShareContentVM(
     private val pushRepository: PushRepository,
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository
-    ): ResViewModel() {
+): ResViewModel() {
 
     private val _uiState = MutableStateFlow<ShareContentUiState>(ShareContentUiState.Loading)
     val uiState: StateFlow<ShareContentUiState> = _uiState
@@ -42,10 +42,10 @@ class ShareContentVM(
         job {
             pushRepository.shareContent(
                 ShareRequest(
-                connectionId = connectionId,
-                content = content,
-                type = TransactionContentType.TransactionType_CONTENT_TEXT
-            )
+                    connectionId = connectionId,
+                    content = content,
+                    type = TransactionContentType.TransactionType_CONTENT_TEXT
+                )
             ).collect { shareResponse->
                 _uiState.update {
                     when(shareResponse){

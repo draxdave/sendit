@@ -42,7 +42,7 @@ class SenditFirebaseService : FirebaseMessagingService() {
 
     private fun updateDeviceInstanceId(instanceId: String) {
         GlobalScope.launch(Dispatchers.IO) {
-            deviceRepository.storeInstanceId(instanceId)
+            deviceRepository.updateInstanceId(instanceId)
         }
     }
 

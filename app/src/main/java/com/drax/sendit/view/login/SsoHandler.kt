@@ -189,7 +189,7 @@ class SsoHandler(
     fun register(fragment: Fragment) {
         signInActivityResult =
             fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-                checkResult(fragment.activity,it)
+                checkResult(fragment.activity, it)
             }
         signupActivityResult =
             fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {

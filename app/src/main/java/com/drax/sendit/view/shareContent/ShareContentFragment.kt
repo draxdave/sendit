@@ -5,14 +5,14 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.siamak.sendit.R
+import app.siamak.sendit.databinding.ShareContentFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import app.siamak.sendit.databinding.ShareContentFragmentBinding
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseBottomSheet
-import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.modal
+import com.drax.sendit.view.util.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
@@ -40,7 +40,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
     }
 
     private fun initView() {
-        collect(viewModel.uiState) { uiState ->
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when(uiState){
                 ShareContentUiState.Loading -> Unit
                 is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {

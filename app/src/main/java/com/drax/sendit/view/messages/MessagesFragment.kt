@@ -7,12 +7,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.TransmissionsFragmentBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.base.BaseFragment
-import com.drax.sendit.view.util.collect
+import com.drax.sendit.view.util.observe
 import com.drax.sendit.view.util.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,17 +41,13 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        initObservers()
+        initView()
     }
 
-    private fun init() {
-//        (newIntent.getSerializableExtra(NotificationUtil.NOTIFICATION_DATA) as? NotificationModel)?.let { notificationModel ->
-        binding.list.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = transitionAdapter
-        }
+    private fun initObservers() {
 
-        collect(viewModel.uiState) { uiState ->
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when(uiState){
                 MessagesUiState.Neutral -> Unit
                 MessagesUiState.NoTransaction -> {
@@ -62,14 +61,31 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
             }
         }
 
-        collect(viewModel.messagesList) {
+        viewModel.messagesList.observe(viewLifecycleOwner) {
             transitionAdapter.submitList(it)
         }
     }
 
+    private fun initView(){
+        binding.list.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                true
+            )
+            adapter = transitionAdapter
+        }
+
+        Glide.with(binding.listBg)
+            .asBitmap()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .load(CHAT_BG_IMG_URL)
+            .into(binding.listBg)
+    }
+
     private fun copyToClipboard(messageWrapper: MessageWrapper) {
-        (context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-            .setPrimaryClip(
+        (context?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
+            ?.setPrimaryClip(
                 ClipData.
                 newPlainText(getString(R.string.copied_text_label), messageWrapper.message.content)
             )
@@ -85,5 +101,9 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
         }.also {
             startActivity(Intent.createChooser(it, null))
         }
+    }
+
+    companion object {
+        private const val CHAT_BG_IMG_URL = "${BuildConfig.BASE_URL}/img/chat_background_01.jpg"
     }
 }

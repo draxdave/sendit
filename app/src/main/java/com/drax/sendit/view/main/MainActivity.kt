@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.lifecycle.lifecycleScope
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -17,8 +17,8 @@ import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.models.NotificationData
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.shareContent.ShareContentFragment
+import com.drax.sendit.view.util.observe
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,29 +35,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initActivity() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
-
-        lifecycleScope.launchWhenCreated {
-            mainVM.uiState.collect {uiState->
-                when(uiState){
-                    MainUiState.Neutral -> Unit
-                    MainUiState.UserSignedIn -> userSignedIn(bottomNavigationView, navController)
-                    MainUiState.UserSignedOut -> userSignedOut(bottomNavigationView, navController)
-                }
+        mainVM.uiState.observe(this) { uiState ->
+            when (uiState) {
+                MainUiState.Neutral -> Unit
+                MainUiState.UserSignedIn -> userSignedIn(
+                    bottomNavigationView,
+                    navController,
+                    intent
+                )
+                MainUiState.UserSignedOut -> userSignedOut(bottomNavigationView, navController)
             }
         }
-        intent?.let { handleNewIntent(it) }
     }
 
     override fun onNewIntent(newIntent: Intent?) {
-        newIntent?.let { handleNewIntent(newIntent) }
+        newIntent?.let {
+            if (mainVM.uiState.value is MainUiState.UserSignedIn) {
+                handleNewIntent(newIntent)
+            }
+        }
         super.onNewIntent(newIntent)
     }
-
 
     private fun handleNewIntent(newIntent: Intent) {
         if (newIntent.action == Intent.ACTION_SEND) {
@@ -65,21 +69,25 @@ class MainActivity : AppCompatActivity() {
             onSharedIntent(newIntent)
 
         } else {
-            analytics.set(Event.Notification.Clicked(newIntent.extras.toString()))
             newIntent.extras?.let { extra ->
                 (extra.getSerializable(NotificationUtil.NOTIFICATION_DATA) as? NotificationModel)
                     ?.data?.let { notificationData ->
-                    when(notificationData){
-                        is NotificationData.Transaction -> navigateTransactions(navController, extra)
+                        analytics.set(Event.Notification.Clicked(newIntent.extras.toString()))
+
+                        when (notificationData) {
+                            is NotificationData.Transaction -> navigateTransactions(
+                                navController,
+                                extra
+                            )
+                        }
                     }
-                }
             }
         }
     }
 
     private fun onSharedIntent(newIntent: Intent) {
         val receivedType = newIntent.type
-        if(receivedType != null && receivedType.startsWith("text/"))
+        if (receivedType != null && receivedType.startsWith("text/"))
             newIntent.getStringExtra(Intent.EXTRA_TEXT)?.let { receivedText ->
                 launchShareFragment(receivedText)
             }
@@ -96,12 +104,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun userSignedIn(bottomNavigationView: BottomNavigationView, navController: NavController){
-        bottomNavigationView.visibility = View.VISIBLE
+    private fun userSignedIn(
+        bottomNavigationView: BottomNavigationView,
+        navController: NavController,
+        intent: Intent?
+    ) {
+        bottomNavigationView.isVisible = true
         navigateToFirstPage(navController)
+        handleNewIntent(intent ?: return)
     }
 
-    private fun userSignedOut(bottomNavigationView: BottomNavigationView, navController: NavController){
+    private fun userSignedOut(
+        bottomNavigationView: BottomNavigationView,
+        navController: NavController
+    ) {
         bottomNavigationView.visibility = View.GONE
         navigateToLogin(navController)
     }

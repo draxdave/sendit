@@ -13,9 +13,9 @@ import com.drax.sendit.domain.network.model.SignInRequest
 import com.drax.sendit.domain.network.model.SignInResponse
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
-import com.drax.sendit.view.util.collect
 import com.drax.sendit.view.util.isActive
 import com.drax.sendit.view.util.modal
+import com.drax.sendit.view.util.observe
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -56,14 +56,13 @@ class LoginFragment : BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentB
             analytics.set(Event.View.Clicked.SigninWithGoogle)
             ssoHandler.launchOneTapSignIn(activity ?: return@setOnClickListener)
         }
-        BuildConfig.BASE_URL
 
-        RocketAnimationHandler(binding.rocketAnimated,lifecycle, viewModel.uiState)
+        RocketAnimationHandler(binding.rocketAnimated, lifecycle, viewModel.uiState)
             .startAnimation()
     }
 
     private fun setupListeners() {
-        collect(viewModel.uiState) { uiState ->
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 is LoginUiState.LoginFailed -> {
                     analytics.set(Event.SignIn.Failed("REQUEST FAILED"))

@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.flow.collect
 
 class PushProcessor(
     private val transactionRepository: TransactionRepository,
@@ -32,7 +31,7 @@ class PushProcessor(
         PushOp.PUSH_OP_NEW_CONNECTION -> {
             analytics.set(Event.Notification.ConnectionRequest)
             rawData?.let {
-            val data = json.decodeFromString<NewInvitation>(it)
+                val data = json.decodeFromString<NewInvitation>(it)
                 tryStoreNewConnection(data.connectionId)
                 NEW_CONNECTION to bundleOf("data" to data)
             }
@@ -71,7 +70,7 @@ class PushProcessor(
         notificationBuilder.fireNotification(transaction)
         // Update server to delivered
     } catch (e: Exception){
-            e.printStackTrace()
+        e.printStackTrace()
     }
 
     private fun job(dispatcher: CoroutineContext = Dispatchers.IO, job: suspend CoroutineScope.() -> Unit){

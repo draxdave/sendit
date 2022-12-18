@@ -26,24 +26,25 @@ class LoginVM(
     private val deviceRepository: DeviceRepository,
     private val connectionRepository: ConnectionRepository,
     private val analytics: Analytics,
-): ResViewModel() {
-    val versionText="Version A.${BuildConfig.VERSION_NAME}"
+) : ResViewModel() {
+    val versionText = "Version A.${BuildConfig.VERSION_NAME}"
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Neutral)
     val uiState: StateFlow<LoginUiState> = _uiState
 
     fun login(signInRequest: SignInRequest) = job {
-        _uiState.update {LoginUiState.Loading}
+        _uiState.update { LoginUiState.Loading }
 
-        when(val result = authRepository.signInDevice(signInRequest)){
-            is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode)}
+        when (val result = authRepository.signInDevice(signInRequest)) {
+            is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
             is Resource.SUCCESS -> {
-                _uiState.update {   LoginUiState.LoginSucceed}
+                _uiState.update { LoginUiState.LoginSucceed }
                 delay(4000)
                 analytics.set(Event.SignIn.GoToHome)
-                result.data.data?.let { storeData(it)}
+                result.data.data?.let { storeData(it) }
             }
         }
     }
+
     private fun storeData(signInResponse: SignInResponse) {
         storeToken(signInResponse.token)
         storeDevices(signInResponse.device)
@@ -51,31 +52,31 @@ class LoginVM(
         signInResponse.connections?.let { storeConnections(*it.toTypedArray()) }
     }
 
-    private fun storeToken(token: String){
+    private fun storeToken(token: String) {
         job {
             deviceRepository.storeToken(token)
         }
     }
 
-    private fun storeUser(user: User){
+    private fun storeUser(user: User) {
         job {
             userRepository.addOrUpdateUser(user)
         }
     }
 
-    private fun storeDevices(device: Device){
+    private fun storeDevices(device: Device) {
         job {
             deviceRepository.addOrUpdateDevice(device)
         }
     }
 
-    private fun storeConnections(vararg connection: Connection){
+    private fun storeConnections(vararg connection: Connection) {
         job {
             connectionRepository.addConnection(*connection)
         }
     }
 
-    fun googleSignInFailed(message: Int){
+    fun googleSignInFailed(message: Int) {
         _uiState.update { LoginUiState.GoogleSignInFailed(message) }
     }
 }
