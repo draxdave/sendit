@@ -3,7 +3,8 @@ image: inovex/gitlab-ci-android
 
 before_script:
   - chmod +x ./gradlew
-  - echo $LOCAL_PROPERTIES > ./local.properties
+  - cat $LOCAL_PROPERTIES > local.properties
+  - cat $KEYSTORE_RELEASE > keystore.properties
 
 variables:
   ANDROID_COMPILE_SDK: "33"
