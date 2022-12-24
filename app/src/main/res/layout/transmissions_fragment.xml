@@ -8,7 +8,7 @@
         <variable name="model" type="com.drax.sendit.view.messages.MessagesVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
+        android:background="@color/low_white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -16,7 +16,8 @@
     <color name="receiverTextBackground">#ffffff</color>
     <color name="senderTextBackground">#e7ffdb</color>
     <color name="blueA200">#40C4FF</color>
-    <color name="white">#E3E3E3</color>
+    <color name="low_white">#E3E3E3</color>
+    <color name="white">#FFFFFF</color>
     <color name="warning">#FFB300</color>
     <color name="warning_warmer">#FB8C00</color>
     <color name="gray">#A8AAB6</color>
