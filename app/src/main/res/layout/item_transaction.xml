@@ -14,7 +14,9 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/otherIcon"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/low_white"
             app:shapeAppearance="@style/roundedImageViewRounded"
             android:layout_alignParentEnd="true"
             app:img="@{transaction.connection.iconUrl}"
@@ -25,10 +27,13 @@
             android:id="@+id/partyName"
             android:text="@{transaction.connection.name}"
             android:layout_toStartOf="@id/otherIcon"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:textSize="10sp"
             android:maxLines="1"
+            android:background="@drawable/party_light_bg"
             android:textColor="@color/main_text_lighter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

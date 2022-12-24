@@ -20,7 +20,7 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         app:indicatorColor="@color/colorAccent"
-        app:trackColor="@color/white"
+        app:trackColor="@color/low_white"
         app:indicatorSize="64dp"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
