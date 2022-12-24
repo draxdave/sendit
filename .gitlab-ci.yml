@@ -2,8 +2,8 @@ image: inovex/gitlab-ci-android
 
 
 before_script:
-  - export GRADLE_USER_HOME=cache/.gradle
   - chmod +x ./gradlew
+  - echo $LOCAL_PROPERTIES > ./local.properties
 
 variables:
   ANDROID_COMPILE_SDK: "33"
@@ -11,12 +11,6 @@ variables:
 
 stages:
   - build
-
-cache:
-  key: "$CI_COMMIT_REF_NAME"
-  paths:
-    - cache/wrapper
-    - cache/caches
 
 buildDebug:
   stage: build
