@@ -48,7 +48,7 @@ class NotificationUtil(
             .setContentText(description)
             .setContentIntent(pendingIntent)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
-//            .setAutoCancel(true)
+            .setAutoCancel(true)
 //            .setTimeoutAfter(10000)
             .setOngoing(notificationModel.isSticky)
 //            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
