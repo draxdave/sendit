@@ -19,6 +19,10 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdk 33
+    def versionMajor = 1
+    def versionMinor = 2
+    def versionPatch = 1
+    def appVersionCode = 10201
 
     signingConfigs {
         release {
@@ -34,8 +38,10 @@ android {
 
         minSdk 21
         targetSdk 33
-        versionCode 10101
-        versionName "1.1.1"
+
+        versionCode appVersionCode
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
         buildConfigField "String", "API_VERSION", localProperties['api_version']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -64,6 +70,7 @@ android {
             buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
             minifyEnabled true
             debuggable false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -127,10 +134,14 @@ dependencies {
     //FCM
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-messaging:23.0.8'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation ('com.google.firebase:firebase-analytics-ktx') {
+        exclude module: "play-services-ads-identifier"
+        exclude module: "play-services-measurement"
+        exclude module: "play-services-measurement-sdk"
+    }
     implementation 'com.google.firebase:firebase-crashlytics:18.2.13'
     implementation 'com.google.android.gms:play-services-basement:18.1.0'
-    implementation 'com.google.android.gms:play-services-location:20.0.0'
+//    implementation 'com.google.android.gms:play-services-location:20.0.0'
 
     //Play Services auth component(for automatic sms verification code usage)
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
