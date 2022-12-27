@@ -1,9 +1,11 @@
 package com.drax.sendit.view.login
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.LoginFragmentBinding
@@ -52,15 +54,65 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
         setupObservers()
     }
 
-    private fun setupObservers() {
-        viewModel.uiState.observe(viewLifecycleOwner){
+    private fun setupObservers() = with(binding) {
+        viewModel.uiState.observe(viewLifecycleOwner) {
             binding.loadingLayout.isShowing = it == LoginUiState.Loading
+        }
+
+        viewModel.signinFormState.observe(viewLifecycleOwner) { formState ->
+            when (formState) {
+                SigninFormState.Forgot -> {
+                    tvBottomAction.setText(R.string.login_bottom_action_signin)
+                    submitButton.setText(R.string.login_submit_forgot)
+                    passwordTextField.isVisible = false
+                    tvForgotAction.isVisible = false
+                    confirmPasswordTextField.isVisible = false
+                }
+                SigninFormState.Signin -> {
+                    tvBottomAction.setText(R.string.login_bottom_action_signup)
+                    submitButton.setText(R.string.login_submit_signin)
+                    passwordTextField.isVisible = true
+                    tvForgotAction.isVisible = true
+                    confirmPasswordTextField.isVisible = false
+                }
+                SigninFormState.Signup -> {
+                    tvBottomAction.setText(R.string.login_bottom_action_signin)
+                    submitButton.setText(R.string.login_submit_signup)
+                    passwordTextField.isVisible = true
+                    tvForgotAction.isVisible = false
+                    confirmPasswordTextField.isVisible = true
+                }
+                SigninFormState.FormHidden -> {
+                    passwordTextField.isVisible = false
+                    tvForgotAction.isVisible = false
+                    confirmPasswordTextField.isVisible = false
+                    emailTextField.isVisible = false
+                    submitButton.isVisible = false
+                    tvBottomAction.isVisible = false
+                    signInGoogle.isVisible = false
+                }
+            }
         }
 
     }
 
     private fun setupUI() {
         binding.versionText.text = viewModel.versionText
+        binding.tvForgotAction.apply {
+            paint.isUnderlineText = true
+            setOnClickListener {
+                viewModel.updateSigninFormState(SigninFormState.Forgot)
+            }
+        }
+        binding.tvBottomAction.setOnClickListener {
+            viewModel.updateSigninFormState(
+                if (binding.tvBottomAction.text.equals(getString(R.string.login_bottom_action_signin))) {
+                    SigninFormState.Signin
+                } else {
+                    SigninFormState.Signup
+                }
+            )
+        }
         binding.signInGoogle.setOnClickListener {
             analytics.set(Event.View.Clicked.SigninWithGoogle)
             ssoHandler.launchOneTapSignIn(activity ?: return@setOnClickListener)
@@ -89,7 +141,10 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     )
                 }
                 LoginUiState.Neutral -> Unit
-                LoginUiState.LoginSucceed -> analytics.set(Event.SignIn.Succeed)
+                LoginUiState.LoginSucceed -> {
+                    analytics.set(Event.SignIn.Succeed)
+                    viewModel.updateSigninFormState(SigninFormState.FormHidden)
+                }
                 is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                 LoginUiState.Loading -> Unit
             }

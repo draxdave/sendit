@@ -8,3 +8,10 @@ sealed class LoginUiState {
 
     data class GoogleSignInFailed(val message: Int): LoginUiState()
 }
+
+sealed class SigninFormState {
+    object Signin: SigninFormState()
+    object Signup: SigninFormState()
+    object Forgot: SigninFormState()
+    object FormHidden: SigninFormState()
+}

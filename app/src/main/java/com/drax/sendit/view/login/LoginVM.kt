@@ -31,6 +31,12 @@ class LoginVM(
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Neutral)
     val uiState: StateFlow<LoginUiState> = _uiState
 
+    private val _signinFormState = MutableStateFlow<SigninFormState>(SigninFormState.Signin)
+    val signinFormState: StateFlow<SigninFormState> = _signinFormState
+
+
+    fun updateSigninFormState(newState: SigninFormState) = _signinFormState.update { newState }
+
     fun login(signInRequest: SignInRequest) = job {
         _uiState.update { LoginUiState.Loading }
 
@@ -38,7 +44,6 @@ class LoginVM(
             is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
             is Resource.SUCCESS -> {
                 _uiState.update { LoginUiState.LoginSucceed }
-                delay(4000)
                 analytics.set(Event.SignIn.GoToHome)
                 result.data.data?.let { storeData(it) }
             }

@@ -55,5 +55,14 @@
     <string name="unpair">Unpair connection</string>
     <string name="unpair_modal_description">You are removin this connection from your network. Proceed?</string>
     <string name="cancel">Cancel</string>
+    <string name="login_email_hint">Enter your Email here</string>
+    <string name="login_password_hint">Enter your Password here</string>
+    <string name="login_password_confirm_hint">Enter your Password again</string>
+    <string name="login_bottom_action_signup">Create An Account Now!</string>
+    <string name="login_bottom_action_signin">Already Have An Account?</string>
+    <string name="login_bottom_action_forgot">Forgot your password?</string>
+    <string name="login_submit_signin">Sign In</string>
+    <string name="login_submit_forgot">Send Recovery Email</string>
+    <string name="login_submit_signup">Sign Up</string>
 
 </resources>
