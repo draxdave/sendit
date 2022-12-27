@@ -24,7 +24,9 @@
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_banner" />
+        app:layout_constraintBottom_toBottomOf="@id/top_banner"
+        app:layout_constraintTop_toBottomOf="@id/top_banner"
+        />
 
     <ImageView
         android:id="@+id/rocket_animated"
@@ -46,6 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_email_hint"
+        app:startIconDrawable="@drawable/login_input_username"
         app:layout_constraintEnd_toEndOf="@id/sign_in_google"
         app:layout_constraintStart_toStartOf="@id/sign_in_google"
         app:layout_constraintTop_toBottomOf="@id/mid_title_1">
@@ -63,6 +66,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextField"
         style="@style/login_form_input"
+        app:startIconDrawable="@drawable/login_input_password"
+        app:endIconMode="password_toggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_password_hint"
@@ -82,6 +87,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/confirmPasswordTextField"
         style="@style/login_form_input"
+        app:startIconDrawable="@drawable/login_input_password"
+        app:endIconMode="password_toggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_password_confirm_hint"
@@ -142,7 +149,6 @@
         style="@style/heading"
         android:layout_width="250dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="64dp"
         android:background="@drawable/overlay_button_bg"
         android:clickable="true"
         android:elevation="7dp"
@@ -154,7 +160,7 @@
         android:textSize="18sp"
         app:drawableStartCompat="@drawable/ic_google_icon"
         app:layout_constraintTop_toBottomOf="@id/tvBottomAction"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/versionText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -162,7 +168,7 @@
         android:id="@+id/versionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
         android:textColor="@color/gray"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"

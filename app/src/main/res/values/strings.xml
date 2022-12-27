@@ -64,5 +64,8 @@
     <string name="login_submit_signin">Sign In</string>
     <string name="login_submit_forgot">Send Recovery Email</string>
     <string name="login_submit_signup">Sign Up</string>
+    <string name="login_form_error_email_input">Please enter correct email address.</string>
+    <string name="login_form_error_password_input">Please enter a complex password with 8&#8211;20 characters.</string>
+    <string name="login_form_error_password_equal">Passwords do not match.</string>
 
 </resources>
