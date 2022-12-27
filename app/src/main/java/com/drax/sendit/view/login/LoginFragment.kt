@@ -11,7 +11,7 @@ import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.SignInRequest
 import com.drax.sendit.domain.network.model.SignInResponse
-import com.drax.sendit.view.base.BaseFragment
+import com.drax.sendit.view.base.BaseVBFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.isActive
 import com.drax.sendit.view.util.modal
@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LoginFragment : BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
+class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmentBinding::inflate) {
 
     override val viewModel: LoginVM by viewModel()
     private val deviceInfoHelper: DeviceInfoHelper by inject()
@@ -49,9 +49,18 @@ class LoginFragment : BaseFragment<LoginFragmentBinding, LoginVM>(LoginFragmentB
     private fun initUI() {
         setupListeners()
         setupUI()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.uiState.observe(viewLifecycleOwner){
+            binding.loadingLayout.isShowing = it == LoginUiState.Loading
+        }
+
     }
 
     private fun setupUI() {
+        binding.versionText.text = viewModel.versionText
         binding.signInGoogle.setOnClickListener {
             analytics.set(Event.View.Clicked.SigninWithGoogle)
             ssoHandler.launchOneTapSignIn(activity ?: return@setOnClickListener)
