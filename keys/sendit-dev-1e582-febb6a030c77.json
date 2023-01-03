@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sendit-dev-1e582",
+  "private_key_id": "febb6a030c77f2528f917a926ddf79354488659a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVxblBGjedC6OT\nRqQSeFYOg+Y014YbgG8+otNCs3xNKRvrW1rLGptmPvi6Oy2mw10wxVgpd91+vjKx\n7rhcsPcP9w+Izb09bPwjJX5WSklU67MKlVkpeWY8gXDu//pVZoKb49s525XVBgBK\nE/+SngTtzpBYMn2CmiP8ADTVmtt+y3Y7EGBEsXge05RWsyO05HLvT7fukV9xNl1c\nGbjDG3a0QQY4j3Zxdh8X+lIwf3eB0ci0/+Vnne1sGG3w1rUHWENwP+/AtFw8Ib1Y\nXSOFSy4kq0M8IAu3Dlq4JOdDst2vLf1C5POaT8JkPDWlu9aYWOUWr5KWeGZHMBbX\ng2UuVGfVAgMBAAECggEAN0q8BhtKLbmmxU++ca0oRAqQubBZa5zCNPMCoCzH9mp3\nSq+6uKGVfi1AQOxpAZg9NqycTA7a4BgSehrhyCJyy1uPyhb+RoeOG+GTHwMkyGuN\neRpCxOtzAWJeEXXB8rY6AJghjl4RFgg1oiN45iVdN3fbVRwqtsT2BOoEl1kosEmX\nQmp5tRmm9uKT5MTNAl0D0DVMz5S5eGoc4X73acI0LrPh5Nqh6nUHLJ9TNM5k3LDA\n1yu0Xh43yUShQ0JV7noH85zFjo1vV4aMSb4RdkM3Q+OkwpfCWHvq6SLBh23ItU+d\nif8inzCNX7kKI6nF/vOTQUdlsz239kh9RAOwKGDZfwKBgQDFjf37zPkHCxOfPYNU\naI2YcWQ0x8abJPMkUHBeELz0fpm87r6oRfcZfCTy+sp9/YyKyRHlDtxQRVwGB0u+\nvYhfti1TUBjPAlVKGqFjC2789BCmK25vBtxgu8mUwwqCpHnxGc+tIN29W6lWHZTw\nBp/TKTQx6QJzNggqQtq93gN31wKBgQDCFOOqcvSLwaxXvZil2IEiCaUjcBSVgfME\nL/tucZNgdnX9H9id0yKyXJzNh8QkAOLRX241vWliytuCGI7epFfBLGBAh9Uz8cUs\nJnJCizHwihJmBVGxAETRIzf68uWAVU+sWANOwX0v6OU3H7K0YwisYlddn58rq2vD\nX48X8me4MwKBgGuMN37DQbcB4rbIKBzlpmAdKu5I6+g+H1ffqqyq9BMucMeYOZcm\nL7ViDkNxIJeiVsafW+yVQH86ozRs+GFokTt51AcNDdR0crYa9U0URmHTBNVRw5cR\n5xuKX91qqOgiXnhREuwvfke+BNvq0tAw6wVr4wxgy4KpIZzQNIE0wjKVAoGAD2Ju\nhZVlMyrgCXh7ADKAUf1nvL5ms09Av0U6bg/MuenKAo2isygIaREUUOqBLsVvNV+W\nMeZY0z73VYGy2Y03c5Wb76GU0fBJS+2kQwgbplCbksC7MAewbM+Y4WidrqWUkjnL\n0VNfJAwXF16I4Om0x01oVYCQsnp9KViK1EAf3qcCgYEArkomq1S34vpwdNrWuUy7\nqRF638+VRr0VARaQCLMw+i4E8Jfe5YwQLtsBIFdYo+jtTNWBbKmFhaXeKcqcUY/w\nChmUmH/soB8/MJFeVSwD1r8CJMgjHtHkL6SEGbao1Ndb4k1rARNp4ieeeqLo3vDx\n8Xi2koQ8t9FIAjRkx5WsDI0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "app-distribution-agent@sendit-dev-1e582.iam.gserviceaccount.com",
+  "client_id": "109862168974835057914",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/app-distribution-agent%40sendit-dev-1e582.iam.gserviceaccount.com"
+}
