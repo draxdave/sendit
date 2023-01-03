@@ -1,25 +1,26 @@
 package com.drax.sendit.view.login
 
 import android.content.Context
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.LoginFragmentBinding
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.domain.network.model.SignInRequest
-import com.drax.sendit.domain.network.model.SignInResponse
+import com.drax.sendit.data.service.SenditFirebaseService
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.view.base.BaseVBFragment
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.isActive
+import com.drax.sendit.view.util.md5
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
+import com.drax.sendit.view.util.toast
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 import org.koin.android.ext.android.inject
@@ -36,7 +37,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
 
         when (event) {
             is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
-            is SsoEvent.SignSucceed -> tryLoginToServer(event.request)
+            is SsoEvent.SignSucceed -> trySso(event.request)
         }
     }
 
@@ -108,8 +109,10 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                         else
                             ModalMessage.Failed(
                                 when (uiState.errorCode) {
-                                    SignInResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                                    SignInResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                                    SignInSsoResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
+                                    SignInSsoResponse.INCORRECT_CREDENTIALS -> R.string.login_error_user_pass_incorrect
+                                    SignInSsoResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                                    SignInSsoResponse.USER_ALREADY_ACTIVE -> R.string.login_error_user_inactive
                                     else -> R.string.error_internal
                                 }
                             )
@@ -122,6 +125,8 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 }
                 is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                 LoginUiState.Loading -> Unit
+                LoginUiState.ForgetPasswordDone -> toast(getString(R.string.login_forget_pass))
+                LoginUiState.SignupDone -> toast(getString(R.string.signup_done))
             }
         }
     }
@@ -170,6 +175,10 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
             })
     }
 
+    private fun clearPasswordInputs(){
+        binding.etPassword.setText("")
+        binding.etConfirmPassword.setText("")
+    }
     private fun handleSignup() {
         if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
@@ -184,7 +193,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 R.string.login_form_error_password_input
             )
         ) {
-            if (binding.etPassword.text != binding.etConfirmPassword.text) {
+            if (binding.etPassword.text.toString() != binding.etConfirmPassword.text.toString()) {
                 binding.confirmPasswordTextField.apply {
                     requestFocus()
                     error = getString(R.string.login_form_error_password_equal)
@@ -192,7 +201,23 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 return
             }
 
-            Toast.makeText(context, "handleSignup", Toast.LENGTH_SHORT).show()
+
+            val email = binding.etEmail.text.toString()
+            val passwordHash = binding.etPassword.text.toString().md5()
+
+            SenditFirebaseService.token(
+                onError = {
+                    analytics.set(Event.SignIn.Failed("Token is missing"))
+                    toast(getString(R.string.signin_google_error))
+
+                }) { instanceId ->
+                viewModel.signupWithEmail(
+                    email = email,
+                    passwordHash = passwordHash,
+                    instanceId = instanceId,
+                    deviceId = deviceInfoHelper.getId()
+                )
+            }
         }
     }
 
@@ -206,7 +231,23 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 R.string.login_form_error_password_input
             )
         ) {
-            Toast.makeText(context, "sign in", Toast.LENGTH_SHORT).show()
+
+            val email = binding.etEmail.text.toString()
+            val passwordHash = binding.etPassword.text.toString().md5()
+
+            SenditFirebaseService.token(
+                onError = {
+                    analytics.set(Event.SignIn.Failed("Token is missing"))
+                    toast(getString(R.string.signin_google_error))
+
+                }) { instanceId ->
+                viewModel.authoriseWithEmail(
+                    email = email,
+                    passwordHash = passwordHash,
+                    instanceId = instanceId,
+                    deviceId = deviceInfoHelper.getId()
+                )
+            }
         }
     }
 
@@ -216,12 +257,13 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 R.string.login_form_error_email_input
             )
         ) {
-            Toast.makeText(context, "handleForgot", Toast.LENGTH_SHORT).show()
+            val email = binding.etEmail.text.toString()
+            viewModel.forgetPassword(email)
         }
     }
 
-    private fun tryLoginToServer(signInRequest: SignInRequest?) {
-        viewModel.login(signInRequest ?: return)
+    private fun trySso(signInRequest: SignInSsoRequest?) {
+        viewModel.authoriseWithSso(signInRequest ?: return)
     }
 
     override fun onDetach() {
@@ -242,6 +284,6 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
 
     companion object {
         private const val PASSWORD_REGEX =
-            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~\$^+=<>]).{8,20}\$"
+            "^(?=.*[0-9]).{6,20}\$"
     }
 }

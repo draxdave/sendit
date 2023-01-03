@@ -44,7 +44,9 @@
     <string name="share_success">Sent successfully!</string>
     <string name="notification_title_new_content">Share Content Received</string>
     <string name="login_error_device_inactive">This device is not active. Please contact support for more info.</string>
+    <string name="login_error_user_pass_incorrect">Username/Email or Password is incorrect.</string>
     <string name="login_error_user_inactive">This user is not active. Please contact support for more info.</string>
+    <string name="login_error_user_active">User is already registered. Please sign in with your credentials.</string>
     <string name="sendit">Send it</string>
     <string name="share">Share</string>
     <string name="copy">Copy</string>
@@ -65,7 +67,9 @@
     <string name="login_submit_forgot">Send Recovery Email</string>
     <string name="login_submit_signup">Sign Up</string>
     <string name="login_form_error_email_input">Please enter correct email address.</string>
-    <string name="login_form_error_password_input">Please enter a complex password with 8&#8211;20 characters.</string>
+    <string name="login_form_error_password_input">Please enter a complex password with 6&#8211;20 characters.</string>
     <string name="login_form_error_password_equal">Passwords do not match.</string>
+    <string name="signup_done">A confirmation Email is sent to your email address. Please follow instructions in it to verify your email address.</string>
+    <string name="login_forget_pass">We sent the required instructions to your email address. Please follow then in order to reset account password.</string>
 
 </resources>

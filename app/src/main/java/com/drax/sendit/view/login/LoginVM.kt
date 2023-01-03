@@ -1,21 +1,22 @@
 package com.drax.sendit.view.login
 
 import app.siamak.sendit.BuildConfig
-import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
-import com.drax.sendit.domain.network.model.SignInRequest
-import com.drax.sendit.domain.network.model.SignInResponse
+import com.drax.sendit.domain.network.model.auth.ForgotPasswordRequest
+import com.drax.sendit.domain.network.model.auth.SignUpRequest
+import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
+import com.drax.sendit.domain.network.model.device.WhoisModel
+import com.drax.sendit.domain.network.model.device.toWhoisModel
 import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -24,7 +25,6 @@ class LoginVM(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val deviceRepository: DeviceRepository,
-    private val connectionRepository: ConnectionRepository,
     private val analytics: Analytics,
 ) : ResViewModel() {
     val versionText = "Version A.${BuildConfig.VERSION_NAME}"
@@ -37,51 +37,130 @@ class LoginVM(
 
     fun updateSigninFormState(newState: SigninFormState) = _signinFormState.update { newState }
 
-    fun login(signInRequest: SignInRequest) = job {
+    fun authoriseWithSso(signInRequest: SignInSsoRequest) = job {
         _uiState.update { LoginUiState.Loading }
 
-        when (val result = authRepository.signInDevice(signInRequest)) {
+        when (val result = authRepository.signInSso(signInRequest)) {
             is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
             is Resource.SUCCESS -> {
-                _uiState.update { LoginUiState.LoginSucceed }
-                analytics.set(Event.SignIn.GoToHome)
-                result.data.data?.let { storeData(it) }
+                _uiState.update {
+                    authorised(result.data.data?.token ?: return@update LoginUiState.LoginFailed())
+                    LoginUiState.LoginSucceed
+                }
             }
         }
     }
 
-    private fun storeData(signInResponse: SignInResponse) {
-        storeToken(signInResponse.token)
-        storeDevices(signInResponse.device)
-        storeUser(signInResponse.user)
-        signInResponse.connections?.let { storeConnections(*it.toTypedArray()) }
+    private suspend fun authorised(token: String) {
+        storeToken(token)
+
+        val (user, device) = getWhois() ?: return
+        analytics.set(Event.SignIn.GoToHome)
+        storeLoginData(
+            user = user,
+            device = device
+        )
     }
 
-    private fun storeToken(token: String) {
-        job {
-            deviceRepository.storeToken(token)
+    private suspend fun getWhois(): WhoisModel? {
+        return when (val result = deviceRepository.getWhois()) {
+            is Resource.ERROR -> {
+                _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
+                null
+            }
+            is Resource.SUCCESS -> result.data.data?.toWhoisModel()
         }
     }
 
-    private fun storeUser(user: User) {
-        job {
-            userRepository.addOrUpdateUser(user)
-        }
+    private suspend fun storeLoginData(device: Device, user: User) {
+        storeDevices(device)
+        storeUser(user)
     }
 
-    private fun storeDevices(device: Device) {
-        job {
-            deviceRepository.addOrUpdateDevice(device)
-        }
+    private suspend fun storeToken(token: String) {
+        deviceRepository.storeToken(token)
     }
 
-    private fun storeConnections(vararg connection: Connection) {
-        job {
-            connectionRepository.addConnection(*connection)
-        }
+    private suspend fun storeUser(user: User) {
+        userRepository.addOrUpdateUser(user)
+    }
+
+    private suspend fun storeDevices(device: Device) {
+        deviceRepository.addOrUpdateDevice(device)
     }
 
     fun googleSignInFailed(message: Int) {
         _uiState.update { LoginUiState.GoogleSignInFailed(message) }
+    }
+
+    fun forgetPassword(email: String) {
+        job {
+            _uiState.update { LoginUiState.Loading }
+            when (val result = authRepository.forgotPassword(ForgotPasswordRequest(email))) {
+                is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
+                is Resource.SUCCESS -> _uiState.update { LoginUiState.ForgetPasswordDone }
+            }
+
+        }
+    }
+
+    fun signupWithEmail(
+        email: String,
+        deviceId: String,
+        instanceId: String,
+        passwordHash: String
+    ) {
+        job {
+            _uiState.update { LoginUiState.Loading }
+            val result = authRepository.signUp(
+                SignUpRequest(
+                    email = email,
+                    deviceId = deviceId,
+                    instanceId = instanceId,
+                    passwordHash = passwordHash
+
+                )
+            )
+            when (result) {
+                is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
+                is Resource.SUCCESS -> _uiState.update { LoginUiState.SignupDone }
+            }
+
+        }
+    }
+
+
+    fun authoriseWithEmail(
+        email: String,
+        deviceId: String,
+        instanceId: String,
+        passwordHash: String
+    ) {
+        job {
+            _uiState.update { LoginUiState.Loading }
+            val result = authRepository.signIn(
+                SignInRequest(
+                    email = email,
+                    deviceId = deviceId,
+                    instanceId = instanceId,
+                    passwordHash = passwordHash
+
+                )
+            )
+            _uiState.update {
+
+                when (result) {
+                    is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode)
+                    is Resource.SUCCESS -> {
+
+                        authorised(
+                            result.data.data?.token ?: return@update LoginUiState.LoginFailed()
+                        )
+                        LoginUiState.LoginSucceed
+                    }
+                }
+            }
+
+        }
     }
 }
