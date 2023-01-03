@@ -179,6 +179,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
         binding.etPassword.setText("")
         binding.etConfirmPassword.setText("")
     }
+
     private fun handleSignup() {
         if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
@@ -211,6 +212,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     toast(getString(R.string.signin_google_error))
 
                 }) { instanceId ->
+                clearPasswordInputs()
                 viewModel.signupWithEmail(
                     email = email,
                     passwordHash = passwordHash,
@@ -241,6 +243,7 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                     toast(getString(R.string.signin_google_error))
 
                 }) { instanceId ->
+                clearPasswordInputs()
                 viewModel.authoriseWithEmail(
                     email = email,
                     passwordHash = passwordHash,
