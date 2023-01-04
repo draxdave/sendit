@@ -10,7 +10,7 @@ fun Fragment.modal(message: ModalMessage, onDismiss: () -> Unit = {}){
     Modal.builder(requireView()).apply {
         type = Modal.Type.Alert
         title = getString(message.title)
-        icon = message.icon
+//        icon = message.icon
         direction =
             if(message.fromTop)
                 Modal.Direction.Top

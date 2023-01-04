@@ -1,32 +1,32 @@
 <resources>
     <string name="app_name">Send it</string>
 
-    <string name="error_internal">Please try again</string>
+    <string name="error_internal">Please try again.</string>
     <string name="error_unauthorized">Please Sign in first.</string>
-    <string name="network_unavailable">Internet connection is not available</string>
-    <string name="unknown_error">Error happened!</string>
+    <string name="network_unavailable">Internet connection is not available.</string>
+    <string name="unknown_error">Error happened.</string>
 
 
-    <string name="no_connected_devices">No paired devices yet!\nAdd one now!</string>
-    <string name="no_transactions">No transactions yet!\nSend one now!</string>
+    <string name="no_connected_devices">No paired devices yet.\nAdd one now!</string>
+    <string name="no_transactions">No messages yet.\nSend one now!</string>
 
     <string name="fragment_qr">Pairing</string>
     <string name="fragment_devices">Devices</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_transmitted">Transactions</string>
     <string name="fragment_transactions_title">Transactions History</string>
-    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
     <string name="fragment_login">Login</string>
-    <string name="devices_item_device_added_date">Paired since %s</string>
+    <string name="devices_item_device_added_date">Paired Since %s</string>
     <string name="devices_status_pending">Pending Response</string>
-    <string name="sign_out">Sign out</string>
-    <string name="signin_google_error">Signing in failed! Try again please.</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="signin_google_error">Sign in failed! Try again in a few minutes.</string>
     <string name="signin_google_error_no_account">A Google account is required to use SendIt app! Please create one and then try again.</string>
     <string name="device_name">Device Name: %s</string>
-    <string name="last_used">Last used: %s</string>
+    <string name="last_used">Last Used: %s</string>
     <string name="scan">Scan</string>
     <string name="scanner">Scanner</string>
-    <string name="invitation_sent_title">Invitation sent successfully.</string>
+    <string name="invitation_sent_title">Invitation Sent Successfully.</string>
     <string name="invitation_sent_desc">Please wait for the other party to respond to your request.</string>
     <string name="new_invitation">New Pair Request</string>
     <string name="new_invitation_desc"><b>%s</b> wants to connect and send you messages.\nDo you accept the invitation?</string>
@@ -37,28 +37,28 @@
     <string name="new_invitation_accept_sent">Your response is sent!</string>
     <string name="permission_needed">Permission Is Required</string>
     <string name="permission_needed_camera">SendIt Needs Camera permission to scan the barcodes. Please provide it.</string>
-    <string name="invitation_already_active">You are already connected to this device</string>
-    <string name="invitation_rejected">Your pair request has been rejected</string>
-    <string name="invitation_waiting_for_peer">Request already sent</string>
-    <string name="share_modal_title">Select a connections to share the content with</string>
-    <string name="share_success">Sent successfully!</string>
-    <string name="notification_title_new_content">Share Content Received</string>
+    <string name="invitation_already_active">You are already connected to this device.</string>
+    <string name="invitation_rejected">Your pair request has been rejected.</string>
+    <string name="invitation_waiting_for_peer">Request already sent.</string>
+    <string name="share_modal_title">Select a connection to share the content with.</string>
+    <string name="share_success">Sent it!</string>
+    <string name="notification_title_new_content">Received a new message.</string>
     <string name="login_error_device_inactive">This device is not active. Please contact support for more info.</string>
-    <string name="login_error_user_pass_incorrect">Username/Email or Password is incorrect.</string>
+    <string name="login_error_user_pass_incorrect">Email or Password is incorrect.</string>
     <string name="login_error_user_inactive">This user is not active. Please contact support for more info.</string>
     <string name="login_error_user_active">User is already registered. Please sign in with your credentials.</string>
-    <string name="sendit">Send it</string>
+    <string name="sendit">Send It</string>
     <string name="share">Share</string>
     <string name="copy">Copy</string>
-    <string name="copied_text_label">Copied from Sendit</string>
+    <string name="copied_text_label">Copied From Sendit</string>
     <string name="remove">Remove</string>
     <string name="qr_help_desc">Use this QR code to connect to other devices. Or you can scan QR code on your other devices.</string>
     <string name="learn_more">Learn More</string>
-    <string name="unpair">Unpair connection</string>
-    <string name="unpair_modal_description">You are removin this connection from your network. Proceed?</string>
+    <string name="unpair">Unpair Connection</string>
+    <string name="unpair_modal_description">You are removing this connection from your network. Proceed?</string>
     <string name="cancel">Cancel</string>
-    <string name="login_email_hint">Enter your Email here</string>
-    <string name="login_password_hint">Enter your Password here</string>
+    <string name="login_email_hint">Enter your email address</string>
+    <string name="login_password_hint">Enter your Password</string>
     <string name="login_password_confirm_hint">Enter your Password again</string>
     <string name="login_bottom_action_signup">Create An Account Now!</string>
     <string name="login_bottom_action_signin">Already Have An Account?</string>
@@ -70,6 +70,6 @@
     <string name="login_form_error_password_input">Please enter a complex password with 6&#8211;20 characters.</string>
     <string name="login_form_error_password_equal">Passwords do not match.</string>
     <string name="signup_done">A confirmation Email is sent to your email address. Please follow instructions in it to verify your email address.</string>
-    <string name="login_forget_pass">We sent the required instructions to your email address. Please follow then in order to reset account password.</string>
+    <string name="login_forget_pass">We sent the required instructions to your email address. Please follow them in order to reset account password.</string>
 
 </resources>

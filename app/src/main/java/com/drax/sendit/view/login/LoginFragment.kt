@@ -125,8 +125,8 @@ class LoginFragment : BaseVBFragment<LoginFragmentBinding, LoginVM>(LoginFragmen
                 }
                 is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                 LoginUiState.Loading -> Unit
-                LoginUiState.ForgetPasswordDone -> toast(getString(R.string.login_forget_pass))
-                LoginUiState.SignupDone -> toast(getString(R.string.signup_done))
+                LoginUiState.ForgetPasswordDone -> modal(ModalMessage.Success(R.string.login_forget_pass))
+                LoginUiState.SignupDone -> modal(ModalMessage.Success(R.string.signup_done))
             }
         }
     }
