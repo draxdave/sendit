@@ -1,10 +1,11 @@
-image: inovex/gitlab-ci-android
+image: jangrewe/gitlab-ci-android
 
 
 before_script:
   - chmod +x ./gradlew
   - cat $LOCAL_PROPERTIES > local.properties
   - cat $KEYSTORE_RELEASE > keystore.properties
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
 
 variables:
   ANDROID_COMPILE_SDK: "33"
@@ -13,18 +14,23 @@ variables:
 stages:
   - build
 
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .gradle/
+
 buildDebug:
   stage: build
+  interruptible: true
+
+  artifacts:
+    paths:
+      - app/build/outputs/
+
   only:
     refs:
-      - api
-      - web
-      - triggers
-      - schedules
       - merge_requests
       - /v([0-9]+)-release/
 
   script:
-
-    # ----- Build -----
-    - ./gradlew --build-cache --gradle-user-home cache/ -Dorg.gradle.jvmargs=-Xmx8g :app:bundleDebug -Ptest_code="$CI_PIPELINE_ID"
+    - ./gradlew -Dorg.gradle.jvmargs=-Xmx16g --build-cache :app:bundleDebug
