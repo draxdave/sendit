@@ -3,6 +3,7 @@ image: jangrewe/gitlab-ci-android
 
 before_script:
   - chmod +x ./gradlew
+  - echo $CI_PIPELINE_SOURCE
   - cat $LOCAL_PROPERTIES > local.properties
   - cat $KEYSTORE_RELEASE > keystore.properties
   - export GRADLE_USER_HOME=$(pwd)/.gradle
@@ -13,13 +14,14 @@ variables:
 
 stages:
   - build
+  - release
 
 cache:
   key: ${CI_PROJECT_ID}
   paths:
     - .gradle/
 
-buildDebug:
+build Debug:
   stage: build
   interruptible: true
 
@@ -30,7 +32,28 @@ buildDebug:
   only:
     refs:
       - merge_requests
-      - /v([0-9]+)-release/
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /v([0-9]+).([0-9]+).([0-9]+)-release/
 
   script:
     - ./gradlew -Dorg.gradle.jvmargs=-Xmx16g --build-cache :app:bundleDebug
+
+build & deploy Release:
+  stage: release
+  interruptible: true
+
+  artifacts:
+    paths:
+      - app/build/outputs/
+      - firebase-debug.log
+
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"
+
+  script:
+    - ./gradlew -Dorg.gradle.jvmargs=-Xmx16g --build-cache :app:bundleRelease
+    - chmod +x scripts/ci_release_uploader.sh
+    - AAB_PATH=$(pwd)"/app/build/outputs/bundle/release/app-release.aab"
+    - RELEASE_NOTE=`echo $(git log -n 1 --skip 0 --no-merges --oneline --pretty=format:%s) | tr -d "/'" | tr -d '/"'`
+    - scripts/ci_release_uploader.sh $AAB_PATH $FIREBASE_APP_DISTRIBUTION_REFRESH_TOKEN $FIREBASE_PROJECT_APP_ID $RELEASE_NOTE
+    - echo "Send a message via Email/Telegram later"
