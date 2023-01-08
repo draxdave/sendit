@@ -16,3 +16,4 @@ local.properties
 .idea/inspectionProfiles/
 .ssh/*
 .idea/deploymentTargetDropDown.xml
+firebase-debug.log
