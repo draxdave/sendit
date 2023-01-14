@@ -9,10 +9,15 @@ import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.ShareResponse
-import com.drax.sendit.domain.network.model.SignInRequest
-import com.drax.sendit.domain.network.model.SignInResponse
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
+import com.drax.sendit.domain.network.model.auth.ForgotPasswordRequest
+import com.drax.sendit.domain.network.model.auth.SignUpRequest
+import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
+import com.drax.sendit.domain.network.model.auth.signin.SignInResponse
+import com.drax.sendit.domain.network.model.device.WhoisResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,10 +29,25 @@ import retrofit2.http.Query
 interface ApiService {
 
 
+    @POST("/user/signin_sso")
+    suspend fun signInSso(
+        @Body request: SignInSsoRequest
+    ): Response<ApiResponse<SignInSsoResponse>>
+
     @POST("/user/signin")
     suspend fun signIn(
         @Body request: SignInRequest
     ): Response<ApiResponse<SignInResponse>>
+
+    @POST("/user/signup")
+    suspend fun signUp(
+        @Body request: SignUpRequest
+    ): Response<ApiResponse<Unit>>
+
+    @POST("/user/forget")
+    suspend fun forgotPassword(
+        @Body request: ForgotPasswordRequest
+    ): Response<ApiResponse<Unit>>
 
     @POST("/device/pair")
     suspend fun pair(
@@ -64,7 +84,10 @@ interface ApiService {
     @GET("/device/pair/qr")
     suspend fun getQr(): Response<ApiResponse<GetQRResponse>>
 
-    @PUT("/user/instanceId")
+    @GET("/device/whois")
+    suspend fun getWhois(): Response<ApiResponse<WhoisResponse>>
+
+    @PUT("/device/instanceId")
     suspend fun updateInstanceId(@Body request: UpdateInstanceIdRequest): Response<ApiResponse<Unit>>
 }
 
