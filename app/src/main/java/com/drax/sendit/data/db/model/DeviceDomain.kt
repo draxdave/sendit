@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import java.time.Instant
 
 @Serializable
-data class Device (
+data class DeviceDomain (
     val id: Long,
     val name: String,
     @DevicePlatform val platform: Int,

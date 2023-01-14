@@ -1,7 +1,7 @@
 package com.drax.sendit.view
 
 import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Transaction
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -11,7 +11,7 @@ import java.util.Locale
 data class MessageWrapper(
     val message: Transaction,
 
-    val thisDevice: Device?,
+    val thisDevice: DeviceDomain?,
     val connection: Connection?,
     val isSender: Boolean
 ){

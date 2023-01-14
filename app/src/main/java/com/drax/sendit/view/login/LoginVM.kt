@@ -1,7 +1,7 @@
 package com.drax.sendit.view.login
 
 import app.siamak.sendit.BuildConfig
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
 import com.drax.sendit.data.service.Analytics
@@ -72,7 +72,7 @@ class LoginVM(
         }
     }
 
-    private suspend fun storeLoginData(device: Device, user: User) {
+    private suspend fun storeLoginData(device: DeviceDomain, user: User) {
         storeDevices(device)
         storeUser(user)
     }
@@ -85,7 +85,7 @@ class LoginVM(
         userRepository.addOrUpdateUser(user)
     }
 
-    private suspend fun storeDevices(device: Device) {
+    private suspend fun storeDevices(device: DeviceDomain) {
         deviceRepository.addOrUpdateDevice(device)
     }
 

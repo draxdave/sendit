@@ -1,7 +1,7 @@
 package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.RegistryDao
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.repo.RegistryRepository
@@ -33,8 +33,8 @@ class RegistryRepositoryImpl(
 
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
-    override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE, device)
-    override fun getThisDevice() = registryDao.getRegistryValue(THIS_DEVICE).decode<Device>(json)
+    override suspend fun updateThisDevice(device: DeviceDomain?) = store(THIS_DEVICE, device)
+    override fun getThisDevice() = registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
 
     override suspend fun updateUser(user: User?) {
         store(THIS_USER, user)
