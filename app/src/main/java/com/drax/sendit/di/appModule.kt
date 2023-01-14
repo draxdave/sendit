@@ -38,7 +38,6 @@ import com.drax.sendit.view.util.DeviceInfoHelper
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -56,7 +55,7 @@ val appModule = module {
     viewModel                  {  ConnectionsVM(get(),get(),get(),get())  }
     viewModel                  {  QrVM(get(),get())  }
     viewModel                  {  MessagesVM(get(),get(),get())  }
-    viewModel                  {  LoginVM(get(),get(),get(),get(),get())  }
+    viewModel                  {  LoginVM(get(), get(), get(), get())  }
     viewModel                  {  MainVM(get(), get())  }
     viewModel                  {  ScannerVM()  }
     viewModel                  {  ShareContentVM(get(), get(), get())  }

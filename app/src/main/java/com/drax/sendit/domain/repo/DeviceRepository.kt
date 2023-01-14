@@ -4,6 +4,8 @@ import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.GetQRResponse
+import com.drax.sendit.domain.network.model.device.WhoisModel
+import com.drax.sendit.domain.network.model.device.WhoisResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository: BaseStorageRepository{
@@ -17,4 +19,6 @@ interface DeviceRepository: BaseStorageRepository{
 
     suspend fun storeQRUrl(qrUrl: String)
     fun getQrUrl(): Flow<String?>
+
+    suspend fun getWhois(): Resource<ApiResponse<WhoisResponse>>
 }

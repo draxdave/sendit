@@ -17,32 +17,37 @@ import kotlinx.serialization.json.Json
  * Just define a constant number as record key and then save the value as a String value.
  * Use Gson to make sure the data stays the same while saving and loading.
  */
-class  RegistryRepositoryImpl(
+class RegistryRepositoryImpl(
     private val registryDao: RegistryDao,
     private val json: Json,
-): RegistryRepository {
+) : RegistryRepository {
 
 
-    override suspend fun setFirebaseId(id:String) = registryDao.addOrUpdate(Registry(key = FIREBASE_ID,value = id))
-    override fun getFirebaseId():String? = registryDao.getRegistryValueSync(FIREBASE_ID)
+    override suspend fun setFirebaseId(id: String) =
+        registryDao.addOrUpdate(Registry(key = FIREBASE_ID, value = id))
 
-    override suspend fun updateToken(token: String) = registryDao.addOrUpdate(Registry(key = API_TOKEN,value = token))
+    override fun getFirebaseId(): String? = registryDao.getRegistryValueSync(FIREBASE_ID)
+
+    override suspend fun updateToken(token: String) =
+        registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token))
+
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
-    override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE,device)
-    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<Device>(json)
+    override suspend fun updateThisDevice(device: Device?) = store(THIS_DEVICE, device)
+    override fun getThisDevice() = registryDao.getRegistryValue(THIS_DEVICE).decode<Device>(json)
 
-    override suspend fun updateUser(user: User?){
+    override suspend fun updateUser(user: User?) {
         store(THIS_USER, user)
     }
-    override fun getUser() =  registryDao.getRegistryValue(THIS_USER).decode<User>(json)
+
+    override fun getUser() = registryDao.getRegistryValue(THIS_USER).decode<User>(json)
 
     override suspend fun updateQrUrl(qrUrl: String?) = store(QR_URL, qrUrl)
 
 
-    override fun getQrUrl() =  registryDao.getRegistryValue(QR_URL).decode<String>(json)
+    override fun getQrUrl() = registryDao.getRegistryValue(QR_URL).decode<String>(json)
 
-    private inline fun <reified T> store(key: String, value: T?){
+    private inline fun <reified T> store(key: String, value: T?) {
         registryDao.addOrUpdate(
             Registry(key = key, value = value.encode<T>(json))
         )
@@ -55,7 +60,7 @@ class  RegistryRepositoryImpl(
         updateUser(null)
     }
 
-    companion object{
+    companion object {
         private const val FIREBASE_ID = "FIREBASE_ID"
         private const val API_TOKEN = "API_TOKEN"
         private const val THIS_DEVICE = "THIS_DEVICE"
@@ -64,17 +69,15 @@ class  RegistryRepositoryImpl(
     }
 }
 
-private inline fun <reified T> Flow<String?>.decode(json:Json): Flow<T?> {
+private inline fun <reified T> Flow<String?>.decode(json: Json): Flow<T?> {
 
     return map {
-        if(it == null) null
-        else
-            json.decodeFromString<T>(it)
+        json.decodeFromString<T>(it ?: return@map null)
     }
 }
 
-private inline fun <reified T> T?.encode(json:Json): String? {
-    return if(this == null) null
+private inline fun <reified T> T?.encode(json: Json): String? {
+    return if (this == null) null
     else
         json.encodeToString(this)
 }

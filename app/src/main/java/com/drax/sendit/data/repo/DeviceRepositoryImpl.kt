@@ -4,6 +4,7 @@ import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
+import com.drax.sendit.domain.network.model.device.WhoisModel
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 
@@ -38,5 +39,7 @@ class DeviceRepositoryImpl(
 
     override fun getQrUrl() = registryRepository.getQrUrl()
 
-
+    override suspend fun getWhois() = NetworkCall {
+        apiService.getWhois()
+    }.fetch()
 }

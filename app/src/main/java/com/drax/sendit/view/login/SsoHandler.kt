@@ -16,8 +16,7 @@ import app.siamak.sendit.R
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.data.service.SenditFirebaseService
-import com.drax.sendit.domain.network.model.SignInRequest
-import com.drax.sendit.domain.network.model.type.UserSex
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.ifNotNull
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -30,7 +29,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import java.time.Instant
 
 class SsoHandler(
     private val analytics: Analytics,
@@ -220,16 +218,10 @@ class SsoHandler(
         }
     }
 
-    private fun GoogleSignInAccount.toSignInRequest(): SignInRequest? =
+    private fun GoogleSignInAccount.toSignInRequest(): SignInSsoRequest? =
         email.ifNotNull(id, idToken) {
-            SignInRequest(
-                firstName = givenName ?: displayName ?: "User Name",
-                lastName = familyName ?: displayName ?: "N/A",
-                fullName = displayName ?: "N/A",
+            SignInSsoRequest(
                 email = email!!,
-                sex = UserSex.UserSex_NONE,
-                birthDate = Instant.now(),
-                avatarUrl = photoUrl.toString(),
                 deviceId = deviceInfoHelper.getId(),
                 instanceId = id!!,
                 tokenId = idToken!!
@@ -239,14 +231,8 @@ class SsoHandler(
     private fun SignInCredential.toSignInRequest(
         instanceId: String,
         idToken: String
-    ): SignInRequest = SignInRequest(
-        firstName = givenName ?: displayName ?: "User Name",
-        lastName = familyName ?: displayName ?: "N/A",
-        fullName = displayName ?: "N/A",
+    ): SignInSsoRequest = SignInSsoRequest(
         email = id,
-        sex = UserSex.UserSex_NONE,
-        birthDate = Instant.now(),
-        avatarUrl = profilePictureUri.toString(),
         deviceId = deviceInfoHelper.getId(),
         instanceId = instanceId,
         tokenId = idToken
@@ -255,5 +241,5 @@ class SsoHandler(
 
 sealed class SsoEvent {
     data class SignInFailed(val stringId: Int) : SsoEvent()
-    data class SignSucceed(val request: SignInRequest?) : SsoEvent()
+    data class SignSucceed(val request: SignInSsoRequest?) : SsoEvent()
 }

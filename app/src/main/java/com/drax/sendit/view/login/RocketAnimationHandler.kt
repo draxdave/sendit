@@ -49,6 +49,7 @@ class RocketAnimationHandler(
     private fun startPreLaunch() {
         stopAndClear()
         with(R.drawable.rocket_pre_luaching.asVectorAnimated()) {
+            ivRocketAnimated.alpha = 1f
             ivRocketAnimated.setImageDrawable(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 registerAnimationCallback(object : Animatable2.AnimationCallback() {
