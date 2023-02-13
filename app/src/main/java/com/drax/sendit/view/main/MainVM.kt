@@ -23,7 +23,7 @@ class MainVM(
     init {
         job {
             userRepository.getUser().collect { user ->
-                _uiState.update {
+                _uiState.tryEmit(
                     when {
                         user == null || deviceRepository.getSelfDevice().firstOrNull() == null
                         -> MainUiState.UserSignedOut
@@ -32,7 +32,7 @@ class MainVM(
                             MainUiState.UserSignedIn
                         }
                     }
-                }
+                )
             }
         }
     }

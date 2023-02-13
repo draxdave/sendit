@@ -17,5 +17,5 @@ data class WhoisModel(
 
 fun WhoisResponse.toWhoisModel() = WhoisModel(
     user = user,
-    device = device
+    device = device.copy(isThisDevice = true)
 )

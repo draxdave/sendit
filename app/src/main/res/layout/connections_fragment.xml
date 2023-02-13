@@ -49,7 +49,6 @@
                         style="@style/comment_text"
                         android:id="@+id/lastUsed"
                         android:layout_margin="@dimen/_16sdp"
-                        android:text="@{@string/last_used(model.deviceDomain.lastTouch)}"
                         tools:text="Last used: 5 May 10:35"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -61,7 +60,6 @@
                         style="@style/light_text"
                         tools:text="Xiaomi redmi 9 pro"
                         android:id="@+id/deviceName"
-                        android:text="@{@string/device_name(model.deviceDomain.name)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -99,6 +97,7 @@
                         app:tint="@color/colorPrimary" />
 
                     <ImageView
+                        android:id="@+id/deviceIcon"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +105,6 @@
                         android:layout_margin="@dimen/_16sdp"
                         android:layout_width="128dp"
                         android:layout_height="128dp"
-                        img="@{model.deviceDomain.iconUrl}"
                         />
 
                     <ImageView

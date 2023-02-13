@@ -20,7 +20,7 @@ import com.drax.sendit.data.db.model.Transaction
         Transaction::class,
         Connection::class
     ],
-    version = 19,
+    version = 25,
     exportSchema = false
 )
 @TypeConverters(TimeConverters::class)
