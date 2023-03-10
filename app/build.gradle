@@ -68,9 +68,9 @@ android {
             }
             applicationIdSuffix '.sendit'
             buildConfigField "String", "BASE_URL", localProperties['production_server_url']
-            buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientId']
+            buildConfigField "String", "ONETAP_CLIENT_ID", localProperties['oneTapGoogleSignInServerClientIdPrd']
             minifyEnabled true
-            debuggable false
+            debuggable true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release

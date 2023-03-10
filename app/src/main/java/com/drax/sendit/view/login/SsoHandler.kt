@@ -50,11 +50,6 @@ class SsoHandler(
     fun launchOneTapSignIn(activity: Activity) {
         oneTapClient = Identity.getSignInClient(activity)
         signInRequest = BeginSignInRequest.builder()
-            .setPasswordRequestOptions(
-                BeginSignInRequest.PasswordRequestOptions.builder()
-                    .setSupported(true)
-                    .build()
-            )
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)

@@ -10,7 +10,7 @@ class Analytics(
 ) {
 
     fun set(event: Event){
-        if (!BuildConfig.DEBUG)
+//        if (!BuildConfig.DEBUG)
             firebaseAnalytics.logEvent(event.category, event.params)
     }
 }
