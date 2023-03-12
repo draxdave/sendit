@@ -1,17 +1,16 @@
 package com.drax.sendit.domain.repo
 
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.GetQRResponse
-import com.drax.sendit.domain.network.model.device.WhoisModel
 import com.drax.sendit.domain.network.model.device.WhoisResponse
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository: BaseStorageRepository{
 
-    suspend fun addOrUpdateDevice(device: Device)
-    fun getSelfDevice(): Flow<Device?>
+    suspend fun addOrUpdateDevice(device: DeviceDomain)
+    fun getSelfDevice(): Flow<DeviceDomain?>
     suspend fun storeToken(token: String)
     suspend fun updateInstanceId(instanceId: String)
     fun getApiToken(): String?

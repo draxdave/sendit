@@ -31,6 +31,7 @@ class NetworkCall<ResultType>(
             } ?: Resource.ERROR(response.code())
         }
     } catch (e: Exception) {
+        e.printStackTrace()
         Resource.ERROR(-1)
     }
 }

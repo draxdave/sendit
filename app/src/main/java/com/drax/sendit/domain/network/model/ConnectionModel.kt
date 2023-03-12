@@ -1,24 +1,20 @@
 package com.drax.sendit.domain.network.model
 
-import com.drax.sendit.data.model.InstantSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.Instant
 
 @Serializable
 data class ConnectionModel (
-    val id: String,
+    val id: Int,
 
-    @SerialName("connect_date") @Serializable(with = InstantSerializer::class)
-    val connectDate: Instant,
+    @SerialName("connect_date") val connectDate: Long,
 
-    @SerialName("connector_id") val connectorId: String,
-    @SerialName("connectee_id") val connecteeId: String,
-    val status: String,
-    val type: String,
+    @SerialName("connector_id") val connectorId: Int,
+    @SerialName("connectee_id") val connecteeId: Int,
+    val status: Int,
+    val type: Int,
 
-    @SerialName("last_used") @Serializable(with = InstantSerializer::class)
-    val lastUsed: Instant,
+    @SerialName("last_used") val lastUsed: Long,
 
     val meta: String
 )

@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import app.siamak.sendit.R

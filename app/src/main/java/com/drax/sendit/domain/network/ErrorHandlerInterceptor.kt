@@ -27,44 +27,6 @@ class ErrorHandlerInterceptor(
 
         val response = try {
             return chain.proceed(request)
-//            val initResponse = chain.proceed(request)
-//
-//            when (initResponse.code) {
-//                BadRequest -> {
-//                    Exception("Error 400:" + initResponse.body?.string()).printStackTrace()
-//                    ErrorResponse( // Missing Required field(s
-//                        BadRequest,
-//                    )
-//                        .toResponse()
-//
-//                }
-//                in UnControlledBadRequest -> {
-//                    Exception("Error 402:" + initResponse.body?.string()).printStackTrace()
-//                    ErrorResponse( // Missing Required field(s
-//                        BadRequest,
-//                    )
-//                        .toResponse()
-//
-//                }
-//                in UnControlledRedirection -> {
-//                    Exception("Error 300:" + initResponse.body?.string()).printStackTrace()
-//                    ErrorResponse( // Missing Required field(s
-//                        UnControlledRedirection.first
-//                    )
-//                        .toResponse()
-//
-//
-//                }
-//                in UnControlledServerError -> {
-//                    Exception("Error 500:" + initResponse.body?.string()).printStackTrace()
-//                    ErrorResponse(UnControlledServerError.first).toResponse()
-//
-//
-//                }
-//                else -> {
-//                    initResponse
-//                }
-//            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
