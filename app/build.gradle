@@ -21,8 +21,8 @@ android {
     compileSdk 33
     def versionMajor = 1
     def versionMinor = 3
-    def versionPatch = 0
-    def appVersionCode = 10300
+    def versionPatch = 1
+    def appVersionCode = 10310
     def apiVersion = 2
 
     signingConfigs {
