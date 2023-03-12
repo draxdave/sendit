@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import kotlinx.serialization.json.Json
 
 class SsoHandler(
     private val analytics: Analytics,
@@ -191,10 +192,20 @@ class SsoHandler(
         googleAuthCallback =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result: ActivityResult ->
+                val gson = Json { ignoreUnknownKeys = true }
                 if (result.resultCode == AppCompatActivity.RESULT_OK && result.data != null) {
                     val task: Task<GoogleSignInAccount> =
                         GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     handleSignInResult(task)
+                } else {
+                    val list = result.data?.extras?.keySet()?.map { it to (result.data?.extras?.get(it) ?: "null") }
+
+                    Log.d("list", list.toString())
+
+                    result.data?.let {
+                        Log.e(tag, "Google sign in failed: ${it.getStringExtra("com.google.android.gms.auth.api.signin.EXTRA_SIGN_IN_FAILURE")}")
+                        onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
+                    }
                 }
             }
     }

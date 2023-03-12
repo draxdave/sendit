@@ -14,15 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "407813379503-pvv68qq0bp15rkcaf54s966n77i8e6l8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "app.siamak.senditdebug",
-            "certificate_hash": "06f91ce25e0784c9d233aac6965696b77baa605e"
-          }
-        },
-        {
-          "client_id": "407813379503-3dqdao3gk13onkfi0b8d0ckljkjq63t3.apps.googleusercontent.com",
+          "client_id": "407813379503-e87sk4s7pg5373kis43qrjihr1rb66lk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

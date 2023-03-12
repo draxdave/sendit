@@ -26,8 +26,8 @@
     <string name="last_used">Last Used: %s</string>
     <string name="scan">Scan</string>
     <string name="scanner">Scanner</string>
-    <string name="invitation_sent_title">Invitation Sent Successfully.</string>
-    <string name="invitation_sent_desc">Please wait for the other party to respond to your request.</string>
+    <string name="invitation_sent_title">The Connection Request Is Sent!</string>
+    <string name="invitation_sent_desc">You will see the new connection on \'Devices\' soon.</string>
     <string name="new_invitation">New Pair Request</string>
     <string name="new_invitation_desc"><b>%s</b> wants to connect and send you messages.\nDo you accept the invitation?</string>
     <string name="new_invitation_accept"><b>Yes</b>, Accept the invitation</string>
