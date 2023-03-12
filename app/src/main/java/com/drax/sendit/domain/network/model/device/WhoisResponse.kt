@@ -1,21 +1,21 @@
 package com.drax.sendit.domain.network.model.device
 
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.User
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class WhoisResponse(
     val user: User,
-    val device: Device,
+    val device: DeviceDomain,
 )
 
 data class WhoisModel(
     val user: User,
-    val device: Device,
+    val device: DeviceDomain,
 )
 
 fun WhoisResponse.toWhoisModel() = WhoisModel(
     user = user,
-    device = device
+    device = device.copy(isThisDevice = true)
 )

@@ -46,7 +46,9 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
                 is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {
                     DeviceWrapper(it)
                 })
-                ShareContentUiState.NoConnectionsAvailable -> modal(ModalMessage.Neutral(R.string.no_connected_devices))
+                ShareContentUiState.NoConnectionsAvailable -> {
+//                    modal(ModalMessage.Neutral(R.string.no_connected_devices))
+                }
                 ShareContentUiState.SharingDone -> {
                     analytics.set(Event.Share.Sent)
                     modal(ModalMessage.Success(R.string.share_success)) {

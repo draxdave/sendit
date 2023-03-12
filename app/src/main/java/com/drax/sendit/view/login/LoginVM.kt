@@ -1,7 +1,8 @@
 package com.drax.sendit.view.login
 
+import android.util.Log
 import app.siamak.sendit.BuildConfig
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
 import com.drax.sendit.data.service.Analytics
@@ -20,6 +21,7 @@ import com.drax.sendit.view.util.job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.job
 
 class LoginVM(
     private val authRepository: AuthRepository,
@@ -65,14 +67,14 @@ class LoginVM(
     private suspend fun getWhois(): WhoisModel? {
         return when (val result = deviceRepository.getWhois()) {
             is Resource.ERROR -> {
-                _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
+                _uiState.tryEmit(LoginUiState.LoginFailed(result.errorCode))
                 null
             }
             is Resource.SUCCESS -> result.data.data?.toWhoisModel()
         }
     }
 
-    private suspend fun storeLoginData(device: Device, user: User) {
+    private suspend fun storeLoginData(device: DeviceDomain, user: User) {
         storeDevices(device)
         storeUser(user)
     }
@@ -85,7 +87,7 @@ class LoginVM(
         userRepository.addOrUpdateUser(user)
     }
 
-    private suspend fun storeDevices(device: Device) {
+    private suspend fun storeDevices(device: DeviceDomain) {
         deviceRepository.addOrUpdateDevice(device)
     }
 
@@ -147,20 +149,19 @@ class LoginVM(
 
                 )
             )
-            _uiState.update {
 
-                when (result) {
-                    is Resource.ERROR -> LoginUiState.LoginFailed(result.errorCode)
-                    is Resource.SUCCESS -> {
+            when (result) {
+                is Resource.ERROR -> _uiState.update { LoginUiState.LoginFailed(result.errorCode) }
+                is Resource.SUCCESS -> {
 
-                        authorised(
-                            result.data.data?.token ?: return@update LoginUiState.LoginFailed()
-                        )
+                    val uiState = result.data.data?.token?.let {
+                        authorised(it)
                         LoginUiState.LoginSucceed
-                    }
+                    } ?: LoginUiState.LoginFailed()
+                    _uiState.update { uiState }
                 }
             }
-
         }
+
     }
 }

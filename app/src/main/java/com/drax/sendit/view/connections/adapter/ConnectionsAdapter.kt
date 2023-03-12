@@ -5,20 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import app.siamak.sendit.R
 import com.drax.sendit.data.db.model.Connection
 import app.siamak.sendit.databinding.ItemDeviceBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.drax.sendit.domain.network.model.type.ConnectionStatus
 import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.DeviceWrapper
 
 class ConnectionsAdapter(
-    private val unpair : (Long) -> Unit
+    private val unpair: (Long) -> Unit
 ) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
     diffCallback
-)
-{
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = DeviceViewHolder(ItemDeviceBinding.inflate(LayoutInflater.from(parent.context)), unpair)
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        DeviceViewHolder(ItemDeviceBinding.inflate(LayoutInflater.from(parent.context)), unpair)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
@@ -32,7 +34,10 @@ class ConnectionsAdapter(
             override fun areItemsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
                 oldItem.connection.id == newItem.connection.id
 
-            override fun areContentsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
+            override fun areContentsTheSame(
+                oldItem: DeviceWrapper,
+                newItem: DeviceWrapper
+            ): Boolean =
                 oldItem == newItem
         }
     }
@@ -40,17 +45,23 @@ class ConnectionsAdapter(
     fun newList(connectionList: List<DeviceWrapper>) {
         submitList(connectionList)
     }
-
 }
-class DeviceViewHolder(private val binding: ItemDeviceBinding, private val unpair: (Long) -> Unit)
-    : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindTo(deviceItem : DeviceWrapper) {
+class DeviceViewHolder(private val binding: ItemDeviceBinding, private val unpair: (Long) -> Unit) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    fun bindTo(deviceItem: DeviceWrapper) {
         with(binding) {
             deviceWrapper = deviceItem
             remove.setOnClickListener {
                 unpair(deviceItem.connection.id)
             }
+            Glide.with(icon)
+                .load(deviceItem.connection.iconUrl)
+                .placeholder(R.drawable.default_device_placeholder)
+                .error(R.drawable.default_device_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(icon)
             executePendingBindings()
         }
     }

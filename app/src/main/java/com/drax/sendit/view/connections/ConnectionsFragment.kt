@@ -6,14 +6,18 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.ConnectionsFragmentBinding
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.connections.adapter.ConnectionsAdapter
 import com.drax.sendit.view.connections.unpair.UnpairFragment
+import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -32,6 +36,24 @@ class ConnectionsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        val context = context ?: return
+        viewModel.device.filterNotNull()
+            .map {
+                DeviceTransformer.toUiModel(context, it)
+            }
+            .observe(viewLifecycleOwner){
+            updateDeviceUi(it)
+        }
+    }
+
+    private fun updateDeviceUi(deviceDomain: DeviceUiModel) = with(binding) {
+        deviceIcon.loadImageFromUri(deviceDomain.iconUrl)
+        lastUsed.text = deviceDomain.lastTouch
+        deviceName.text = deviceDomain.name
     }
 
     private fun initView() {

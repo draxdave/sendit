@@ -7,8 +7,6 @@ import com.drax.sendit.domain.network.model.GetConnectionResponse
 import com.drax.sendit.domain.network.model.GetConnectionsResponse
 import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
-import com.drax.sendit.domain.network.model.PairResponseRequest
-import com.drax.sendit.domain.network.model.PairResponseResponse
 import com.drax.sendit.domain.network.model.UnpairRequest
 import kotlinx.coroutines.flow.Flow
 

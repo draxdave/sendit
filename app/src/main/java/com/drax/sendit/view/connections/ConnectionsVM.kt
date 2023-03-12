@@ -3,11 +3,8 @@ package com.drax.sendit.view.connections
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import app.siamak.sendit.R
-import com.drax.sendit.data.db.model.Device
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
-import com.drax.sendit.domain.network.model.PairResponseRequest
-import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
@@ -21,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 
 class ConnectionsVM @Inject constructor(
     private val connectionRepository: ConnectionRepository,
@@ -33,7 +29,7 @@ class ConnectionsVM @Inject constructor(
     private val _uiState = MutableStateFlow<ConnectionUiState>(ConnectionUiState.Neutral)
     val uiState: StateFlow<ConnectionUiState> = _uiState
     val user: LiveData<User?> = userRepository.getUser().asLiveData()
-    val device: LiveData<Device?> = deviceRepository.getSelfDevice().asLiveData()
+    val device = deviceRepository.getSelfDevice()
 
     init {
         job(Dispatchers.Default) {
@@ -99,4 +95,8 @@ class ConnectionsVM @Inject constructor(
     }
 
     private suspend fun emptyConnections() = connectionRepository.emptyConnections()
+
+    companion object {
+        const val DEFAULT_DEVICE_PLACEHOLDER = R.drawable.default_device_placeholder
+    }
 }

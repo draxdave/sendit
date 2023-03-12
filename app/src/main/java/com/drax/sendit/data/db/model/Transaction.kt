@@ -2,13 +2,11 @@ package com.drax.sendit.data.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.drax.sendit.data.model.InstantSerializer
 import com.drax.sendit.domain.network.model.type.TransactionContentType
 import com.drax.sendit.domain.network.model.type.TransactionStatus
 import com.drax.sendit.domain.network.model.type.TransactionType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.Instant
 
 @Entity
 @Serializable
@@ -22,16 +20,13 @@ data class Transaction(
     @SerialName("connection_id")
     val connectionId: Long,
 
-    @SerialName("send_date")
-    @Serializable(with = InstantSerializer::class) val sendDate: Instant,
+    @SerialName("send_date") val sendDate: Long,
 
-    @SerialName("deliver_date")
-    @Serializable(with = InstantSerializer::class) val deliverDate: Instant?,
+    @SerialName("deliver_date") val deliverDate: Long?,
     val content: String,
     @TransactionStatus val status: Int,
 
-    @SerialName("last_update")
-    @Serializable(with = InstantSerializer::class)  val lastUpdate: Instant,
+    @SerialName("last_update") val lastUpdate: Long,
     val meta: String,
 
     @TransactionContentType

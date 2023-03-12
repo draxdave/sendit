@@ -1,10 +1,9 @@
 package com.drax.sendit.data.repo
 
-import com.drax.sendit.data.db.model.Device
+import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
-import com.drax.sendit.domain.network.model.device.WhoisModel
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 
@@ -14,7 +13,7 @@ class DeviceRepositoryImpl(
     private val apiService: ApiService
 
 ) : DeviceRepository {
-    override suspend fun addOrUpdateDevice(device: Device) =
+    override suspend fun addOrUpdateDevice(device: DeviceDomain) =
         registryRepository.updateThisDevice(device)
 
     override fun getSelfDevice() = registryRepository.getThisDevice()
