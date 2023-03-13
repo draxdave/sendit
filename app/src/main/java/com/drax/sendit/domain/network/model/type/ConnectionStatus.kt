@@ -13,7 +13,7 @@ import androidx.annotation.IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class ConnectionStatus {
 
-    companion object{
+    companion object {
         const val ConnectionStatus_ACTIVE = 200
         const val ConnectionStatus_PENDING = 301
         const val ConnectionStatus_DISCONNECTED = 302

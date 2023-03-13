@@ -10,7 +10,7 @@ import com.drax.sendit.domain.network.model.PairResponse
 import com.drax.sendit.domain.network.model.UnpairRequest
 import kotlinx.coroutines.flow.Flow
 
-interface ConnectionRepository: BaseStorageRepository{
+interface ConnectionRepository : BaseStorageRepository {
     fun getConnections(onlyActive: Boolean): Flow<List<Connection>>
     fun getConnectionsFromServer(): Flow<Resource<ApiResponse<GetConnectionsResponse>>>
     fun getConnectionFromServer(id: String): Flow<Resource<ApiResponse<GetConnectionResponse>>>

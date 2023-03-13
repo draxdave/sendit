@@ -13,17 +13,17 @@ import okhttp3.Response
 @Singleton
 class HeaderInterceptor @Inject constructor(
     private val registryRepository: RegistryRepository,
-                                            private val deviceInfoHelper: DeviceInfoHelper,
-): Interceptor {
+    private val deviceInfoHelper: DeviceInfoHelper,
+) : Interceptor {
 
     private val apiToken: String
         get() = registryRepository.getApiToken() ?: ""
 
     private val headers by lazy {
         Headers.headersOf(
-            "lang" , "en",
+            "lang", "en",
             "app-version", BuildConfig.VERSION_CODE.toString(),
-            "region","hk",
+            "region", "hk",
             "device-platform", deviceInfoHelper.platform.toString(),
             "device-platform-version", deviceInfoHelper.platformVersion.toString(),
             "device-model", deviceInfoHelper.model

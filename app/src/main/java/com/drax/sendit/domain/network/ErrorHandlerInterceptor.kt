@@ -3,6 +3,11 @@ package com.drax.sendit.domain.network
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.ErrorResponse
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -11,11 +16,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.HttpException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class ErrorHandlerInterceptor @Inject constructor(

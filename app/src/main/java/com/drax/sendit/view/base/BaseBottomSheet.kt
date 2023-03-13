@@ -14,9 +14,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
 
-abstract class  BaseBottomSheet<out T: ViewDataBinding, E : ViewModel>(
-    private val inflate:Inflate<T>
-) : BottomSheetDialogFragment(){
+abstract class BaseBottomSheet<out T : ViewDataBinding, E : ViewModel>(
+    private val inflate: Inflate<T>
+) : BottomSheetDialogFragment() {
     @Inject
     lateinit var analytics: Analytics
 
@@ -34,15 +34,15 @@ abstract class  BaseBottomSheet<out T: ViewDataBinding, E : ViewModel>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflate.invoke(inflater,container,false).apply {
+        return inflate.invoke(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.model,viewModel)
+            setVariable(BR.model, viewModel)
             _binding = this
         }.root
     }
 
 
-    fun setResultAndDismiss(tag: String, bundleOf: Bundle){
+    fun setResultAndDismiss(tag: String, bundleOf: Bundle) {
         setFragmentResult(tag, bundleOf)
         dismissAllowingStateLoss()
     }

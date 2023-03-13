@@ -25,7 +25,7 @@ data class DeviceUiModel(
 )
 
 object DeviceTransformer {
-    private val DATE_FORMAT="hh:mm a - MMM dd ,yyyy"
+    private val DATE_FORMAT = "hh:mm a - MMM dd ,yyyy"
     fun toUiModel(context: Context, device: DeviceDomain) = DeviceUiModel(
         id = device.id,
         name = context.getString(R.string.device_name, device.name),
@@ -39,7 +39,10 @@ object DeviceTransformer {
         platformVersion = device.platformVersion,
         appVersion = device.appVersion,
         languageCode = device.languageCode,
-        lastTouch = context.getString(R.string.last_used, device.lastTouch.formatToDate(DATE_FORMAT)),
+        lastTouch = context.getString(
+            R.string.last_used,
+            device.lastTouch.formatToDate(DATE_FORMAT)
+        ),
         isThisDevice = device.isThisDevice,
     )
 }

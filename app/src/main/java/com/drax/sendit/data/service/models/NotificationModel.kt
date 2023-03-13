@@ -4,16 +4,16 @@ import app.siamak.sendit.R
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NotificationModel (
-    val id                  : Int = System.currentTimeMillis().toInt(),
-    val icon                : Int,
-    val isSticky            : Boolean,
-    val title               : Int,
-    val text                : Int,
-    val vibrate             : Boolean,
-    val content             : String? = null,
+data class NotificationModel(
+    val id: Int = System.currentTimeMillis().toInt(),
+    val icon: Int,
+    val isSticky: Boolean,
+    val title: Int,
+    val text: Int,
+    val vibrate: Boolean,
+    val content: String? = null,
     val data: NotificationData? = null
-): java.io.Serializable{
+) : java.io.Serializable {
     companion object {
 
         fun default(
@@ -45,6 +45,7 @@ data class NotificationModel (
 }
 
 @Serializable
-sealed class NotificationData: java.io.Serializable {
-    data class Transaction( val transaction: com.drax.sendit.data.db.model.Transaction): NotificationData()
+sealed class NotificationData : java.io.Serializable {
+    data class Transaction(val transaction: com.drax.sendit.data.db.model.Transaction) :
+        NotificationData()
 }

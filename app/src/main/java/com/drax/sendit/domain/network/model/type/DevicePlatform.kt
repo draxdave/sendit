@@ -15,7 +15,7 @@ import com.drax.sendit.domain.network.model.type.DevicePlatform.Companion.Device
 @Retention(AnnotationRetention.SOURCE)
 annotation class DevicePlatform {
 
-    companion object{
+    companion object {
         const val DevicePlatform_ANDROID = 1
         const val DevicePlatform_IOS = 2
         const val DevicePlatform_WEB = 3

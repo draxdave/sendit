@@ -6,8 +6,6 @@
     <color name="colorPrimaryText">#333131</color>
     <color name="colorSecondaryText">#349a4f</color>
 
-    <color name="darkerGray">#37383C</color>
-    <color name="blur">#1AFFFFFF</color>
     <color name="darkBlur">#9A000000</color>
     <color name="darkerBlur">#8A000000</color>
 
@@ -15,25 +13,18 @@
     <color name="aqua200">#448AFF</color>
     <color name="receiverTextBackground">#ffffff</color>
     <color name="senderTextBackground">#e7ffdb</color>
-    <color name="blueA200">#40C4FF</color>
     <color name="low_white">#E3E3E3</color>
-    <color name="white">#FFFFFF</color>
     <color name="warning">#FFB300</color>
     <color name="warning_warmer">#FB8C00</color>
     <color name="gray">#A8AAB6</color>
     <color name="black">@color/raisin_black</color>
 
-    <color name="main_text_light">#2B2B2B</color>
     <color name="main_text_lighter">#515151</color>
 
 
-
     <!-- PALETTE -->
-    <color name="olivine" >#b6d094</color>
-    <color name="fawn" >#e1aa7d</color>
     <color name="antique_brass">#be8a60</color>
-    <color name="wine" >#6a2e35</color>
+    <color name="wine">#6a2e35</color>
     <color name="raisin_black">#2e2836</color>
-    <color name="raisin_black_light">#3C3645</color>
 
 </resources>

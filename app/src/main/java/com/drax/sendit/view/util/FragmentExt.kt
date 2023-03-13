@@ -1,7 +1,6 @@
 package com.drax.sendit.view.util
 
 import android.content.Context
-import android.view.View
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView

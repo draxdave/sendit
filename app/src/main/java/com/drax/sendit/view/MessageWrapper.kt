@@ -4,10 +4,6 @@ import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Transaction
 import formatToDate
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.util.Calendar
-import java.util.Locale
 
 data class MessageWrapper(
     val message: Transaction,
@@ -15,10 +11,10 @@ data class MessageWrapper(
     val thisDevice: DeviceDomain?,
     val connection: Connection?,
     val isSender: Boolean
-){
+) {
     val addedDate = message.sendDate.formatToDate(dateFormat)
 
-    companion object{
+    companion object {
         private const val dateFormat = "MMMM dd HH:mm"
     }
 }

@@ -1,6 +1,5 @@
 package com.drax.sendit.view.login
 
-import android.util.Log
 import app.siamak.sendit.BuildConfig
 import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.Resource
@@ -20,11 +19,9 @@ import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.job
 
 @HiltViewModel
 class LoginVM @Inject constructor(

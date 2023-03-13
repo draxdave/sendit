@@ -12,11 +12,11 @@ class ShareConnectionsAdapter(
     private val onClick: (DeviceWrapper) -> Unit,
 ) : ListAdapter<DeviceWrapper, RecyclerView.ViewHolder>(
     diffCallback
-)
-{
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = ShareConnectionsVH(ItemShareConnectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-        onClick)
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ShareConnectionsVH(
+        ItemShareConnectionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+        onClick
+    )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
@@ -30,18 +30,22 @@ class ShareConnectionsAdapter(
             override fun areItemsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
                 oldItem.connection.id == newItem.connection.id
 
-            override fun areContentsTheSame(oldItem: DeviceWrapper, newItem: DeviceWrapper): Boolean =
+            override fun areContentsTheSame(
+                oldItem: DeviceWrapper,
+                newItem: DeviceWrapper
+            ): Boolean =
                 oldItem == newItem
         }
     }
 
 }
+
 class ShareConnectionsVH(
     private val binding: ItemShareConnectionBinding,
     private val onClick: (DeviceWrapper) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindTo(deviceItem : DeviceWrapper) {
+    fun bindTo(deviceItem: DeviceWrapper) {
         with(binding) {
             deviceWrapper = deviceItem
             root.setOnClickListener { onClick.invoke(deviceItem) }

@@ -8,7 +8,7 @@ import com.drax.sendit.domain.network.model.type.PairResponseType.Companion.Pair
 @Retention(AnnotationRetention.SOURCE)
 annotation class PairResponseType {
 
-    companion object{
+    companion object {
         const val PairResponseType_ACCEPT = 200
         const val PairResponseType_DECLINE = 100
     }

@@ -1,12 +1,12 @@
 package com.drax.sendit.data.model
 
 import com.drax.sendit.domain.network.InstantDeserializer
+import java.time.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import java.time.Instant
 
 
 object InstantSerializer : KSerializer<Instant> {

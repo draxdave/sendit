@@ -15,11 +15,12 @@ import javax.inject.Inject
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
-abstract class  BaseFragment<out T: ViewDataBinding, E : ViewModel>(
-    private val inflate:Inflate<T>
-) : Fragment(){
+abstract class BaseFragment<out T : ViewDataBinding, E : ViewModel>(
+    private val inflate: Inflate<T>
+) : Fragment() {
 
-    @Inject lateinit var analytics: Analytics
+    @Inject
+    lateinit var analytics: Analytics
     protected abstract val viewModel: E
 
     private var _binding: T? = null
@@ -34,9 +35,9 @@ abstract class  BaseFragment<out T: ViewDataBinding, E : ViewModel>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflate.invoke(inflater,container,false).apply {
+        return inflate.invoke(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            setVariable(BR.model,viewModel)
+            setVariable(BR.model, viewModel)
             _binding = this
         }.root
     }

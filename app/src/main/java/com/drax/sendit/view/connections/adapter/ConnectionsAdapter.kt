@@ -6,12 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.siamak.sendit.R
-import com.drax.sendit.data.db.model.Connection
 import app.siamak.sendit.databinding.ItemDeviceBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.drax.sendit.domain.network.model.type.ConnectionStatus
-import com.drax.sendit.domain.network.model.type.PairResponseType
 import com.drax.sendit.view.DeviceWrapper
 
 class ConnectionsAdapter(

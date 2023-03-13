@@ -9,7 +9,7 @@ import com.drax.sendit.domain.network.model.type.DeviceStatus.Companion.DeviceSt
 @Retention(AnnotationRetention.SOURCE)
 annotation class DeviceStatus {
 
-    companion object{
+    companion object {
         const val DeviceStatus_ACTIVE = 200
         const val DeviceStatus_BLOCKED = 301
         const val DeviceStatus_SIGNOUT = 401

@@ -19,7 +19,7 @@ class MessagesVM @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository,
     private val deviceRepository: DeviceRepository,
-): ResViewModel() {
+) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<MessagesUiState>(MessagesUiState.Neutral)
     val uiState: StateFlow<MessagesUiState> = _uiState

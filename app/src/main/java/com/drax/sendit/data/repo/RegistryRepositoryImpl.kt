@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
  * Use Gson to make sure the data stays the same while saving and loading.
  */
 @Singleton
-class  RegistryRepositoryImpl @Inject constructor(
+class RegistryRepositoryImpl @Inject constructor(
     private val registryDao: RegistryDao,
     private val json: Json,
 ) : RegistryRepository {
@@ -36,8 +36,9 @@ class  RegistryRepositoryImpl @Inject constructor(
 
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
-    override suspend fun updateThisDevice(device: DeviceDomain?) = store(THIS_DEVICE,device)
-    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
+    override suspend fun updateThisDevice(device: DeviceDomain?) = store(THIS_DEVICE, device)
+    override fun getThisDevice() =
+        registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
 
     override suspend fun updateUser(user: User?) {
         store(THIS_USER, user)

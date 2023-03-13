@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
-import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.TransmissionsFragmentBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.drax.sendit.data.service.Event
 import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.observe
@@ -21,7 +21,8 @@ import com.drax.sendit.view.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(TransmissionsFragmentBinding::inflate) {
+class MessagesFragment :
+    BaseFragment<TransmissionsFragmentBinding, MessagesVM>(TransmissionsFragmentBinding::inflate) {
     override val viewModel: MessagesVM by viewModels()
 
     private val transitionAdapter: TransactionAdapter by lazy {
@@ -50,7 +51,7 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
     private fun initObservers() {
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when(uiState){
+            when (uiState) {
                 MessagesUiState.Neutral -> Unit
                 MessagesUiState.NoTransaction -> {
                     binding.emptyDialog.visibility = View.VISIBLE
@@ -68,7 +69,7 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
         }
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.list.apply {
             layoutManager = LinearLayoutManager(
                 requireContext(),
@@ -88,8 +89,10 @@ class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(T
     private fun copyToClipboard(messageWrapper: MessageWrapper) {
         (context?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
             ?.setPrimaryClip(
-                ClipData.
-                newPlainText(getString(R.string.copied_text_label), messageWrapper.message.content)
+                ClipData.newPlainText(
+                    getString(R.string.copied_text_label),
+                    messageWrapper.message.content
+                )
             )
         toast(getString(R.string.copied_text_label))
     }

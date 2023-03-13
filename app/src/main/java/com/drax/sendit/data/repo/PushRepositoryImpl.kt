@@ -6,16 +6,16 @@ import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.RegistryRepository
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.flow
 
 @Singleton
 class PushRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val registryRepository: RegistryRepository,
-    private val deviceRepository: DeviceRepository)
-    : PushRepository {
+    private val deviceRepository: DeviceRepository
+) : PushRepository {
 
     override fun shareContent(shareRequest: ShareRequest) = flow {
         emit(

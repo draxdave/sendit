@@ -17,11 +17,11 @@ class TransactionAdapter(
     private val share: (MessageWrapper) -> Unit,
 ) : ListAdapter<MessageWrapper, RecyclerView.ViewHolder>(
     diffCallback
-)
-{
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = TransactionViewHolder(ItemTransactionBinding.inflate(LayoutInflater.from(parent.context)),
-    copy, remove, share)
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TransactionViewHolder(
+        ItemTransactionBinding.inflate(LayoutInflater.from(parent.context)),
+        copy, remove, share
+    )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         getItem(position)?.let {
@@ -32,19 +32,27 @@ class TransactionAdapter(
     companion object {
         //This diff callback informs the PagedListAdapter how to compute list differences when new
         private val diffCallback = object : DiffUtil.ItemCallback<MessageWrapper>() {
-            override fun areItemsTheSame(oldItem: MessageWrapper, newItem: MessageWrapper): Boolean =
+            override fun areItemsTheSame(
+                oldItem: MessageWrapper,
+                newItem: MessageWrapper
+            ): Boolean =
                 oldItem.message.id == newItem.message.id
 
-            override fun areContentsTheSame(oldItem: MessageWrapper, newItem: MessageWrapper): Boolean =
+            override fun areContentsTheSame(
+                oldItem: MessageWrapper,
+                newItem: MessageWrapper
+            ): Boolean =
                 oldItem == newItem
         }
     }
 
 }
-class TransactionViewHolder(private val binding: ItemTransactionBinding,
-                            private val copy: (MessageWrapper) -> Unit,
-                            private val remove: (MessageWrapper) -> Unit,
-                            private val share: (MessageWrapper) -> Unit
+
+class TransactionViewHolder(
+    private val binding: ItemTransactionBinding,
+    private val copy: (MessageWrapper) -> Unit,
+    private val remove: (MessageWrapper) -> Unit,
+    private val share: (MessageWrapper) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     init {
         binding.root.setOnClickListener {
@@ -52,7 +60,7 @@ class TransactionViewHolder(private val binding: ItemTransactionBinding,
         }
     }
 
-    fun bindTo(deviceItem : MessageWrapper) {
+    fun bindTo(deviceItem: MessageWrapper) {
         with(binding) {
             transaction = deviceItem
             executePendingBindings()
@@ -60,7 +68,7 @@ class TransactionViewHolder(private val binding: ItemTransactionBinding,
     }
 
 
-    private fun showPopup(view: View){
+    private fun showPopup(view: View) {
         val popupMenu = PopupMenu(view.context, view)
 
         // Inflating popup menu from popup_menu.xml file

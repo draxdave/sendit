@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 @Entity(tableName = "connection")
 @Serializable
-data class Connection (
+data class Connection(
     @PrimaryKey
     val id: Long,
 

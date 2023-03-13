@@ -6,7 +6,7 @@ import androidx.annotation.IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class UserSex {
 
-    companion object{
+    companion object {
         const val UserSex_MALE = 200
         const val UserSex_FEMAL = 300
         const val UserSex_NONE = 400

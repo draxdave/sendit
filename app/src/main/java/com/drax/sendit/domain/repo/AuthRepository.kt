@@ -4,10 +4,10 @@ import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.auth.ForgotPasswordRequest
 import com.drax.sendit.domain.network.model.auth.SignUpRequest
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
 import com.drax.sendit.domain.network.model.auth.signin.SignInResponse
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

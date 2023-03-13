@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 data class NewInvitation(
     @SerialName("connection_id") val connectionId: String,
     @SerialName("device_name") val deviceName: String,
-):java.io.Serializable
+) : java.io.Serializable

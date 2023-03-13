@@ -198,12 +198,16 @@ class SsoHandler(
                         GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     handleSignInResult(task)
                 } else {
-                    val list = result.data?.extras?.keySet()?.map { it to (result.data?.extras?.get(it) ?: "null") }
+                    val list = result.data?.extras?.keySet()
+                        ?.map { it to (result.data?.extras?.get(it) ?: "null") }
 
                     Log.d("list", list.toString())
 
                     result.data?.let {
-                        Log.e(tag, "Google sign in failed: ${it.getStringExtra("com.google.android.gms.auth.api.signin.EXTRA_SIGN_IN_FAILURE")}")
+                        Log.e(
+                            tag,
+                            "Google sign in failed: ${it.getStringExtra("com.google.android.gms.auth.api.signin.EXTRA_SIGN_IN_FAILURE")}"
+                        )
                         onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
                     }
                 }

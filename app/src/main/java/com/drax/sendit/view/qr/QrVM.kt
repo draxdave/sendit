@@ -22,16 +22,17 @@ import kotlinx.coroutines.flow.update
 class QrVM @Inject constructor(
     private val connectionRepository: ConnectionRepository,
     private val deviceRepository: DeviceRepository
-): ResViewModel() {
+) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<QrUiState>(QrUiState.Neutral)
     val uiState: StateFlow<QrUiState> = _uiState
 
-    private val _state = MutableSharedFlow<QrState>(replay = 0, extraBufferCapacity = 1, BufferOverflow.DROP_OLDEST)
+    private val _state =
+        MutableSharedFlow<QrState>(replay = 0, extraBufferCapacity = 1, BufferOverflow.DROP_OLDEST)
     val state = _state.asSharedFlow()
 
     private val _qrImageUrl = MutableStateFlow<String?>(null)
-    val qrImageUrl : StateFlow<String?> = _qrImageUrl
+    val qrImageUrl: StateFlow<String?> = _qrImageUrl
 
 
     init {
@@ -47,12 +48,12 @@ class QrVM @Inject constructor(
         }
     }
 
-    private suspend fun requestQrUrl(){
-        _uiState.update { QrUiState.QrLoading}
+    private suspend fun requestQrUrl() {
+        _uiState.update { QrUiState.QrLoading }
         _state.tryEmit(
-            when(val result = deviceRepository.getQRUrlFromServer()){
+            when (val result = deviceRepository.getQRUrlFromServer()) {
                 is Resource.ERROR -> QrState.QrLoadFailedFromNet(result)
-                is Resource.SUCCESS -> when(val qrUrl = result.data.data?.qrUrl){
+                is Resource.SUCCESS -> when (val qrUrl = result.data.data?.qrUrl) {
                     null -> QrState.QrLoadFailed(R.string.unknown_error)
                     else -> {
                         val fullUrl = AppRetrofit.BaseUrl + qrUrl
@@ -62,19 +63,19 @@ class QrVM @Inject constructor(
                 }
             }
         )
-        _uiState.update { QrUiState.Neutral}
+        _uiState.update { QrUiState.Neutral }
     }
 
-    fun sendPairRequest(requestCode: String){
+    fun sendPairRequest(requestCode: String) {
         _uiState.update { QrUiState.QrLoading }
 
         job {
-            connectionRepository.sendPairRequest(PairRequest(requestCode)).collect { response->
+            connectionRepository.sendPairRequest(PairRequest(requestCode)).collect { response ->
 
-                _uiState.update { QrUiState.Neutral}
+                _uiState.update { QrUiState.Neutral }
                 _state.tryEmit(
-                    when(response){
-                        is Resource.ERROR -> when(response.errorCode) {
+                    when (response) {
+                        is Resource.ERROR -> when (response.errorCode) {
                             PairResponse.ALREADY_ACTIVE -> QrState.ConnectionAlreadyActive
                             PairResponse.REJECTED -> QrState.RequestRejected
                             PairResponse.WAITING_FOR_PEER -> QrState.InvitationResponseWaiting
