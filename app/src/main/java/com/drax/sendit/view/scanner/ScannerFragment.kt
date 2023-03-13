@@ -12,7 +12,6 @@ import com.drax.sendit.data.service.Event
 import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.observe
-import com.drax.sendit.view.util.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
