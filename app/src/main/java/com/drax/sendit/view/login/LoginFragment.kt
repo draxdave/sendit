@@ -6,11 +6,9 @@ import android.view.View
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
-import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
@@ -33,12 +31,14 @@ class LoginFragment : BaseComposeFragment() {
     lateinit var deviceInfoHelper: DeviceInfoHelper
 
     private val ssoHandler: SsoHandler by lazy {
-        SsoHandler(this, analytics, deviceInfoHelper) { event ->
+        SsoHandler( analytics = analytics, deviceInfoHelper = deviceInfoHelper) { event ->
             if (isActive()) return@SsoHandler
 
             when (event) {
                 is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
-                is SsoEvent.SignSucceed -> tryLoginToServer(event.request)
+                is SsoEvent.SignSucceed -> {
+//                    tryLoginToServer(event.request)
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseBottomSheet
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
     override val viewModel: ShareContentVM by viewModels()
