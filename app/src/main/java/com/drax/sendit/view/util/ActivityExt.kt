@@ -5,13 +5,13 @@ import com.drax.sendit.data.model.ModalMessage
 import ir.drax.modal.Modal
 
 
-fun Activity.modal(message: ModalMessage){
+fun Activity.modal(message: ModalMessage) {
     Modal.builder(this).apply {
         type = Modal.Type.Alert
         title = getString(message.title)
         icon = message.icon
         direction =
-            if(message.fromTop)
+            if (message.fromTop)
                 Modal.Direction.Top
             else
                 Modal.Direction.Bottom

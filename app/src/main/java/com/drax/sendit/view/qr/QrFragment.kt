@@ -21,7 +21,7 @@ import ir.drax.modal.Modal
 import ir.drax.modal.model.MoButton
 
 @AndroidEntryPoint
-class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::inflate) {
+class QrFragment : BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::inflate) {
     override val viewModel: QrVM by viewModels()
 
     private val requestPermissionLauncher =
@@ -39,9 +39,9 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
     }
 
     private fun initView() {
-        viewModel.uiState.observe(viewLifecycleOwner){
-            viewModel.uiState.collect{
-                when(it){
+        viewModel.uiState.observe(viewLifecycleOwner) {
+            viewModel.uiState.collect {
+                when (it) {
                     QrUiState.Neutral -> Unit
                     QrUiState.QrLoading -> Unit
                 }
@@ -49,7 +49,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         }
 
         viewModel.state.observe(viewLifecycleOwner) {
-            when(it){
+            when (it) {
                 is QrState.QrLoadFailed -> {
                     analytics.set(Event.QR.LoadQRFailed)
                     modal(ModalMessage.Failed(it.reason))
@@ -89,7 +89,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         }
     }
 
-    private fun checkPermissionAndLaunchScanner(){
+    private fun checkPermissionAndLaunchScanner() {
         when {
             allPermissionsGranted(listOf(REQUIRED_PERMISSION)) -> launchScanner()
 
@@ -100,11 +100,11 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         }
     }
 
-    private fun showPermissionRationaleModal(then: ()->Unit){
+    private fun showPermissionRationaleModal(then: () -> Unit) {
         Modal.builder(requireView()).apply {
             title = getString(R.string.permission_needed)
             setMessage(getString(R.string.permission_needed_camera))
-            callback = MoButton(getString(ir.drax.modal.R.string.modal_ok)){
+            callback = MoButton(getString(ir.drax.modal.R.string.modal_ok)) {
                 then()
                 true
             }
@@ -112,7 +112,7 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         }.build().show()
     }
 
-    private fun launchScanner(){
+    private fun launchScanner() {
         analytics.set(Event.QR.ScannerRequested)
         setFragmentResultListener(ScannerFragment.REQUEST_KEY) { _, bundle ->
             bundle.getString(ScannerFragment.RESPONSE_KEY)?.let { qrResponse ->
@@ -124,11 +124,11 @@ class QrFragment: BaseFragment<QrFragmentBinding, QrVM>(QrFragmentBinding::infla
         findNavController().navigate(QrFragmentDirections.qrToScanner())
     }
 
-    private fun sendPairRequest(requestCode: String){
+    private fun sendPairRequest(requestCode: String) {
         viewModel.sendPairRequest(requestCode)
     }
 
-    companion object{
+    companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }
 }

@@ -6,7 +6,7 @@ import androidx.annotation.IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class ConnectionRole {
 
-    companion object{
+    companion object {
         const val ROLE_CONNECTEE = 100
         const val ROLE_CONNECTOR = 200
     }

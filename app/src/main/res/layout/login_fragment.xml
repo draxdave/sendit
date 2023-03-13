@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <ImageView
         android:id="@+id/top_banner"
@@ -22,11 +22,10 @@
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="38sp"
+        app:layout_constraintBottom_toBottomOf="@id/top_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/top_banner"
-        app:layout_constraintTop_toBottomOf="@id/top_banner"
-        />
+        app:layout_constraintTop_toBottomOf="@id/top_banner" />
 
     <ImageView
         android:id="@+id/rocket_animated"
@@ -48,10 +47,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_email_hint"
-        app:startIconDrawable="@drawable/login_input_username"
         app:layout_constraintEnd_toEndOf="@id/sign_in_google"
         app:layout_constraintStart_toStartOf="@id/sign_in_google"
-        app:layout_constraintTop_toBottomOf="@id/mid_title_1">
+        app:layout_constraintTop_toBottomOf="@id/mid_title_1"
+        app:startIconDrawable="@drawable/login_input_username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
@@ -66,14 +65,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextField"
         style="@style/login_form_input"
-        app:startIconDrawable="@drawable/login_input_password"
-        app:endIconMode="password_toggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_password_hint"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/sign_in_google"
         app:layout_constraintStart_toStartOf="@id/sign_in_google"
-        app:layout_constraintTop_toBottomOf="@id/emailTextField">
+        app:layout_constraintTop_toBottomOf="@id/emailTextField"
+        app:startIconDrawable="@drawable/login_input_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
@@ -87,14 +86,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/confirmPasswordTextField"
         style="@style/login_form_input"
-        app:startIconDrawable="@drawable/login_input_password"
-        app:endIconMode="password_toggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/login_password_confirm_hint"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/sign_in_google"
         app:layout_constraintStart_toStartOf="@id/sign_in_google"
-        app:layout_constraintTop_toBottomOf="@id/passwordTextField">
+        app:layout_constraintTop_toBottomOf="@id/passwordTextField"
+        app:startIconDrawable="@drawable/login_input_password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etConfirmPassword"
@@ -125,9 +124,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/login_submit_signin"
-        app:cornerRadius="7dp"
         android:textSize="18sp"
         android:textStyle=""
+        app:cornerRadius="7dp"
         app:layout_constraintEnd_toEndOf="@id/sign_in_google"
         app:layout_constraintStart_toStartOf="@id/sign_in_google"
         app:layout_constraintTop_toBottomOf="@id/tvForgotAction" />
@@ -159,10 +158,10 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         app:drawableStartCompat="@drawable/ic_google_icon"
-        app:layout_constraintTop_toBottomOf="@id/tvBottomAction"
         app:layout_constraintBottom_toTopOf="@id/versionText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBottomAction" />
 
     <TextView
         android:id="@+id/versionText"
@@ -178,7 +177,6 @@
     <include
         android:id="@+id/loadingLayout"
         layout="@layout/loading_layout"
-        tools:visibility="gone"
-        />
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

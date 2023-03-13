@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import app.siamak.sendit.R
 import app.siamak.sendit.databinding.ConnectionsFragmentBinding
-import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.UnpairRequest
@@ -17,13 +16,14 @@ import com.drax.sendit.view.connections.unpair.UnpairFragment
 import com.drax.sendit.view.util.loadImageFromUri
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsVM>(ConnectionsFragmentBinding::inflate) {
+class ConnectionsFragment :
+    BaseFragment<ConnectionsFragmentBinding, ConnectionsVM>(ConnectionsFragmentBinding::inflate) {
 
     override val viewModel: ConnectionsVM by viewModels()
 
@@ -46,9 +46,9 @@ class ConnectionsFragment : BaseFragment<ConnectionsFragmentBinding,ConnectionsV
             .map {
                 DeviceTransformer.toUiModel(context, it)
             }
-            .observe(viewLifecycleOwner){
-            updateDeviceUi(it)
-        }
+            .observe(viewLifecycleOwner) {
+                updateDeviceUi(it)
+            }
     }
 
     private fun updateDeviceUi(deviceDomain: DeviceUiModel) = with(binding) {

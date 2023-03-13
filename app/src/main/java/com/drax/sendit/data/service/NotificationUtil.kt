@@ -19,13 +19,15 @@ import kotlinx.serialization.json.Json
 class NotificationUtil @Inject constructor(
     @ApplicationContext private val context: Context,
     private val json: Json,
-){
-    private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+) {
+    private val notificationManager: NotificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
     init {
         createNotificationChannel()
     }
 
-    fun buildAndPop(notificationModel: NotificationModel){
+    fun buildAndPop(notificationModel: NotificationModel) {
         val notification = buildNotification(notificationModel)
         popNotification(notification, notificationModel.id)
     }
@@ -34,11 +36,12 @@ class NotificationUtil @Inject constructor(
         val description = notificationModel.content ?: context.getString(notificationModel.text)
         val title = context.getString(notificationModel.title)
 
-        val pendingIntent = PendingIntent.getActivity(context,0,
+        val pendingIntent = PendingIntent.getActivity(
+            context, 0,
             Intent(context, MainActivity::class.java).apply {
                 putExtra(NOTIFICATION_DATA, notificationModel)
             },
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             } else {
                 PendingIntent.FLAG_UPDATE_CURRENT
@@ -63,7 +66,7 @@ class NotificationUtil @Inject constructor(
 
         //we give each notification the ID of the event it's describing,
         //to ensure they all show up and there are no duplicates
-        notificationManager.notify(id , notification)
+        notificationManager.notify(id, notification)
     }
 
     fun pullNotification(notificationId: Int) {
@@ -80,10 +83,11 @@ class NotificationUtil @Inject constructor(
         }
     }
 
-    companion object{
+    companion object {
         const val NOTIFICATION_DATA = "notif_service_object"
         private const val CHANNEL_NAME = "Sendit Main Notification Channel"
-        private val CHANNEL_DESCRIPTION = "Sendit general notifications channel. You will not see new contents notifications if you mute this channel."
+        private val CHANNEL_DESCRIPTION =
+            "Sendit general notifications channel. You will not see new contents notifications if you mute this channel."
         private val CHANNEL_ID = "SenditMain"
 
     }

@@ -27,10 +27,10 @@ import javax.inject.Singleton
 )
 @TypeConverters(TimeConverters::class)
 abstract class AppDB : RoomDatabase() {
-    abstract fun registryDao() : RegistryDao
-    abstract fun transactionDao() : TransactionsDao
-    abstract fun connectionDao() : ConnectionDao
-    abstract fun authDao() : AuthDao
+    abstract fun registryDao(): RegistryDao
+    abstract fun transactionDao(): TransactionsDao
+    abstract fun connectionDao(): ConnectionDao
+    abstract fun authDao(): AuthDao
 
     companion object {
         private var instance: AppDB? = null

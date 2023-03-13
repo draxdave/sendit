@@ -8,11 +8,12 @@ import androidx.annotation.IntDef
     PushOp.OP_DEVICE_SIGNIN,
     PushOp.OP_DEVICE_SIGNOUT,
     PushOp.OP_NEW_CONTENT,
-    PushOp.PUSH_OP_NEW_CONNECTION)
+    PushOp.PUSH_OP_NEW_CONNECTION
+)
 @Retention(AnnotationRetention.SOURCE)
 annotation class PushOp {
 
-    companion object{
+    companion object {
         const val PUSH_OP_NEW_CONNECTION = 500
         const val OP_CONNECTION_DISCONNECTED = 502
         const val OP_DEVICE_SIGNOUT = 503

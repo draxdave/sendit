@@ -22,15 +22,14 @@ import com.drax.sendit.view.util.observe
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainVM: MainVM by viewModels()
     private lateinit var navController: NavController
-    @Inject lateinit var analytics: Analytics
+    @Inject
+    lateinit var analytics: Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

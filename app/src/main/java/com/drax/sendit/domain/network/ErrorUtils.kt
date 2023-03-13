@@ -11,11 +11,11 @@ class ErrorUtils {
             runCatching {
                 JSONObject(errorBody()?.string())
                     .getJSONObject("error").run {
-                    ErrorResponse(
-                        type = getInt("type"),
-                        description = getString("description")
-                    )
-                }
+                        ErrorResponse(
+                            type = getInt("type"),
+                            description = getString("description")
+                        )
+                    }
             }.getOrNull()
         } else {
             null

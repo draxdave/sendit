@@ -2,13 +2,13 @@ package com.drax.sendit.domain.network
 
 import app.siamak.sendit.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class AppRetrofit @Inject constructor(
     private val authInterceptor: AuthInterceptor,
@@ -27,7 +27,7 @@ class AppRetrofit @Inject constructor(
             .build()
     }
 
-    private fun buildClient():OkHttpClient{
+    private fun buildClient(): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(120, TimeUnit.SECONDS)
             callTimeout(60, TimeUnit.SECONDS)
@@ -39,9 +39,9 @@ class AppRetrofit @Inject constructor(
             addInterceptor(apiInterceptor)
 
 //            if (BuildConfig.DEBUG)
-                addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
+            addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
 
 
         }.build()
@@ -49,7 +49,7 @@ class AppRetrofit @Inject constructor(
 
     }
 
-    companion object{
+    companion object {
         val BaseUrl = BuildConfig.BASE_URL
         const val UrlVersion = "/api/${BuildConfig.API_VERSION}"
     }

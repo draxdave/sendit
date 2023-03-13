@@ -11,11 +11,11 @@ class TimeConverters {
 
     @TypeConverter
     fun fromTimestamp(value: String?): Instant? {
-        return value?.let{ json.decodeFromString(InstantSerializer,value)}
+        return value?.let { json.decodeFromString(InstantSerializer, value) }
     }
 
     @TypeConverter
     fun dateToTimestamp(date: Instant?): String? {
-        return date?.let { json.encodeToString(InstantSerializer,date)}
+        return date?.let { json.encodeToString(InstantSerializer, date) }
     }
 }

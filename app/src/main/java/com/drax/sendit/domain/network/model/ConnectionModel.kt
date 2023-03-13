@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ConnectionModel (
+data class ConnectionModel(
     val id: Int,
 
     @SerialName("connect_date") val connectDate: Long,

@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
@@ -20,14 +19,14 @@ class ShareContentVM @Inject constructor(
     private val pushRepository: PushRepository,
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository
-): ResViewModel() {
+) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<ShareContentUiState>(ShareContentUiState.Loading)
     val uiState: StateFlow<ShareContentUiState> = _uiState
 
     init {
         job {
-            connectionRepository.getConnections(onlyActive = true).collect {connections->
+            connectionRepository.getConnections(onlyActive = true).collect { connections ->
                 _uiState.update {
                     if (connections.isEmpty())
                         ShareContentUiState.NoConnectionsAvailable
@@ -39,8 +38,8 @@ class ShareContentVM @Inject constructor(
     }
 
 
-    fun share(content: String, connectionId: Long){
-        _uiState.update { ShareContentUiState.Loading}
+    fun share(content: String, connectionId: Long) {
+        _uiState.update { ShareContentUiState.Loading }
 
         job {
             pushRepository.shareContent(
@@ -49,12 +48,16 @@ class ShareContentVM @Inject constructor(
                     content = content,
                     type = TransactionContentType.TransactionType_CONTENT_TEXT
                 )
-            ).collect { shareResponse->
+            ).collect { shareResponse ->
                 _uiState.update {
-                    when(shareResponse){
+                    when (shareResponse) {
                         is Resource.ERROR -> ShareContentUiState.SharingFailed(shareResponse)
                         is Resource.SUCCESS -> {
-                            shareResponse.data.data?.transaction?.let { transactionRepository.insertNewTransaction(it)}
+                            shareResponse.data.data?.transaction?.let {
+                                transactionRepository.insertNewTransaction(
+                                    it
+                                )
+                            }
                             ShareContentUiState.SharingDone
                         }
                     }

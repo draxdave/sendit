@@ -69,7 +69,7 @@ class RocketAnimationHandler(
 
     fun startAnimation() {
         stopped = false
-        with(R.drawable.login_rocket_animated.asVectorAnimated()){
+        with(R.drawable.login_rocket_animated.asVectorAnimated()) {
             ivRocketAnimated.setImageDrawable(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 registerAnimationCallback(object : Animatable2.AnimationCallback() {

@@ -1,71 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <import type="android.view.View"/>
-        <import type="com.drax.sendit.view.shareContent.ShareContentUiState"/>
+
+        <import type="android.view.View" />
+
+        <import type="com.drax.sendit.view.shareContent.ShareContentUiState" />
+
         <variable
             name="model"
             type="com.drax.sendit.view.shareContent.ShareContentVM" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/shareTitle"
-            android:text="@string/sendit"
-            app:layout_constraintTop_toTopOf="parent"
             style="@style/heading3"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_8sdp"
-            android:paddingTop="@dimen/_8sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:text="@string/sendit"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/shareIcon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/shareTitle"
-            app:layout_constraintBottom_toBottomOf="@id/shareSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_16sdp"
             android:src="@drawable/ic_baseline_share_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toBottomOf="@id/shareSubtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/shareTitle" />
 
         <TextView
             android:id="@+id/shareSubtitle"
-            app:layout_constraintTop_toBottomOf="@id/shareTitle"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:text="@string/share_modal_title"
             style="@style/body_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="@string/share_modal_title"
+            app:layout_constraintTop_toBottomOf="@id/shareTitle" />
 
         <View
-            app:layout_constraintTop_toBottomOf="@id/shareSubtitle"
-            android:background="@color/gray"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:alpha=".4"
-            android:layout_height="1dp"/>
+            android:background="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/shareSubtitle" />
 
         <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@id/shareSubtitle"
-            android:layout_margin="@dimen/_8sdp"
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            app:layout_constraintTop_toBottomOf="@id/shareSubtitle" />
 
         <Space
             android:id="@+id/bottomSpace"
-            app:layout_constraintTop_toBottomOf="@id/list"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_16sdp"/>
+            android:layout_height="@dimen/_16sdp"
+            app:layout_constraintTop_toBottomOf="@id/list" />
 
-        <include layout="@layout/loading_layout"
-            app:layout_constraintBottom_toBottomOf="@id/bottomSpace"
-            app:layout_constraintTop_toTopOf="parent"
+        <include
+            layout="@layout/loading_layout"
             app:isShowing="@{model.uiState == ShareContentUiState.Loading.INSTANCE}"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/bottomSpace"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

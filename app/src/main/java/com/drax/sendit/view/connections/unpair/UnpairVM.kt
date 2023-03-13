@@ -9,24 +9,23 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class UnpairVM @Inject constructor(
     private val connectionRepository: ConnectionRepository
-): ResViewModel() {
+) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<UnpairUiState>(UnpairUiState.Neutral)
     val uiState: StateFlow<UnpairUiState> = _uiState
 
 
-    fun unpairDevice(unpairRequest: UnpairRequest){
+    fun unpairDevice(unpairRequest: UnpairRequest) {
         _uiState.update { UnpairUiState.Loading }
         job {
-            connectionRepository.unpair(unpairRequest).collect { unpair->
+            connectionRepository.unpair(unpairRequest).collect { unpair ->
                 _uiState.update {
-                    when(unpair){
+                    when (unpair) {
                         is Resource.ERROR -> UnpairUiState.Failed(unpair)
                         is Resource.SUCCESS -> {
                             UnpairUiState.Done

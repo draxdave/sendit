@@ -8,7 +8,7 @@ import com.drax.sendit.domain.network.model.type.UserType.Companion.UserType_VIP
 @Retention(AnnotationRetention.SOURCE)
 annotation class UserType {
 
-    companion object{
+    companion object {
         const val UserType_NORMAL = 200
         const val UserType_VIP = 301
     }

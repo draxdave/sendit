@@ -6,27 +6,29 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.drax.sendit.data.service.Event
-import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFragmentBinding::inflate) {
+class ScannerFragment :
+    BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFragmentBinding::inflate) {
     override val viewModel: ScannerVM by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
+
     private lateinit var codeScanner: CodeScanner
 
     private fun initView() {
         viewModel.uiState.observe(viewLifecycleOwner) {
-            when(it){
+            when (it) {
                 ScannerUiState.Neutral -> Unit
             }
         }
@@ -46,7 +48,7 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
         }
     }
 
-    private fun submitResultAndDismiss(qrData: String){
+    private fun submitResultAndDismiss(qrData: String) {
         setFragmentResult(REQUEST_KEY, bundleOf(RESPONSE_KEY to qrData))
         findNavController().navigateUp()
     }
@@ -60,7 +62,8 @@ class ScannerFragment: BaseFragment<ScannerFragmentBinding, ScannerVM>(ScannerFr
         codeScanner.releaseResources()
         super.onPause()
     }
-    companion object{
+
+    companion object {
         const val REQUEST_KEY = "SCANNER_REQUEST_KEY"
         const val RESPONSE_KEY = "qrData"
     }

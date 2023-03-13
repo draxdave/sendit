@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class Transaction(
-    @PrimaryKey(autoGenerate = true)  val iid: Long=0,
+    @PrimaryKey(autoGenerate = true) val iid: Long = 0,
 
     val id: Long,
     @SerialName("broadcaster_id")
@@ -34,4 +34,4 @@ data class Transaction(
     val contentType: Int,
 
     @TransactionType val type: Int,
-): java.io.Serializable
+) : java.io.Serializable

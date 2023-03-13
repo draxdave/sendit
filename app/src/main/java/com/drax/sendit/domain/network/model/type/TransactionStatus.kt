@@ -19,7 +19,7 @@ import com.drax.sendit.domain.network.model.type.TransactionStatus.Companion.Tra
 @Retention(AnnotationRetention.SOURCE)
 annotation class TransactionStatus {
 
-    companion object{
+    companion object {
         const val TransactionStatus_SENT = 200
         const val TransactionStatus_DELIVERED = 201
         const val TransactionStatus_FAILED = 301

@@ -8,7 +8,7 @@ import com.drax.sendit.domain.network.model.type.UserStatus.Companion.UserStatus
 @Retention(AnnotationRetention.SOURCE)
 annotation class UserStatus {
 
-    companion object{
+    companion object {
         const val UserStatus_ACTIVE = 200
         const val UserStatus_BLOCKED = 301
     }

@@ -9,14 +9,14 @@ import com.drax.sendit.domain.network.model.PairRequest
 import com.drax.sendit.domain.network.model.PairResponse
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.ShareResponse
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
 import com.drax.sendit.domain.network.model.auth.ForgotPasswordRequest
 import com.drax.sendit.domain.network.model.auth.SignUpRequest
 import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
 import com.drax.sendit.domain.network.model.auth.signin.SignInResponse
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
+import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.domain.network.model.device.WhoisResponse
 import retrofit2.Response
 import retrofit2.http.Body

@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="isShowing"
             type="Boolean" />
     </data>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:visibility="@{isShowing ? View.VISIBLE: View.GONE}"
-    android:elevation="64dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="@color/darkBlur"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        app:indicatorColor="@color/colorAccent"
-        app:trackColor="@color/low_white"
-        app:indicatorSize="64dp"
-        android:indeterminate="true"
-        android:indeterminateBehavior="cycle"
-        android:layout_centerInParent="true"
-        android:layout_width="128dp"
-        android:layout_height="128dp"/>
-</RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/darkBlur"
+        android:clickable="true"
+        android:elevation="64dp"
+        android:focusable="true"
+        android:visibility="@{isShowing ? View.VISIBLE: View.GONE}">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorSize="64dp"
+            app:trackColor="@color/low_white" />
+    </RelativeLayout>
 </layout>

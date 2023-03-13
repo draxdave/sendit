@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionsDao: TransactionsDao,
     private val apiService: ApiService
-): TransactionRepository {
+) : TransactionRepository {
     override fun getAllTransactions() = transactionsDao.getList()
     override suspend fun clearDb() {
         transactionsDao.deleteAll()
@@ -27,7 +27,7 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override fun getAllTransactionsFromServer() = flow {
         emit(
-            NetworkCall{
+            NetworkCall {
                 apiService.getTransactions(1)
             }.fetch()
         )

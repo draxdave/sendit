@@ -1,10 +1,8 @@
 package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.AuthDao
-import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.ApiResponse
 import com.drax.sendit.domain.network.model.auth.ForgotPasswordRequest
 import com.drax.sendit.domain.network.model.auth.SignUpRequest
 import com.drax.sendit.domain.network.model.auth.signin.SignInRequest
@@ -18,7 +16,7 @@ import kotlinx.coroutines.flow.flow
 class AuthRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val authDao: AuthDao,
-): AuthRepository {
+) : AuthRepository {
 
     override suspend fun signInSso(signInSsoRequest: SignInSsoRequest) = NetworkCall {
         apiService.signInSso(signInSsoRequest)
@@ -28,9 +26,10 @@ class AuthRepositoryImpl @Inject constructor(
         apiService.signIn(signInRequest)
     }.fetch()
 
-    override suspend fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest) = NetworkCall {
-        apiService.forgotPassword(forgotPasswordRequest)
-    }.fetch()
+    override suspend fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest) =
+        NetworkCall {
+            apiService.forgotPassword(forgotPasswordRequest)
+        }.fetch()
 
     override suspend fun signUp(signUpRequest: SignUpRequest) = NetworkCall {
         apiService.signUp(signUpRequest)

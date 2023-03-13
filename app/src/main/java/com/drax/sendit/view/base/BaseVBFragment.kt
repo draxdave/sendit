@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import app.siamak.sendit.BR
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event
 import javax.inject.Inject
 
 
-abstract class  BaseVBFragment<out T: ViewBinding, E : ViewModel>(
-    private val inflate:Inflate<T>
-) : Fragment(){
+abstract class BaseVBFragment<out T : ViewBinding, E : ViewModel>(
+    private val inflate: Inflate<T>
+) : Fragment() {
 
     @Inject
     lateinit var analytics: Analytics
@@ -34,7 +32,7 @@ abstract class  BaseVBFragment<out T: ViewBinding, E : ViewModel>(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflate.invoke(inflater,container,false).apply {
+        return inflate.invoke(inflater, container, false).apply {
             _binding = this
         }.root
     }

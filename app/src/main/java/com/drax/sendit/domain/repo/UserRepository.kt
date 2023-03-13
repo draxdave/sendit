@@ -5,8 +5,8 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 
 @Singleton
-interface UserRepository: BaseStorageRepository {
-//    fun getUserSync(): User?
+interface UserRepository : BaseStorageRepository {
+    //    fun getUserSync(): User?
     fun getUser(): Flow<User?>
     suspend fun addOrUpdateUser(user: User)
 }

@@ -14,7 +14,7 @@ import okhttp3.Interceptor
 class AuthInterceptor @Inject constructor(
     private val authDao: AuthDao,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-): Interceptor {
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(chain.request()).also {
         if (it.code == UNAUTHORIZED_ACCESS) {
@@ -23,7 +23,7 @@ class AuthInterceptor @Inject constructor(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun unAuthorizedAccessDetected(){
+    private fun unAuthorizedAccessDetected() {
 
         GlobalScope.launch(defaultDispatcher) {
             authDao.clearDeviceData()
@@ -32,7 +32,7 @@ class AuthInterceptor @Inject constructor(
         }
     }
 
-    companion object{
+    companion object {
         const val UNAUTHORIZED_ACCESS = 401
     }
 }

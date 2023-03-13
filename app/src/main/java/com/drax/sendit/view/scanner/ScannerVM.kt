@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
-class ScannerVM @Inject constructor(): ResViewModel() {
+class ScannerVM @Inject constructor() : ResViewModel() {
 
     private val _uiState = MutableStateFlow<ScannerUiState>(ScannerUiState.Neutral)
     val uiState: StateFlow<ScannerUiState> = _uiState

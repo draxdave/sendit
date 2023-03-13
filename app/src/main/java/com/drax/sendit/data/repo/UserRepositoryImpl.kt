@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class UserRepositoryImpl @Inject constructor(
     private val registryRepository: RegistryRepository
 ) : UserRepository {
-//    override fun getUserSync() = registryRepository.getUser()
+    //    override fun getUserSync() = registryRepository.getUser()
     override fun getUser() = registryRepository.getUser()
 
     override suspend fun addOrUpdateUser(user: User) = registryRepository.updateUser(user)

@@ -7,7 +7,7 @@ import com.drax.sendit.domain.network.model.GetQRResponse
 import com.drax.sendit.domain.network.model.device.WhoisResponse
 import kotlinx.coroutines.flow.Flow
 
-interface DeviceRepository: BaseStorageRepository{
+interface DeviceRepository : BaseStorageRepository {
 
     suspend fun addOrUpdateDevice(device: DeviceDomain)
     fun getSelfDevice(): Flow<DeviceDomain?>

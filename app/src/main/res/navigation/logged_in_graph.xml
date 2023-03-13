@@ -15,14 +15,14 @@
         android:id="@+id/qrFragment"
         android:name="com.drax.sendit.view.qr.QrFragment"
         android:label="@string/fragment_qr"
-        tools:layout="@layout/qr_fragment" >
-        <action android:id="@+id/qrToScanner"
+        tools:layout="@layout/qr_fragment">
+        <action
+            android:id="@+id/qrToScanner"
             app:destination="@id/scannerFragment"
             app:enterAnim="@anim/slide_enter_bottom"
-            app:popEnterAnim="@anim/slide_enter_top"
             app:exitAnim="@anim/slide_exit_top"
-            app:popExitAnim="@anim/slide_exit_bottom"
-            />
+            app:popEnterAnim="@anim/slide_enter_top"
+            app:popExitAnim="@anim/slide_exit_bottom" />
     </fragment>
 
     <fragment

@@ -13,12 +13,12 @@ import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class ConnectionsVM @Inject constructor(

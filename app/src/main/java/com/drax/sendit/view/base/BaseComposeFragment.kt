@@ -1,7 +1,6 @@
 package com.drax.sendit.view.base
 
 import android.content.Context
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.drax.sendit.data.service.Analytics
 import com.drax.sendit.data.service.Event

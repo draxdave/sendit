@@ -18,8 +18,8 @@ import com.drax.sendit.view.util.isActive
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
 import com.google.android.material.textfield.TextInputLayout
-import java.util.regex.Pattern
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +31,7 @@ class LoginFragment : BaseComposeFragment() {
     lateinit var deviceInfoHelper: DeviceInfoHelper
 
     private val ssoHandler: SsoHandler by lazy {
-        SsoHandler( analytics = analytics, deviceInfoHelper = deviceInfoHelper) { event ->
+        SsoHandler(analytics = analytics, deviceInfoHelper = deviceInfoHelper) { event ->
             if (isActive()) return@SsoHandler
 
             when (event) {
@@ -185,7 +185,7 @@ class LoginFragment : BaseComposeFragment() {
             })*/
     }
 
-    private fun clearPasswordInputs(){
+    private fun clearPasswordInputs() {
 //        binding.etPassword.setText("")
 //        binding.etConfirmPassword.setText("")
     }

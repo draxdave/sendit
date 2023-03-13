@@ -16,7 +16,8 @@ import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
 
 
-class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
+class ShareContentFragment :
+    BaseBottomSheet<ShareContentFragmentBinding, ShareContentVM>(ShareContentFragmentBinding::inflate) {
     override val viewModel: ShareContentVM by viewModels()
 
     private val contentToShare: String? by lazy {
@@ -42,7 +43,7 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
 
     private fun initView() {
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when(uiState){
+            when (uiState) {
                 ShareContentUiState.Loading -> Unit
                 is ShareContentUiState.ConnectionsLoaded -> mAdapter.submitList(uiState.connections.map {
                     DeviceWrapper(it)
@@ -70,14 +71,14 @@ class ShareContentFragment: BaseBottomSheet<ShareContentFragmentBinding, ShareCo
     }
 
     @Suppress("unused")
-    private fun platformToIcon(@DevicePlatform platform: Int) = when(platform){
+    private fun platformToIcon(@DevicePlatform platform: Int) = when (platform) {
         DevicePlatform.DevicePlatform_ANDROID -> R.drawable.ic_round_android_24
         DevicePlatform.DevicePlatform_CHROME -> R.drawable.ic_google_icon
         else -> R.drawable.ic_fragment_devices
 
     }
 
-    companion object{
+    companion object {
         const val SHARE_CONTENT_KEY = "SHARE_CONTENT_KEY"
         const val TAG = "ShareContentFragment"
     }
