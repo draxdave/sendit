@@ -97,7 +97,14 @@ class LoginFragment : BaseComposeFragment() {
                     .fillMaxWidth()
                     .height(250.dp),
             )
-            
+
+            Text(
+                text = getString(R.string.app_name),
+                style = MaterialTheme.typography.h1,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(alignment = Alignment.CenterHorizontally)
+            )
 
 
             Row(verticalAlignment = Alignment.Bottom) {
@@ -138,24 +145,11 @@ class LoginFragment : BaseComposeFragment() {
         }
     }
 
-
-    @Preview(
-        name = "Login Preview (Dark)",
-        showBackground = true,
-        showSystemUi = true,
-        backgroundColor = 0xFFFFFFFF,
-        uiMode = Configuration.UI_MODE_NIGHT_YES,
-    )
-    @Composable
-    fun LoginPreviewDark() {
-        LoginScreen()
-    }
-
     @Preview(
         name = "Login Preview (Light)",
         showBackground = true,
         showSystemUi = true,
-        backgroundColor = 0xFFFFFFFF,
+        backgroundColor = 0xFFCCCCCC,
         uiMode = Configuration.UI_MODE_NIGHT_NO
     )
     @Composable
