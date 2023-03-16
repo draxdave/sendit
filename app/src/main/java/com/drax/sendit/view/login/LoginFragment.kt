@@ -1,11 +1,32 @@
 package com.drax.sendit.view.login
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.compose.material3.Text
+import android.view.ViewGroup
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
@@ -13,6 +34,7 @@ import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
 import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.view.base.BaseComposeFragment
+import com.drax.sendit.view.theme.ComposeTheme
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.isActive
 import com.drax.sendit.view.util.modal
@@ -43,6 +65,55 @@ class LoginFragment : BaseComposeFragment() {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            LoginScreen()
+        }
+    }
+
+    @Composable
+    private fun LoginScreen() {
+        ComposeTheme {
+            LoginContent()
+        }
+    }
+
+    @Composable
+    fun LoginContent() {
+        Column(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .fillMaxHeight()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.login_moving_bg),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp),
+            )
+            
+
+
+            Row(verticalAlignment = Alignment.Bottom) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    VersionText("1.3.2")
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ssoHandler.register(this)
@@ -56,15 +127,40 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     @Composable
-    fun MessageCard(message: String) {
-        Text(message)
+    fun VersionText(appVersion: String) {
+        ComposeTheme {
+            Text(
+                text = appVersion,
+                color = MaterialTheme.colors.secondaryVariant,
+                fontStyle = FontStyle.Italic,
+                fontSize = MaterialTheme.typography.caption.fontSize,
+            )
+        }
     }
 
 
-    @Preview
+    @Preview(
+        name = "Login Preview (Dark)",
+        showBackground = true,
+        showSystemUi = true,
+        backgroundColor = 0xFFFFFFFF,
+        uiMode = Configuration.UI_MODE_NIGHT_YES,
+    )
     @Composable
-    fun Prev() {
-        MessageCard(message = "another test!")
+    fun LoginPreviewDark() {
+        LoginScreen()
+    }
+
+    @Preview(
+        name = "Login Preview (Light)",
+        showBackground = true,
+        showSystemUi = true,
+        backgroundColor = 0xFFFFFFFF,
+        uiMode = Configuration.UI_MODE_NIGHT_NO
+    )
+    @Composable
+    fun LoginPreviewLight() {
+        LoginScreen()
     }
 
 
