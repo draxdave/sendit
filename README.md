@@ -21,6 +21,7 @@ Instead you can install it from [https://play.google.com/store/apps/details?id=a
 
 ## Future plans
 - Jetpack Compose - In progress [30% done]
+- Github pipeline integration
 - 80% Test coverage
 - Protobuf
 - UI revamp
