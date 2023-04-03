@@ -106,6 +106,7 @@ class LoginFragment : BaseComposeFragment() {
                     .align(alignment = Alignment.CenterHorizontally)
             )
 
+            LoginForm()
 
             Row(verticalAlignment = Alignment.Bottom) {
                 Column(
@@ -118,6 +119,17 @@ class LoginFragment : BaseComposeFragment() {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
+        }
+    }
+
+    @Composable
+    fun LoginForm() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(text = "Login")
         }
     }
 
