@@ -8,6 +8,9 @@ In order to try the application from source code you'll need
 - And a _local.properties_ with some credentials. 
 Instead you can install it from [https://play.google.com/store/apps/details?id=app.siamak.sendit&hl=en&gl=US](Google Play).
 
+![image](https://user-images.githubusercontent.com/11936521/229648959-037eeddf-db47-48cc-ace3-0b95ff2c53d4.png)
+![image](https://user-images.githubusercontent.com/11936521/229649005-434c2ea0-202e-46bd-a055-cc4776a89ee6.png)
+
 ## What's inside
 - Kotlin 1.6.10
 - Retrofit
