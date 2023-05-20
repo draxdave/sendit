@@ -17,4 +17,8 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 3.sp
     ),
+    overline = TextStyle(
+        fontFamily = fontDosisRegularFamily,
+        fontWeight = FontWeight.Normal,
+    )
 )
