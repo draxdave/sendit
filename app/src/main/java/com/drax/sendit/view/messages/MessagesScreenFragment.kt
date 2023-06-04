@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,11 +20,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.drax.sendit.view.base.BaseComposeFragment
@@ -60,6 +69,8 @@ class MessagesScreenFragment : BaseComposeFragment() {
     ) {
         val state = rememberLazyListState()
         val scope = rememberCoroutineScope()
+        val autoscrollVisibility by remember { mutableStateOf(true) }
+
         Box(modifier = modifier) {
             LazyColumn(
                 modifier = modifier,
@@ -85,22 +96,28 @@ class MessagesScreenFragment : BaseComposeFragment() {
                     )
                 }
             }
-            Text(
-                text = "Latest Messages",
-                modifier = Modifier
-                    .clickable {
-                        scope.launch {
-                            state.animateScrollToItem(0)
+            AnimatedVisibility(
+                visible = autoscrollVisibility,
+                enter = slideInVertically { it },
+                exit = slideOutVertically { it }
+            ) {
+                Text(
+                    text = "Latest Messages",
+                    modifier = Modifier
+                        .clickable {
+                            scope.launch {
+                                state.animateScrollToItem(0)
+                            }
                         }
-                    }
-                    .align(Alignment.BottomCenter)
-                    .padding(vertical = 16.dp)
-                    .background(
-                        color = MaterialTheme.colors.surface,
-                        shape = CircleShape
-                    )
-                    .padding(top = 4.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
-            )
+                        .align(Alignment.BottomCenter)
+                        .padding(vertical = 16.dp)
+                        .background(
+                            color = MaterialTheme.colors.surface,
+                            shape = CircleShape
+                        )
+                        .padding(top = 4.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+                )
+            }
         }
     }
 
