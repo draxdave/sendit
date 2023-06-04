@@ -15,7 +15,7 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = fontDosisBoldFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 3.sp
+        fontSize = 36.sp
     ),
     overline = TextStyle(
         fontFamily = fontDosisRegularFamily,
