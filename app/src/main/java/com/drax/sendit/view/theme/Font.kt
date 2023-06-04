@@ -12,8 +12,8 @@ val fontMain = FontFamily(
 )
 
 val fontDosisBoldFamily = FontFamily(
-    Font(R.font.dosis_bold , style = FontStyle.Normal),
-    Font(R.font.dosis, weight = FontWeight.Bold, style = FontStyle.Normal),
+    Font(R.font.dosis_bold),
+//    Font(R.font.dosis, weight = FontWeight.Bold, style = FontStyle.Normal),
 )
 val fontDosisRegularFamily = FontFamily(
     Font(R.font.dosis , style = FontStyle.Normal),

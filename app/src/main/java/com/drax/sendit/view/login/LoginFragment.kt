@@ -7,14 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +29,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
+import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
@@ -66,9 +70,7 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
             LoginScreen()
@@ -82,42 +84,50 @@ class LoginFragment : BaseComposeFragment() {
         }
     }
 
+
+    @Preview
+    @Composable
+    private fun LoginScreenPreview() {
+        ComposeTheme {
+            LoginContent()
+        }
+    }
+
     @Composable
     fun LoginContent() {
-        Column(
-            modifier = Modifier
-                .background(Color.LightGray)
-                .fillMaxHeight()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.login_moving_bg),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
-            )
+        Scaffold(modifier = Modifier
+            .fillMaxHeight()
+            .background(color = Color.Blue), topBar = {
 
-            Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.h1,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(alignment = Alignment.CenterHorizontally)
-            )
-
-//            LoginForm()
-
-            Row(verticalAlignment = Alignment.Bottom) {
-                Column(
+            Column(
+                modifier = Modifier.background(Color.LightGray),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.login_moving_bg),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    VersionText("1.3.2")
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+                        .height(250.dp),
+                )
+
+                Text(
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.h1,
+                    modifier = Modifier
+                )
+            }
+        }, bottomBar = {
+            VersionText(BuildConfig.VERSION_NAME)
+        }) { contentPadding ->
+            Column(
+                modifier = Modifier
+                    .background(Color.LightGray)
+                    .padding(contentPadding)
+                    .fillMaxHeight()
+            ) {
+                LoginForm()
             }
         }
     }
@@ -147,27 +157,33 @@ class LoginFragment : BaseComposeFragment() {
 
     @Composable
     fun VersionText(appVersion: String) {
-        ComposeTheme {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center
+
+        ) {
             Text(
+                modifier = Modifier,
                 text = appVersion,
                 color = MaterialTheme.colors.secondaryVariant,
                 fontStyle = FontStyle.Italic,
                 fontSize = MaterialTheme.typography.caption.fontSize,
             )
         }
-    }
-/*
-    @Preview(
-        name = "Login Preview (Light)",
-        showBackground = true,
-        showSystemUi = true,
-        backgroundColor = 0xFFCCCCCC,
-        uiMode = Configuration.UI_MODE_NIGHT_NO
-    )
-    @Composable
-    fun LoginPreviewLight() {
-        LoginScreen()
-    }*/
+    }/*
+        @Preview(
+            name = "Login Preview (Light)",
+            showBackground = true,
+            showSystemUi = true,
+            backgroundColor = 0xFFCCCCCC,
+            uiMode = Configuration.UI_MODE_NIGHT_NO
+        )
+        @Composable
+        fun LoginPreviewLight() {
+            LoginScreen()
+        }*/
 
 
     private fun initUI() {
@@ -177,7 +193,7 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     @Composable
-    fun HeaderLayout(modifier: Modifier = Modifier){
+    fun HeaderLayout(modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .background(Color.LightGray)
@@ -255,25 +271,25 @@ class LoginFragment : BaseComposeFragment() {
                 is LoginUiState.LoginFailed -> {
                     analytics.set(Event.SignIn.Failed("REQUEST FAILED"))
                     modal(
-                        if (uiState.errorCode in 1..799)
-                            ModalMessage.FromNetError(uiState.errorCode)
-                        else
-                            ModalMessage.Failed(
-                                when (uiState.errorCode) {
-                                    SignInSsoResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                                    SignInSsoResponse.INCORRECT_CREDENTIALS -> R.string.login_error_user_pass_incorrect
-                                    SignInSsoResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
-                                    SignInSsoResponse.USER_ALREADY_ACTIVE -> R.string.login_error_user_inactive
-                                    else -> R.string.error_internal
-                                }
-                            )
+                        if (uiState.errorCode in 1..799) ModalMessage.FromNetError(uiState.errorCode)
+                        else ModalMessage.Failed(
+                            when (uiState.errorCode) {
+                                SignInSsoResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
+                                SignInSsoResponse.INCORRECT_CREDENTIALS -> R.string.login_error_user_pass_incorrect
+                                SignInSsoResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
+                                SignInSsoResponse.USER_ALREADY_ACTIVE -> R.string.login_error_user_inactive
+                                else -> R.string.error_internal
+                            }
+                        )
                     )
                 }
+
                 LoginUiState.Neutral -> Unit
                 LoginUiState.LoginSucceed -> {
                     analytics.set(Event.SignIn.Succeed)
                     viewModel.updateSigninFormState(SigninFormState.FormHidden)
                 }
+
                 is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
                 LoginUiState.Loading -> Unit
                 LoginUiState.ForgetPasswordDone -> modal(ModalMessage.Success(R.string.login_forget_pass))
@@ -282,8 +298,7 @@ class LoginFragment : BaseComposeFragment() {
         }
     }
 
-    private fun setupListeners() {
-        /*binding.tvBottomAction.setOnClickListener {
+    private fun setupListeners() {/*binding.tvBottomAction.setOnClickListener {
             viewModel.updateSigninFormState(
                 if (binding.tvBottomAction.text.equals(getString(R.string.login_bottom_action_signin))) {
                     SigninFormState.Signin
@@ -323,8 +338,7 @@ class LoginFragment : BaseComposeFragment() {
 //        binding.etConfirmPassword.setText("")
     }
 
-    private fun handleSignup() {
-        /*if (binding.emailTextField.isValid(
+    private fun handleSignup() {/*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             ) &&
@@ -366,8 +380,7 @@ class LoginFragment : BaseComposeFragment() {
         }*/
     }
 
-    private fun handleSignin() {
-        /*if (binding.emailTextField.isValid(
+    private fun handleSignin() {/*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             ) &&
@@ -397,8 +410,7 @@ class LoginFragment : BaseComposeFragment() {
         }*/
     }
 
-    private fun handleForgot() {
-        /*if (binding.emailTextField.isValid(
+    private fun handleForgot() {/*if (binding.emailTextField.isValid(
                 Patterns.EMAIL_ADDRESS,
                 R.string.login_form_error_email_input
             )
@@ -429,7 +441,6 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     companion object {
-        private const val PASSWORD_REGEX =
-            "^(?=.*[0-9]).{6,20}\$"
+        private const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
     }
 }
