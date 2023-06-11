@@ -48,6 +48,9 @@
     <string name="unpair_modal_description">You are removing this connection from your network. Proceed?</string>
     <string name="cancel">Cancel</string>
     <string name="login_email_hint">Enter your email address</string>
+    <string name="login_email_placeholder">ex: email@mail.com</string>
+    <string name="login_password_placeholder">Your password</string>
+    <string name="login_password_repeat_placeholder">Repeat your password</string>
     <string name="login_password_hint">Enter your Password</string>
     <string name="login_password_confirm_hint">Enter your Password again</string>
     <string name="login_bottom_action_signup">Create An Account Now!</string>

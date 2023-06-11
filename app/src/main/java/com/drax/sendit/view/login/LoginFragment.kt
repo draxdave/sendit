@@ -5,31 +5,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
@@ -43,6 +53,7 @@ import com.drax.sendit.view.util.DeviceInfoHelper
 import com.drax.sendit.view.util.isActive
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe
+import com.drax.sendit.view.util.rememberImeState
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
@@ -95,21 +106,35 @@ class LoginFragment : BaseComposeFragment() {
 
     @Composable
     fun LoginContent() {
-        Scaffold(modifier = Modifier
-            .fillMaxHeight()
-            .background(color = Color.Blue), topBar = {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                VersionText(BuildConfig.VERSION_NAME)
+            }) { contentPadding ->
+            val imeState = rememberImeState()
+            val scrollState = rememberScrollState()
+
+            LaunchedEffect(key1 = imeState.value) {
+                if (imeState.value && scrollState.value > 0) {
+                    scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+                }
+            }
 
             Column(
-                modifier = Modifier.background(Color.LightGray),
+                modifier = Modifier.padding(contentPadding)
+                    .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                val config = LocalConfiguration.current
+                val height = config.screenHeightDp * 0.3
+
                 Image(
                     painter = painterResource(id = R.drawable.login_moving_bg),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp),
+                        .height(height.dp),
                 )
 
                 Text(
@@ -117,31 +142,12 @@ class LoginFragment : BaseComposeFragment() {
                     style = MaterialTheme.typography.h1,
                     modifier = Modifier
                 )
-            }
-        }, bottomBar = {
-            VersionText(BuildConfig.VERSION_NAME)
-        }) { contentPadding ->
-            Column(
-                modifier = Modifier
-                    .background(Color.LightGray)
-                    .padding(contentPadding)
-                    .fillMaxHeight()
-            ) {
-                LoginForm()
+
+                LoginForm(Modifier)
             }
         }
     }
 
-    @Composable
-    fun LoginForm() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(text = "Login")
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -324,14 +330,7 @@ class LoginFragment : BaseComposeFragment() {
             }
         }
 
-        activity?.onBackPressedDispatcher?.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    analytics.set(Event.SignIn.LeftSignIn)
-                    this.remove()
-                }
-            })*/
+        */
     }
 
     private fun clearPasswordInputs() {
