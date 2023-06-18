@@ -58,5 +58,7 @@
     <string name="login_submit_signin">Sign In</string>
     <string name="signup_done">A confirmation Email is sent to your email address. Please follow instructions in it to verify your email address.</string>
     <string name="login_forget_pass">We sent the required instructions to your email address. Please follow them in order to reset account password.</string>
+    <string name="login_submit_signup">Sign-Up Now!</string>
+    <string name="login_submit_forget">Send Password</string>
 
 </resources>
