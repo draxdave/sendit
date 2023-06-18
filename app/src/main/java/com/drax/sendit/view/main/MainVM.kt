@@ -1,5 +1,6 @@
 package com.drax.sendit.view.main
 
+import android.util.Log
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.util.ResViewModel
@@ -17,12 +18,14 @@ class MainVM @Inject constructor(
     deviceRepository: DeviceRepository,
 ) : ResViewModel() {
 
+
     private val _uiState: MutableStateFlow<MainUiState> = MutableStateFlow(MainUiState.Neutral)
     val uiState: StateFlow<MainUiState> = _uiState
 
     init {
         job {
             userRepository.getUser().collect { user ->
+                Log.e("MainVM", "init $this $user")
                 _uiState.tryEmit(
                     when {
                         user == null || deviceRepository.getSelfDevice().firstOrNull() == null
