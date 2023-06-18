@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -85,7 +84,6 @@ class LoginFragment : BaseComposeFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            Toast.makeText(requireContext(), "onCreateView", Toast.LENGTH_SHORT).show()
             LoginScreen()
         }
     }
@@ -170,14 +168,14 @@ class LoginFragment : BaseComposeFragment() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.Center
 
         ) {
             Text(
                 modifier = Modifier,
                 text = appVersion,
-                color = MaterialTheme.colors.secondaryVariant,
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
                 fontStyle = FontStyle.Italic,
                 fontSize = MaterialTheme.typography.caption.fontSize,
             )

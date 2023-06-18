@@ -25,7 +25,6 @@ class MainVM @Inject constructor(
     init {
         job {
             userRepository.getUser().collect { user ->
-                Log.e("MainVM", "init $this $user")
                 _uiState.tryEmit(
                     when {
                         user == null || deviceRepository.getSelfDevice().firstOrNull() == null

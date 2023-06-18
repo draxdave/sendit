@@ -1,9 +1,9 @@
 package com.drax.sendit.view.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
         mainVM.uiState.observe(this) { uiState ->
-            Toast.makeText(this, uiState.toString(), Toast.LENGTH_SHORT).show()
             when (uiState) {
                 MainUiState.Neutral -> Unit
                 MainUiState.UserSignedIn -> userSignedIn(
