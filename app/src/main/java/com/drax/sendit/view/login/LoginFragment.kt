@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -84,6 +85,7 @@ class LoginFragment : BaseComposeFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
+            Toast.makeText(requireContext(), "onCreateView", Toast.LENGTH_SHORT).show()
             LoginScreen()
         }
     }
@@ -110,7 +112,8 @@ class LoginFragment : BaseComposeFragment() {
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 VersionText(BuildConfig.VERSION_NAME)
-            }) { contentPadding ->
+            }
+        ) { contentPadding ->
             val imeState = rememberImeState()
             val scrollState = rememberScrollState()
 
@@ -121,7 +124,8 @@ class LoginFragment : BaseComposeFragment() {
             }
 
             Column(
-                modifier = Modifier.padding(contentPadding)
+                modifier = Modifier
+                    .padding(contentPadding)
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -143,7 +147,7 @@ class LoginFragment : BaseComposeFragment() {
                     modifier = Modifier
                 )
 
-                LoginForm(Modifier)
+                LoginForm(Modifier.fillMaxWidth(.85f))
             }
         }
     }

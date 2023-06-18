@@ -27,6 +27,7 @@ class MainVM @Inject constructor(
                     when {
                         user == null || deviceRepository.getSelfDevice().firstOrNull() == null
                         -> MainUiState.UserSignedOut
+
                         else -> {
                             if (uiState.value == MainUiState.UserSignedOut) delay(5000)
                             MainUiState.UserSignedIn

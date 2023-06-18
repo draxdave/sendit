@@ -11,6 +11,7 @@ val darkerBlur = Color(0x9A000000)
 
 val lightAqua = Color(0XFF30BC96)
 val aqua200 = Color(0XFF448AFF)
+val aqua500 = Color(0xFF3F51B5)
 val receiverTextBackground = Color(0XFFffffff)
 val senderTextBackground = Color(0xFFe7ffdb)
 val low_white = Color(0xffE3E3E3)
