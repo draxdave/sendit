@@ -25,7 +25,6 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,7 +42,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import app.siamak.sendit.R
 import com.drax.sendit.view.theme.aqua500
 
@@ -51,8 +50,10 @@ import com.drax.sendit.view.theme.aqua500
 @Composable
 fun LoginForm(
     modifier: Modifier,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val formType by viewModel.formType
+
     val formState by viewModel.formState
 
 
@@ -102,7 +103,7 @@ fun LoginForm(
             singleLine = true,
         )
 
-        if (formState !is FormState.ForgetPassword)
+        if (formType !is FormType.ForgetPassword)
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -150,7 +151,7 @@ fun LoginForm(
                 colors = colors,
             )
 
-        if (formState is FormState.Register)
+        if (formType is FormType.Register)
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -199,7 +200,7 @@ fun LoginForm(
                 colors = colors
             )
 
-        if (formState is FormState.Login)
+        if (formType is FormType.Login)
             Text(
                 modifier = Modifier
                     .padding(start = 8.dp)
@@ -215,7 +216,7 @@ fun LoginForm(
                         )
                     }
                     .clickable {
-                        viewModel.updateFormState(FormState.ForgetPassword)
+                        viewModel.updateFormState(FormType.ForgetPassword)
                     },
                 text = stringResource(id = R.string.login_bottom_action_forgot),
                 color = MaterialTheme.colors.secondary,
@@ -232,14 +233,16 @@ fun LoginForm(
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.primaryVariant,
-            )
+                disabledBackgroundColor = MaterialTheme.colors.primaryVariant.copy(alpha = 0.5f),
+            ),
+            enabled = formState is FormState.Valid
         ) {
             Text(
                 text = stringResource(
-                    id = when (formState) {
-                        is FormState.Login -> R.string.login_submit_signin
-                        is FormState.Register -> R.string.login_submit_signup
-                        is FormState.ForgetPassword -> R.string.login_submit_forget
+                    id = when (formType) {
+                        is FormType.Login -> R.string.login_submit_signin
+                        is FormType.Register -> R.string.login_submit_signup
+                        is FormType.ForgetPassword -> R.string.login_submit_forget
                     }
                 ),
             )
@@ -263,16 +266,16 @@ fun LoginForm(
                 }
                 .clickable {
                     viewModel.updateFormState(
-                        when (formState) {
-                            FormState.Login -> FormState.Register
-                            FormState.Register, FormState.ForgetPassword -> FormState.Login
+                        when (formType) {
+                            FormType.Login -> FormType.Register
+                            FormType.Register, FormType.ForgetPassword -> FormType.Login
                         }
                     )
                 },
             text = stringResource(
-                id = when (formState) {
-                    FormState.Login -> R.string.login_bottom_action_signup
-                    FormState.ForgetPassword, FormState.Register -> R.string.login_submit_signin
+                id = when (formType) {
+                    FormType.Login -> R.string.login_bottom_action_signup
+                    FormType.ForgetPassword, FormType.Register -> R.string.login_submit_signin
                 }
             ),
             style = MaterialTheme.typography.button,
@@ -284,7 +287,7 @@ fun LoginForm(
                 .padding(vertical = 8.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                viewModel.updateFormState(FormState.Register)
+                viewModel.updateFormState(FormType.Register)
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.surface
@@ -322,10 +325,17 @@ fun LoginPreview() {
     LoginForm(modifier = Modifier.background(color = Color.White))
 }
 
+sealed class FormType {
+    object Login : FormType()
+    object Register : FormType()
+    object ForgetPassword : FormType()
+}
+
 sealed class FormState {
-    object Login : FormState()
-    object Register : FormState()
-    object ForgetPassword : FormState()
+    object Loading : FormState()
+    data class Error(val message: String?) : FormState()
+    object Valid : FormState()
+    data class Success(val message: String?) : FormState()
 }
 
 sealed class UiState {

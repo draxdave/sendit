@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.siamak.sendit">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--    To receive push notifications in receiver when the app is closed-->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />

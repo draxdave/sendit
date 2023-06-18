@@ -140,7 +140,7 @@ class LoginVM @Inject constructor(
         passwordHash: String
     ) {
         job {
-            _uiState.update { LoginUiState.Loading }
+            _uiState.tryEmit(LoginUiState.Loading)
             val result = authRepository.signIn(
                 SignInRequest(
                     email = email,
