@@ -5,6 +5,7 @@ import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.repo.RegistryRepository
+import com.drax.sendit.view.util.DeviceInfoHelper
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +23,7 @@ import kotlinx.serialization.json.Json
 @Singleton
 class RegistryRepositoryImpl @Inject constructor(
     private val registryDao: RegistryDao,
+    private val deviceInfoHelper: DeviceInfoHelper,
     private val json: Json,
 ) : RegistryRepository {
 
@@ -51,6 +53,11 @@ class RegistryRepositoryImpl @Inject constructor(
 
     override fun getQrUrl() = registryDao.getRegistryValue(QR_URL).decode<String>(json)
 
+    override fun getDeviceId(): String =
+        registryDao.getRegistryValueSync(DEVICE_UNIQUE_ID) ?: deviceInfoHelper.getId().also {
+            registryDao.addOrUpdate(Registry(key = DEVICE_UNIQUE_ID, value = it))
+        }
+
     private inline fun <reified T> store(key: String, value: T?) {
         registryDao.addOrUpdate(
             Registry(key = key, value = value.encode<T>(json))
@@ -70,6 +77,7 @@ class RegistryRepositoryImpl @Inject constructor(
         private const val THIS_DEVICE = "THIS_DEVICE"
         private const val THIS_USER = "THIS_USER"
         private const val QR_URL = "QR_URL"
+        private const val DEVICE_UNIQUE_ID = "DEVICE_UNIQUE_ID"
     }
 }
 

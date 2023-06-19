@@ -63,7 +63,7 @@ sealed class ModalMessage(
     )
 }
 
-private fun Int.toStringId() = when (this) {
+fun Int.toStringId() = when (this) {
     UNAUTHORIZED_ACCESS -> R.string.error_unauthorized
     ConnectException -> R.string.network_unavailable
     SocketTimeoutException -> R.string.network_unavailable
@@ -76,7 +76,7 @@ private fun Int.toStringId() = when (this) {
     else -> R.string.unknown_error
 }
 
-private fun Int.toDrawableId() = when (this) {
+fun Int.toDrawableId() = when (this) {
     UNAUTHORIZED_ACCESS -> R.drawable.ic_round_signal_cellular_connected_no_internet_4_bar_24
 
     UnknownHostException,

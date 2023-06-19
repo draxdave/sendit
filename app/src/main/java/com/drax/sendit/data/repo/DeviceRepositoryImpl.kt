@@ -6,6 +6,8 @@ import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.network.model.UpdateInstanceIdRequest
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.RegistryRepository
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,6 +17,14 @@ class DeviceRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 
 ) : DeviceRepository {
+    override val deviceUniqueId: String by lazy {
+        registryRepository.getDeviceId()
+    }
+
+    override val deviceInstanceId: String by lazy {
+        registryRepository.getFirebaseId() ?: ""
+    }
+
     override suspend fun addOrUpdateDevice(device: DeviceDomain) =
         registryRepository.updateThisDevice(device)
 

@@ -19,4 +19,7 @@ interface RegistryRepository : BaseStorageRepository {
 
     suspend fun updateQrUrl(qrUrl: String?)
     fun getQrUrl(): Flow<String?>
+
+    fun getDeviceId(): String
+
 }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.siamak.sendit.R
 import com.drax.sendit.view.theme.aqua500
 import java.util.regex.Pattern
@@ -57,10 +59,13 @@ private const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
 
 @Composable
 fun AppEmailInput(
-    modifier: Modifier = Modifier, viewModel: LoginViewModel, colors: TextFieldColors,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel,
+    valueDelegate: MutableState<String>,
+    colors: TextFieldColors,
     onValidationChange: (Boolean) -> Unit = {},
 ) {
-    var username by rememberSaveable { mutableStateOf("") }
+    var username by valueDelegate
     var usernameHadError by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
@@ -117,10 +122,11 @@ fun AppEmailInput(
 fun AppPasswordInput(
     viewModel: LoginViewModel,
     colors: TextFieldColors,
+    valueDelegate: MutableState<String>,
     @StringRes label: Int,
     onValidationChange: (Boolean) -> Unit = {},
 ) {
-    var password by rememberSaveable { mutableStateOf("") }
+    var password by valueDelegate
     var passwordHasError by rememberSaveable { mutableStateOf(false) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -197,12 +203,9 @@ fun LoginForm(
     modifier: Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    var formType by rememberSaveable {
-        mutableStateOf<FormType>(FormType.Login)
-    }
-    var formState by rememberSaveable {
-        mutableStateOf<FormState>(FormState.Invalid)
-    }
+    var formType by viewModel.formType
+    var formState by viewModel.formState
+
     var usernameIsValid by rememberSaveable {
         mutableStateOf(false)
     }
@@ -277,23 +280,29 @@ fun LoginForm(
             )
 
 
-        AppEmailInput(viewModel = viewModel, colors = colors) { isValid ->
+        AppEmailInput(
+            viewModel = viewModel,
+            colors = colors,
+            valueDelegate = viewModel.usernameInput
+        ) { isValid ->
             usernameIsValid = isValid
         }
 
         if (formType !is FormType.ForgetPassword)
             AppPasswordInput(
                 label = R.string.login_password_placeholder,
-                viewModel = viewModel, colors = colors
-            ){
+                viewModel = viewModel, colors = colors,
+                valueDelegate = viewModel.passwordInput,
+            ) {
                 passwordIsValid = it
             }
 
         if (formType is FormType.Register)
             AppPasswordInput(
                 label = R.string.login_password_repeat_placeholder,
-                viewModel = viewModel, colors = colors
-            ){
+                viewModel = viewModel, colors = colors,
+                valueDelegate = viewModel.passwordRepeatInput,
+            ) {
                 passwordRepeatIsValid = it
             }
 
@@ -320,13 +329,28 @@ fun LoginForm(
                 style = MaterialTheme.typography.body2,
             )
 
+        (formState as? FormState.Error)?.let {
+            Text(
+                modifier = Modifier.padding(top = 8.dp, start = 8.dp),
+                text = it.message ?: stringResource(
+                    id = it.messageResId ?: R.string.login_form_error
+                ),
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.error,
+            )
+        }
+
         Button(
             modifier = Modifier
                 .fillMaxWidth(.8f)
                 .padding(vertical = 8.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = {
-
+                when(formType){
+                    FormType.ForgetPassword -> TODO()
+                    FormType.Login -> viewModel.loginWithEmail()
+                    FormType.Register -> TODO()
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.primaryVariant,
@@ -417,7 +441,7 @@ fun LoginForm(
 @Preview
 @Composable
 fun LoginPreview() {
-    LoginForm(modifier = Modifier.background(color = Color.White))
+    LoginForm(modifier = Modifier.background(color = Color.White), viewModel = viewModel())
 }
 
 @Serializable
@@ -430,10 +454,16 @@ sealed class FormType : java.io.Serializable {
 @Serializable
 sealed class FormState : java.io.Serializable {
     object Loading : FormState()
-    data class Error(val message: String?) : FormState()
+    data class Error(
+        val message: String? = null,
+        @StringRes val messageResId: Int? = null,
+        val iconResId: Int
+    ) :
+        FormState()
+
     object Valid : FormState()
     object Invalid : FormState()
-    data class Success(val message: String?) : FormState()
+    object Success : FormState()
 }
 
 sealed class UiState {
