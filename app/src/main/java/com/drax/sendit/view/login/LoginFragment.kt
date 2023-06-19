@@ -443,6 +443,6 @@ class LoginFragment : BaseComposeFragment() {
     }
 
     companion object {
-        private const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
+
     }
 }

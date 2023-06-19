@@ -11,6 +11,4 @@ import kotlinx.coroutines.launch
 fun ViewModel.job(
     dispatcher: CoroutineContext = Dispatchers.IO,
     job: suspend CoroutineScope.() -> Unit
-) {
-    viewModelScope.launch(dispatcher, CoroutineStart.DEFAULT, job)
-}
+) = viewModelScope.launch(dispatcher, CoroutineStart.DEFAULT, job)

@@ -60,5 +60,7 @@
     <string name="login_forget_pass">We sent the required instructions to your email address. Please follow them in order to reset account password.</string>
     <string name="login_submit_signup">Sign-Up Now!</string>
     <string name="login_submit_forget">Send Password</string>
+    <string name="login_form_error_email_input">Please enter correct email address</string>
+    <string name="login_form_error_password_input">Enter a valid password, please</string>
 
 </resources>

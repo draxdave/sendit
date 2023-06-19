@@ -1,5 +1,7 @@
 package com.drax.sendit.view.login
 
+import android.util.Patterns
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +20,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -25,6 +28,7 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,28 +49,224 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.siamak.sendit.R
 import com.drax.sendit.view.theme.aqua500
+import java.util.regex.Pattern
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
+private const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
+
+@Composable
+fun AppEmailInput(
+    modifier: Modifier = Modifier, viewModel: LoginViewModel, colors: TextFieldColors,
+    onValidationChange: (Boolean) -> Unit = {},
+) {
+    var username by rememberSaveable { mutableStateOf("") }
+    var usernameHadError by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    if (!usernameHadError && username.isNotBlank()) {
+        onValidationChange(true)
+    } else {
+        onValidationChange(false)
+    }
+
+    TextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp)),
+        value = username,
+        label = {
+            Text(
+                text = stringResource(
+                    id = if (usernameHadError) {
+                        R.string.login_form_error_email_input
+                    } else {
+                        R.string.login_email_hint
+                    }
+                )
+            )
+        },
+        placeholder = {
+            Text(text = stringResource(id = R.string.login_email_placeholder))
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.login_input_username),
+                contentDescription = null,
+                modifier = Modifier
+            )
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        onValueChange = {
+            scope.launch {
+                usernameHadError = !viewModel.validateInput(
+                    usernameInput = it,
+                    pattern = Patterns.EMAIL_ADDRESS
+                )
+            }
+            username = it
+        },
+        colors = colors,
+        singleLine = true,
+        isError = usernameHadError,
+    )
+}
+
+@Composable
+fun AppPasswordInput(
+    viewModel: LoginViewModel,
+    colors: TextFieldColors,
+    @StringRes label: Int,
+    onValidationChange: (Boolean) -> Unit = {},
+) {
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordHasError by rememberSaveable { mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    if (!passwordHasError && password.isNotBlank()) {
+        onValidationChange(true)
+    } else {
+        onValidationChange(false)
+    }
+
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .border(
+                width = 1.dp,
+                color = Color.LightGray,
+                shape = RoundedCornerShape(7.dp)
+            ),
+        singleLine = true,
+        value = password,
+        label = {
+            Text(
+                text = if (passwordHasError) {
+                    stringResource(id = R.string.login_form_error_password_input)
+                } else {
+                    stringResource(id = label)
+                }
+            )
+        },
+        placeholder = {
+            Text(text = stringResource(id = R.string.login_password_placeholder))
+        },
+        leadingIcon = {
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.login_input_password),
+                    ""
+                )
+            }
+        },
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            val image = if (passwordVisible)
+                Icons.Outlined.Visibility
+            else Icons.Filled.VisibilityOff
+
+            // Please provide localized description for accessibility services
+            val description = if (passwordVisible) "Hide password" else "Show password"
+
+            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                Icon(imageVector = image, description)
+            }
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        onValueChange = {
+            scope.launch {
+                passwordHasError = !viewModel.validateInput(
+                    usernameInput = it,
+                    pattern = Pattern.compile(PASSWORD_REGEX)
+                )
+            }
+            password = it
+        },
+        colors = colors,
+        isError = passwordHasError,
+    )
+}
 
 @Composable
 fun LoginForm(
     modifier: Modifier,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val formType by viewModel.formType
+    var formType by rememberSaveable {
+        mutableStateOf<FormType>(FormType.Login)
+    }
+    var formState by rememberSaveable {
+        mutableStateOf<FormState>(FormState.Invalid)
+    }
+    var usernameIsValid by rememberSaveable {
+        mutableStateOf(false)
+    }
 
-    val formState by viewModel.formState
+    var passwordIsValid by rememberSaveable {
+        mutableStateOf(false)
+    }
 
+    var passwordRepeatIsValid by rememberSaveable {
+        mutableStateOf(false)
+    }
 
+    when (formState) {
+        FormState.Loading -> Unit
+        is FormState.Error -> Unit
+        FormState.Invalid -> when (formType) {
+            FormType.ForgetPassword -> {
+                if (usernameIsValid) {
+                    formState = FormState.Valid
+                }
+            }
+
+            FormType.Login -> {
+                if (usernameIsValid && passwordIsValid) {
+                    formState = FormState.Valid
+                }
+            }
+
+            FormType.Register -> {
+                if (usernameIsValid && passwordIsValid && passwordRepeatIsValid) {
+                    formState = FormState.Valid
+                }
+            }
+        }
+
+        is FormState.Success -> Unit
+        FormState.Valid -> when (formType) {
+            FormType.ForgetPassword -> {
+                if (!usernameIsValid) {
+                    formState = FormState.Invalid
+                }
+            }
+
+            FormType.Login -> {
+                if (!usernameIsValid || !passwordIsValid) {
+                    formState = FormState.Invalid
+                }
+            }
+
+            FormType.Register -> {
+                if (!usernameIsValid || !passwordIsValid || !passwordRepeatIsValid) {
+                    formState = FormState.Invalid
+                }
+            }
+        }
+    }
+
+    println("formState: $formState")
+    println("formType: $formType")
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        var username by rememberSaveable { mutableStateOf("") }
-        var password by rememberSaveable { mutableStateOf("") }
-        var passwordRepeat by rememberSaveable { mutableStateOf("") }
-        var passwordVisible by rememberSaveable { mutableStateOf(false) }
-        var passwordRepeatVisible by rememberSaveable { mutableStateOf(false) }
         val colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedLabelColor = Color.Unspecified,
@@ -76,129 +276,26 @@ fun LoginForm(
 
             )
 
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(7.dp)),
-            value = username,
-            label = {
-                Text(text = stringResource(id = R.string.login_email_hint))
-            },
-            placeholder = {
-                Text(text = stringResource(id = R.string.login_email_placeholder))
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.login_input_username),
-                    contentDescription = null,
-                    modifier = Modifier
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            onValueChange = {
-                username = it
-            },
-            colors = colors,
-            singleLine = true,
-        )
+
+        AppEmailInput(viewModel = viewModel, colors = colors) { isValid ->
+            usernameIsValid = isValid
+        }
 
         if (formType !is FormType.ForgetPassword)
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .border(
-                        width = 1.dp,
-                        color = Color.LightGray,
-                        shape = RoundedCornerShape(7.dp)
-                    ),
-                singleLine = true,
-                value = password,
-                label = {
-                    Text(text = stringResource(id = R.string.login_password_hint))
-                },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.login_password_placeholder))
-                },
-                leadingIcon = {
-                    IconButton(onClick = {
-
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.login_input_password),
-                            ""
-                        )
-                    }
-                },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val image = if (passwordVisible)
-                        Icons.Outlined.Visibility
-                    else Icons.Filled.VisibilityOff
-
-                    // Please provide localized description for accessibility services
-                    val description = if (passwordVisible) "Hide password" else "Show password"
-
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = image, description)
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = {
-                    password = it
-                },
-                colors = colors,
-            )
+            AppPasswordInput(
+                label = R.string.login_password_placeholder,
+                viewModel = viewModel, colors = colors
+            ){
+                passwordIsValid = it
+            }
 
         if (formType is FormType.Register)
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .border(
-                        width = 1.dp,
-                        color = Color.LightGray,
-                        shape = RoundedCornerShape(7.dp)
-                    ),
-                singleLine = true,
-                value = passwordRepeat,
-                label = {
-                    Text(text = stringResource(id = R.string.login_password_repeat_placeholder))
-                },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.login_password_repeat_placeholder))
-                },
-                leadingIcon = {
-                    IconButton(onClick = {
-
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.login_input_password),
-                            ""
-                        )
-                    }
-                },
-                visualTransformation = if (passwordRepeatVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val image = if (passwordRepeatVisible)
-                        Icons.Outlined.Visibility
-                    else Icons.Filled.VisibilityOff
-
-                    // Please provide localized description for accessibility services
-                    val description =
-                        if (passwordRepeatVisible) "Hide password" else "Show password"
-
-                    IconButton(onClick = { passwordRepeatVisible = !passwordRepeatVisible }) {
-                        Icon(imageVector = image, description)
-                    }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = {
-                    passwordRepeat = it
-                },
-                colors = colors
-            )
+            AppPasswordInput(
+                label = R.string.login_password_repeat_placeholder,
+                viewModel = viewModel, colors = colors
+            ){
+                passwordRepeatIsValid = it
+            }
 
         if (formType is FormType.Login)
             Text(
@@ -216,7 +313,7 @@ fun LoginForm(
                         )
                     }
                     .clickable {
-                        viewModel.updateFormState(FormType.ForgetPassword)
+                        formType = FormType.ForgetPassword
                     },
                 text = stringResource(id = R.string.login_bottom_action_forgot),
                 color = MaterialTheme.colors.secondary,
@@ -265,12 +362,10 @@ fun LoginForm(
                     )
                 }
                 .clickable {
-                    viewModel.updateFormState(
-                        when (formType) {
-                            FormType.Login -> FormType.Register
-                            FormType.Register, FormType.ForgetPassword -> FormType.Login
-                        }
-                    )
+                    formType = when (formType) {
+                        FormType.Login -> FormType.Register
+                        FormType.Register, FormType.ForgetPassword -> FormType.Login
+                    }
                 },
             text = stringResource(
                 id = when (formType) {
@@ -287,7 +382,7 @@ fun LoginForm(
                 .padding(vertical = 8.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                viewModel.updateFormState(FormType.Register)
+                formType = FormType.Register
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.surface
@@ -325,16 +420,19 @@ fun LoginPreview() {
     LoginForm(modifier = Modifier.background(color = Color.White))
 }
 
-sealed class FormType {
+@Serializable
+sealed class FormType : java.io.Serializable {
     object Login : FormType()
     object Register : FormType()
     object ForgetPassword : FormType()
 }
 
-sealed class FormState {
+@Serializable
+sealed class FormState : java.io.Serializable {
     object Loading : FormState()
     data class Error(val message: String?) : FormState()
     object Valid : FormState()
+    object Invalid : FormState()
     data class Success(val message: String?) : FormState()
 }
 
