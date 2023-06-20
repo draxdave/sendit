@@ -219,7 +219,7 @@ fun LoginForm(
     }
 
     when (formState) {
-        FormState.Loading -> Unit
+        FormState.Loading -> {}
         is FormState.Error -> Unit
         FormState.Invalid -> when (formType) {
             FormType.ForgetPassword -> {
@@ -323,6 +323,7 @@ fun LoginForm(
                     }
                     .clickable {
                         formType = FormType.ForgetPassword
+                        formState = FormState.Invalid
                     },
                 text = stringResource(id = R.string.login_bottom_action_forgot),
                 color = MaterialTheme.colors.secondary,
@@ -367,7 +368,7 @@ fun LoginForm(
                 backgroundColor = MaterialTheme.colors.primaryVariant,
                 disabledBackgroundColor = MaterialTheme.colors.primaryVariant.copy(alpha = 0.5f),
             ),
-            enabled = formState is FormState.Valid
+            enabled = formState !in listOf(FormState.Invalid, FormState.Loading),
         ) {
             Text(
                 text = stringResource(
@@ -401,6 +402,7 @@ fun LoginForm(
                         FormType.Login -> FormType.Register
                         FormType.Register, FormType.ForgetPassword -> FormType.Login
                     }
+                    formState = FormState.Invalid
                 },
             text = stringResource(
                 id = when (formType) {
@@ -418,6 +420,7 @@ fun LoginForm(
                 .align(Alignment.CenterHorizontally),
             onClick = {
                 formType = FormType.Register
+                formState = FormState.Invalid
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.surface
