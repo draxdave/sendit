@@ -63,6 +63,7 @@
     <string name="login_form_error_email_input">Please enter correct email address</string>
     <string name="login_form_error_password_input">Enter a valid password, please</string>
     <string name="login_form_error">An error happened. Try again please.</string>
+    <string name="login_form_success">Operation done successfully</string>
     <string name="passwords_dont_match">Passwords do not match.</string>
 
 </resources>

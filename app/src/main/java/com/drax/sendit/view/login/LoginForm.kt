@@ -340,16 +340,27 @@ fun LoginForm(
             )
         }
 
+        (formState as? FormState.Success)?.let {
+            Text(
+                modifier = Modifier.padding(top = 8.dp, start = 8.dp),
+                text = stringResource(
+                    id = it.messageRes ?: R.string.login_form_success
+                ),
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.error,
+            )
+        }
+
         Button(
             modifier = Modifier
                 .fillMaxWidth(.8f)
                 .padding(vertical = 8.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                when(formType){
-                    FormType.ForgetPassword -> TODO()
+                when (formType) {
+                    FormType.ForgetPassword -> viewModel.forgetPassword()
                     FormType.Login -> viewModel.loginWithEmail()
-                    FormType.Register -> TODO()
+                    FormType.Register -> viewModel.register()
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -463,7 +474,7 @@ sealed class FormState : java.io.Serializable {
 
     object Valid : FormState()
     object Invalid : FormState()
-    object Success : FormState()
+    data class Success(@StringRes val messageRes: Int? = null) : FormState()
 }
 
 sealed class UiState {
