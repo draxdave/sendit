@@ -68,7 +68,8 @@ class LoginFragment : BaseComposeFragment() {
     lateinit var deviceInfoHelper: DeviceInfoHelper
 
     private val ssoHandler: SsoHandler by lazy {
-        SsoHandler(analytics = analytics, deviceInfoHelper = deviceInfoHelper) { event ->
+        SsoHandler(analytics = analytics, deviceInfoHelper = deviceInfoHelper)
+        /*{ event ->
             if (isActive()) return@SsoHandler
 
             when (event) {
@@ -77,7 +78,7 @@ class LoginFragment : BaseComposeFragment() {
 //                    tryLoginToServer(event.request)
                 }
             }
-        }
+        }*/
     }
 
     override fun onCreateView(
@@ -145,15 +146,12 @@ class LoginFragment : BaseComposeFragment() {
                     modifier = Modifier
                 )
 
-                LoginForm(Modifier.fillMaxWidth(.85f))
+                LoginForm(
+                    modifier = Modifier.fillMaxWidth(.85f),
+                    ssoHandler = ssoHandler
+                )
             }
         }
-    }
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        ssoHandler.register(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

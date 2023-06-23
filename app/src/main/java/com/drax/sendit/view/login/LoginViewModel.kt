@@ -2,10 +2,6 @@ package com.drax.sendit.view.login
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import app.siamak.sendit.R
-import com.drax.sendit.domain.repo.AuthRepository
-import com.drax.sendit.domain.repo.DeviceRepository
-import com.drax.sendit.domain.repo.UserRepository
 import com.drax.sendit.view.login.usecases.ForgetPasswordUseCae
 import com.drax.sendit.view.login.usecases.LoginUseCase
 import com.drax.sendit.view.login.usecases.RegisterUseCase
@@ -16,9 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val authRepository: AuthRepository,
-    private val deviceRepository: DeviceRepository,
     private val loginUseCase: LoginUseCase,
     private val forgetPasswordUseCae: ForgetPasswordUseCae,
     private val registerUseCase: RegisterUseCase,
