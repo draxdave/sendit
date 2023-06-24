@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
@@ -66,20 +67,6 @@ class LoginFragment : BaseComposeFragment() {
 
     @Inject
     lateinit var deviceInfoHelper: DeviceInfoHelper
-
-    private val ssoHandler: SsoHandler by lazy {
-        SsoHandler(analytics = analytics, deviceInfoHelper = deviceInfoHelper)
-        /*{ event ->
-            if (isActive()) return@SsoHandler
-
-            when (event) {
-                is SsoEvent.SignInFailed -> viewModel.googleSignInFailed(event.stringId)
-                is SsoEvent.SignSucceed -> {
-//                    tryLoginToServer(event.request)
-                }
-            }
-        }*/
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -148,7 +135,7 @@ class LoginFragment : BaseComposeFragment() {
 
                 LoginForm(
                     modifier = Modifier.fillMaxWidth(.85f),
-                    ssoHandler = ssoHandler
+                    viewModel = hiltViewModel()
                 )
             }
         }
@@ -157,7 +144,6 @@ class LoginFragment : BaseComposeFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ssoHandler.googleAuthInit(activity)
         initUI()
     }
 
@@ -422,11 +408,6 @@ class LoginFragment : BaseComposeFragment() {
 
     private fun trySso(signInRequest: SignInSsoRequest?) {
         viewModel.authoriseWithSso(signInRequest ?: return)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        ssoHandler.unregister()
     }
 
     private fun TextInputLayout.isValid(pattern: Pattern, errorText: Int): Boolean {

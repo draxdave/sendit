@@ -3,6 +3,7 @@ package com.drax.sendit.view.login
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.drax.sendit.view.login.usecases.ForgetPasswordUseCae
+import com.drax.sendit.view.login.usecases.GoogleSsoUseCase
 import com.drax.sendit.view.login.usecases.LoginUseCase
 import com.drax.sendit.view.login.usecases.RegisterUseCase
 import com.drax.sendit.view.util.job
@@ -15,6 +16,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val forgetPasswordUseCae: ForgetPasswordUseCae,
     private val registerUseCase: RegisterUseCase,
+    private val ssoUseCase: GoogleSsoUseCase,
 ) : ViewModel() {
 
     val formState = mutableStateOf<FormState>(FormState.Invalid)
@@ -36,7 +38,7 @@ class LoginViewModel @Inject constructor(
 
     fun loginWithEmail() {
         job {
-            loginUseCase.invoke(
+            loginUseCase(
                 formState = formState,
                 username = usernameInput.value,
                 password = passwordInput.value
@@ -44,9 +46,19 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun loginWithGoogle(tokenId: String) {
+        job {
+            ssoUseCase(
+                formState = formState,
+                username = usernameInput.value,
+                idToken = tokenId
+            )
+        }
+    }
+
     fun forgetPassword() {
         job {
-            forgetPasswordUseCae.invoke(formState = formState, email = usernameInput.value)
+            forgetPasswordUseCae(formState = formState, email = usernameInput.value)
         }
     }
 

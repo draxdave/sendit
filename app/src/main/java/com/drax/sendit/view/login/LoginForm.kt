@@ -1,14 +1,10 @@
 package com.drax.sendit.view.login
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -24,10 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import app.siamak.sendit.R
 import com.drax.sendit.view.login.components.AppEmailInput
 import com.drax.sendit.view.login.components.AppPasswordInput
+import com.drax.sendit.view.login.components.SsoButton
 import com.drax.sendit.view.theme.aqua500
 
 internal const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
@@ -43,8 +37,7 @@ internal const val PASSWORD_REGEX = "^(?=.*[0-9]).{6,20}\$"
 @Composable
 fun LoginForm(
     modifier: Modifier,
-    viewModel: LoginViewModel = hiltViewModel(),
-    ssoHandler: SsoHandler?,
+    viewModel: LoginViewModel,
 ) {
     var formType by viewModel.formType
     var formState by viewModel.formState
@@ -124,54 +117,49 @@ fun LoginForm(
 
 
         AppEmailInput(
-            viewModel = viewModel,
-            colors = colors,
-            valueDelegate = viewModel.usernameInput
+            viewModel = viewModel, colors = colors, valueDelegate = viewModel.usernameInput
         ) { isValid ->
             usernameIsValid = isValid
         }
 
-        if (formType !is FormType.ForgetPassword)
-            AppPasswordInput(
-                label = R.string.login_password_placeholder,
-                viewModel = viewModel, colors = colors,
-                valueDelegate = viewModel.passwordInput,
-            ) {
-                passwordIsValid = it
-            }
+        if (formType !is FormType.ForgetPassword) AppPasswordInput(
+            label = R.string.login_password_placeholder,
+            viewModel = viewModel, colors = colors,
+            valueDelegate = viewModel.passwordInput,
+        ) {
+            passwordIsValid = it
+        }
 
-        if (formType is FormType.Register)
-            AppPasswordInput(
-                label = R.string.login_password_repeat_placeholder,
-                viewModel = viewModel, colors = colors,
-                valueDelegate = viewModel.passwordRepeatInput,
-            ) {
-                passwordRepeatIsValid = it
-            }
+        if (formType is FormType.Register) AppPasswordInput(
+            label = R.string.login_password_repeat_placeholder,
+            viewModel = viewModel, colors = colors,
+            valueDelegate = viewModel.passwordRepeatInput,
+        ) {
+            passwordRepeatIsValid = it
+        }
 
-        if (formType is FormType.Login)
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .drawBehind {
-                        val strokeWidth = size.width
-                        val strokeHeightStart = size.height - 1f
+        if (formType is FormType.Login) Text(
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .drawBehind {
+                    val strokeWidth = size.width
+                    val strokeHeightStart = size.height - 1f
 
-                        drawLine(
-                            color = aqua500,
-                            start = Offset(x = 0f, y = strokeHeightStart),
-                            end = Offset(x = strokeWidth, y = size.height),
-                            strokeWidth = 1f,
-                        )
-                    }
-                    .clickable {
-                        formType = FormType.ForgetPassword
-                        formState = FormState.Invalid
-                    },
-                text = stringResource(id = R.string.login_bottom_action_forgot),
-                color = MaterialTheme.colors.secondary,
-                style = MaterialTheme.typography.body2,
-            )
+                    drawLine(
+                        color = aqua500,
+                        start = Offset(x = 0f, y = strokeHeightStart),
+                        end = Offset(x = strokeWidth, y = size.height),
+                        strokeWidth = 1f,
+                    )
+                }
+                .clickable {
+                    formType = FormType.ForgetPassword
+                    formState = FormState.Invalid
+                },
+            text = stringResource(id = R.string.login_bottom_action_forgot),
+            color = MaterialTheme.colors.secondary,
+            style = MaterialTheme.typography.body2,
+        )
 
         (formState as? FormState.Error)?.let {
             Text(
@@ -256,44 +244,13 @@ fun LoginForm(
             style = MaterialTheme.typography.button,
         )
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .align(Alignment.CenterHorizontally),
-            onClick = {
-                formState = FormState.Loading
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.surface
-            ),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-
-                ) {
-                Image(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_google_icon),
-                    contentDescription = "Google icon"
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(alignment = Alignment.CenterVertically),
-                    text = stringResource(id = R.string.sign_in_with_google),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.button,
-                    color = MaterialTheme.colors.primary,
-                )
-
-            }
-        }
+        SsoButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            viewModel = viewModel,
+        )
     }
 }
+
 
 @Preview
 @Composable
@@ -301,6 +258,5 @@ fun LoginPreview() {
     LoginForm(
         modifier = Modifier.background(color = Color.White),
         viewModel = viewModel(),
-        ssoHandler = null,
     )
 }

@@ -44,24 +44,7 @@ class LoginUseCase @Inject constructor(
                 instanceId = instanceId,
             )
         )) {
-            is Resource.ERROR -> {
-                formState.value = FormState.Error(
-                    messageResId = if (result.errorCode in 1..799) {
-                        result.errorCode.toStringId()
-                    } else when (result.errorCode) {
-                        SignInSsoResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                        SignInSsoResponse.INCORRECT_CREDENTIALS -> R.string.login_error_user_pass_incorrect
-                        SignInSsoResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
-                        SignInSsoResponse.USER_ALREADY_ACTIVE -> R.string.login_error_user_inactive
-                        else -> R.string.error_internal
-                    },
-                    iconResId = if (result.errorCode in 1..799) {
-                        result.errorCode.toDrawableId()
-                    } else {
-                        R.drawable.warning
-                    },
-                )
-            }
+            is Resource.ERROR -> formState.value = result.toFormState()
 
             is Resource.SUCCESS -> {
                 authorised(formState = formState, token = result.data.data?.token ?: "")

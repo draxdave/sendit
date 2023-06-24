@@ -49,9 +49,7 @@ class SsoHandler @Inject constructor(
         Identity.getSignInClient(appContext)
     }
 
-    private lateinit var signInRequest: BeginSignInRequest
     private lateinit var signUpRequest: BeginSignInRequest
-    private lateinit var signInActivityResult: ActivityResultLauncher<IntentSenderRequest>
     private lateinit var signupActivityResult: ActivityResultLauncher<IntentSenderRequest>
 
     private val mGoogleSignInClient: GoogleSignInClient by lazy {
@@ -64,8 +62,11 @@ class SsoHandler @Inject constructor(
     }
     private lateinit var googleAuthCallback: ActivityResultLauncher<Intent>
 
-    suspend fun launchOneTapSignIn(onEvent: (SsoEvent) -> Unit) {
-        signInRequest = BeginSignInRequest.builder()
+    suspend fun launchOneTapSignIn(
+        launcher: ActivityResultLauncher<IntentSenderRequest>,
+        onEvent: (SsoEvent) -> Unit
+    ) {
+        val signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
@@ -79,12 +80,12 @@ class SsoHandler @Inject constructor(
             .setAutoSelectEnabled(true)
             .build()
 
-        oneTapClient.beginSignIn(signInRequest).await()
+        oneTapClient.beginSignIn(signInRequest)
             .addOnSuccessListener { result ->
                 analytics.set(Event.SignIn.SsoDone)
                 try {
-                    signInActivityResult.launch(
-                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    launcher.launch(
+                        IntentSenderRequest.Builder(result.pendingIntent).build()
                     )
 
                 } catch (e: IntentSender.SendIntentException) {
@@ -98,7 +99,7 @@ class SsoHandler @Inject constructor(
                 // do nothing and continue presenting the signed-out UI.
                 Log.d(tag, "Errorrrrr " + e.localizedMessage)
                 showSignupFlow(onEvent)
-            }
+            }.await()
     }
 
     private fun showSignupFlow(onEvent: (SsoEvent) -> Unit) {
@@ -147,32 +148,29 @@ class SsoHandler @Inject constructor(
                 .getSignInCredentialFromIntent(result.data)
             val idToken = credential.googleIdToken
 
-            when {
-                idToken != null -> {
-                    SenditFirebaseService.token(
-                        onError = {
-                            analytics.set(Event.SignIn.Failed("Token is missing"))
-                            onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
+            if (idToken != null) {
+                SenditFirebaseService.token(
+                    onError = {
+                        analytics.set(Event.SignIn.Failed("Token is missing"))
+                        onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
 
-                        }) { instanceId ->
-                        onEvent(
-                            SsoEvent.SignSucceed(
-                                credential.toSignInRequest(
-                                    instanceId,
-                                    idToken
-                                )
+                    }) { instanceId ->
+                    onEvent(
+                        SsoEvent.SignSucceed(
+                            credential.toSignInRequest(
+                                instanceId,
+                                idToken
                             )
                         )
-                    }
-                    Log.d("TAG", "Got password.")
+                    )
                 }
-
-                else -> {
-                    // Shouldn't happen.
-                    Log.d("TAG", "No ID token or password!")
-                    analytics.set(Event.SignIn.Failed("No ID token or password!"))
-                    onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
-                }
+                Log.d("TAG", "Got password.")
+            }
+            else {
+                // Shouldn't happen.
+                Log.d("TAG", "No ID token or password!")
+                analytics.set(Event.SignIn.Failed("No ID token or password!"))
+                onEvent(SsoEvent.SignInFailed(R.string.signin_google_error))
             }
         } else {
             analytics.set(Event.SignIn.Failed("Negative Result"))
@@ -181,25 +179,14 @@ class SsoHandler @Inject constructor(
     }
 
     fun unregister() {
-        signInActivityResult.unregister()
         signupActivityResult.unregister()
         googleAuthCallback.unregister()
     }
 
-    @Composable
-    fun registerCompose(){
-
-    }
 
     fun register(fragment: Fragment, onEvent: (SsoEvent) -> Unit) {
-        signInActivityResult =
-            fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-                checkResult(fragment.activity, it, onEvent)
-            }
-        signupActivityResult =
-            fragment.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-                checkResult(fragment.activity, it, onEvent)
-            }
+
+
         googleAuthCallback =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result: ActivityResult ->
@@ -223,7 +210,6 @@ class SsoHandler @Inject constructor(
                 }
             }
     }
-
 
     private fun handleSignInResult(
         completedTask: Task<GoogleSignInAccount>,

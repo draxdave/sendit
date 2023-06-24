@@ -24,7 +24,6 @@ import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.RegistryRepository
 import com.drax.sendit.domain.repo.TransactionRepository
 import com.drax.sendit.domain.repo.UserRepository
-import com.drax.sendit.view.login.SsoHandler
 import com.drax.sendit.view.util.DeviceInfoHelper
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Binds
@@ -117,11 +116,5 @@ class otherModule {
             @ApplicationContext context: Context
         ): FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
-        @Provides
-        fun providesGoogleSsoHandler(
-            @ApplicationContext context: Context
-        ): SsoHandler{
-            return SsoHandler(context)
-        }
     }
 }
