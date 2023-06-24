@@ -81,10 +81,12 @@ fun SsoButton(
         val oneTapClient = Identity.getSignInClient(context)
         val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
         val idToken = credential.googleIdToken
-        if (idToken != null) {
+        val email = credential.id
+        if (idToken != null && email != null) {
             // Got an ID token from Google. Use it to authenticate
             // with your backend.
             Log.d("LOG", idToken)
+            viewModel.usernameInput.value = email
 
             viewModel.loginWithGoogle(idToken)
 
@@ -113,12 +115,12 @@ fun SsoButton(
             }
         }, colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.surface
-        ), shape = RoundedCornerShape(8.dp)
+        ), shape = RoundedCornerShape(8.dp),
+        enabled = formState !is FormState.Loading
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
-
             ) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_google_icon),
@@ -138,7 +140,7 @@ fun SsoButton(
     }
 }
 
-suspend fun signInWithGoogle(
+private suspend fun signInWithGoogle(
     context: Context,
     launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
     formState: MutableState<FormState>,
@@ -173,7 +175,7 @@ suspend fun signInWithGoogle(
     }
 }
 
-suspend fun signUpWithGoogle(
+private suspend fun signUpWithGoogle(
     context: Context,
     launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
     formState: MutableState<FormState>,
