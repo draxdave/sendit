@@ -22,7 +22,13 @@ buildscript {
 }
 plugins {
     id 'com.google.dagger.hilt.android' version '2.44' apply false
+    id "io.gitlab.arturbosch.detekt" version "1.23.0"
+
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+detekt {
+    config.setFrom("config/detekt/config.yml")
+    ignoreFailures = true
 }

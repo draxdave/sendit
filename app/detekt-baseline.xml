@@ -1,0 +1,215 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassNaming:appModule.kt$dbModule</ID>
+    <ID>ClassNaming:appModule.kt$networkModule</ID>
+    <ID>ClassNaming:appModule.kt$otherModule</ID>
+    <ID>CyclomaticComplexMethod:LoginForm.kt$@Composable fun LoginForm( modifier: Modifier, viewModel: LoginViewModel, )</ID>
+    <ID>EmptyClassBlock:Analytics.kt$Event.Other${ }</ID>
+    <ID>EmptyClassBlock:LoginFragment.kt$LoginFragment.Companion${ }</ID>
+    <ID>EmptyClassBlock:ResViewModel.kt$ResViewModel${ }</ID>
+    <ID>FunctionNaming:GoogleSsoButton.kt$@Composable fun SsoButton( modifier: Modifier = Modifier, viewModel: LoginViewModel, )</ID>
+    <ID>FunctionNaming:GoogleSsoButton.kt$@Preview @Composable fun PreviewGoogleSso()</ID>
+    <ID>FunctionNaming:InputText.kt$@Composable fun AppEmailInput( modifier: Modifier = Modifier, viewModel: LoginViewModel, valueDelegate: MutableState&lt;String&gt;, colors: TextFieldColors, onValidationChange: (Boolean) -&gt; Unit = {}, )</ID>
+    <ID>FunctionNaming:InputText.kt$@Composable fun AppPasswordInput( viewModel: LoginViewModel, colors: TextFieldColors, valueDelegate: MutableState&lt;String&gt;, @StringRes label: Int, onValidationChange: (Boolean) -&gt; Unit = {}, )</ID>
+    <ID>FunctionNaming:Linkify.kt$@Composable fun LinkifyText(text: String, modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:LoginForm.kt$@Composable fun LoginForm( modifier: Modifier, viewModel: LoginViewModel, )</ID>
+    <ID>FunctionNaming:LoginForm.kt$@Preview @Composable fun LoginPreview()</ID>
+    <ID>FunctionNaming:LoginFragment.kt$LoginFragment$@Composable fun HeaderLayout(modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:LoginFragment.kt$LoginFragment$@Composable fun LoginContent()</ID>
+    <ID>FunctionNaming:LoginFragment.kt$LoginFragment$@Composable fun VersionText(appVersion: String)</ID>
+    <ID>FunctionNaming:LoginFragment.kt$LoginFragment$@Composable private fun LoginScreen()</ID>
+    <ID>FunctionNaming:LoginFragment.kt$LoginFragment$@Preview @Composable private fun LoginScreenPreview()</ID>
+    <ID>FunctionNaming:MessageItem.kt$@Composable fun MessageItem( senderName: String, message: String, dateTime: String, messageProfileIconUrl: String, isSender: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:MessageItem.kt$@Preview(showBackground = true) @Composable fun ReceiverMessageItemPreview()</ID>
+    <ID>FunctionNaming:MessageItem.kt$@Preview(showBackground = true) @Composable fun SenderMessageItemPreview()</ID>
+    <ID>FunctionNaming:MessagesScreenFragment.kt$MessagesScreenFragment$@Composable fun MessagesListLayout( modifier: Modifier = Modifier, messagesList: List&lt;MessageUiModel&gt; )</ID>
+    <ID>FunctionNaming:MessagesScreenFragment.kt$MessagesScreenFragment$@Composable fun MessagesScreen( modifier: Modifier = Modifier, viewmodel: MessagesViewModel = viewModel(), )</ID>
+    <ID>FunctionNaming:MessagesScreenFragment.kt$MessagesScreenFragment$@Preview @Composable fun MessagesScreenPreview()</ID>
+    <ID>FunctionNaming:OverlapingLayout.kt$@Composable fun OverlappingLayout( overlappingContent: @Composable () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:OverlapingLayout.kt$@Preview(name = "OverlappingLayout Preview (Light)") @Composable fun OverlappingLayoutPreview()</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun ComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -&gt; Unit)</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun ProvideComposeColors( colors: ComposeColors, content: @Composable () -&gt; Unit )</ID>
+    <ID>LongMethod:GoogleSsoButton.kt$@Composable fun SsoButton( modifier: Modifier = Modifier, viewModel: LoginViewModel, )</ID>
+    <ID>LongMethod:InputText.kt$@Composable fun AppPasswordInput( viewModel: LoginViewModel, colors: TextFieldColors, valueDelegate: MutableState&lt;String&gt;, @StringRes label: Int, onValidationChange: (Boolean) -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:LoginForm.kt$@Composable fun LoginForm( modifier: Modifier, viewModel: LoginViewModel, )</ID>
+    <ID>LongMethod:MessageItem.kt$@Composable fun MessageItem( senderName: String, message: String, dateTime: String, messageProfileIconUrl: String, isSender: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:MessageItem.kt$( senderName: String, message: String, dateTime: String, messageProfileIconUrl: String, isSender: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:Theme.kt$ComposeColors$( material: Colors, statusBar: Color, contextualStatusBar: Color, appBar: Color, contextualAppBar: Color, appBarContent: Color, contextualAppBarContent: Color, secondaryBackground: Color, isLight: Boolean )</ID>
+    <ID>MagicNumber:AppRetrofit.kt$AppRetrofit$120</ID>
+    <ID>MagicNumber:AppRetrofit.kt$AppRetrofit$60</ID>
+    <ID>MagicNumber:Color.kt$0XFF2e2836</ID>
+    <ID>MagicNumber:Color.kt$0XFF30BC96</ID>
+    <ID>MagicNumber:Color.kt$0XFF448AFF</ID>
+    <ID>MagicNumber:Color.kt$0XFFA8AAB6</ID>
+    <ID>MagicNumber:Color.kt$0XFFFB8C00</ID>
+    <ID>MagicNumber:Color.kt$0XFFFFB300</ID>
+    <ID>MagicNumber:Color.kt$0XFFffffff</ID>
+    <ID>MagicNumber:Color.kt$0x9A000000</ID>
+    <ID>MagicNumber:Color.kt$0xFF333131</ID>
+    <ID>MagicNumber:Color.kt$0xFF349A4F</ID>
+    <ID>MagicNumber:Color.kt$0xFF3F51B5</ID>
+    <ID>MagicNumber:Color.kt$0xFF587C2E</ID>
+    <ID>MagicNumber:Color.kt$0xFFEDEDED</ID>
+    <ID>MagicNumber:Color.kt$0xFFe7ffdb</ID>
+    <ID>MagicNumber:Color.kt$0xff2e2836</ID>
+    <ID>MagicNumber:Color.kt$0xff515151</ID>
+    <ID>MagicNumber:Color.kt$0xff6a2e35</ID>
+    <ID>MagicNumber:Color.kt$0xffE3E3E3</ID>
+    <ID>MagicNumber:Color.kt$0xffbe8a60</ID>
+    <ID>MagicNumber:CryptoExt.kt$16</ID>
+    <ID>MagicNumber:CryptoExt.kt$32</ID>
+    <ID>MagicNumber:ErrorHandlerInterceptor.kt$ErrorHandlerInterceptor$200</ID>
+    <ID>MagicNumber:LoginForm.kt$.8f</ID>
+    <ID>MagicNumber:LoginFragment.kt$LoginFragment$.85f</ID>
+    <ID>MagicNumber:LoginFragment.kt$LoginFragment$0.3</ID>
+    <ID>MagicNumber:LoginFragment.kt$LoginFragment$300</ID>
+    <ID>MagicNumber:LoginFragment.kt$LoginFragment$799</ID>
+    <ID>MagicNumber:MainVM.kt$MainVM$5000</ID>
+    <ID>MagicNumber:NetworkCall.kt$NetworkCall$200</ID>
+    <ID>MagicNumber:longExt.kt$1000</ID>
+    <ID>MatchingDeclarationName:Converters.kt$TimeConverters</ID>
+    <ID>MaxLineLength:GoogleSsoButton.kt$if</ID>
+    <ID>MaxLineLength:NotificationUtil.kt$NotificationUtil.Companion$"Sendit general notifications channel. You will not see new contents notifications if you mute this channel."</ID>
+    <ID>MayBeConst:DeviceUiModel.kt$DeviceTransformer$private val DATE_FORMAT = "hh:mm a - MMM dd ,yyyy"</ID>
+    <ID>MayBeConst:NotificationUtil.kt$NotificationUtil.Companion$private val CHANNEL_DESCRIPTION = "Sendit general notifications channel. You will not see new contents notifications if you mute this channel."</ID>
+    <ID>MayBeConst:NotificationUtil.kt$NotificationUtil.Companion$private val CHANNEL_ID = "SenditMain"</ID>
+    <ID>NestedBlockDepth:DeviceInfoHelper.kt$DeviceInfoHelper$private fun capitalize(str: String)</ID>
+    <ID>NestedBlockDepth:MainActivity.kt$MainActivity$private fun handleNewIntent(newIntent: Intent)</ID>
+    <ID>NestedBlockDepth:NetworkCall.kt$NetworkCall$suspend fun fetch(): Resource&lt;ResultType&gt;</ID>
+    <ID>NewLineAtEndOfFile:ActivityExt.kt$com.drax.sendit.view.util.ActivityExt.kt</ID>
+    <ID>NewLineAtEndOfFile:Analytics.kt$com.drax.sendit.data.service.Analytics.kt</ID>
+    <ID>NewLineAtEndOfFile:ApiInterceptor.kt$com.drax.sendit.domain.network.ApiInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:ApiResponse.kt$com.drax.sendit.domain.network.model.ApiResponse.kt</ID>
+    <ID>NewLineAtEndOfFile:App.kt$com.drax.sendit.App.kt</ID>
+    <ID>NewLineAtEndOfFile:AuthDao.kt$com.drax.sendit.data.db.AuthDao.kt</ID>
+    <ID>NewLineAtEndOfFile:AuthInterceptor.kt$com.drax.sendit.domain.network.AuthInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:AuthRepository.kt$com.drax.sendit.domain.repo.AuthRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:AuthRepositoryImpl.kt$com.drax.sendit.data.repo.AuthRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseBottomSheet.kt$com.drax.sendit.view.base.BaseBottomSheet.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseComposeFragment.kt$com.drax.sendit.view.base.BaseComposeFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseFragment.kt$com.drax.sendit.view.base.BaseFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseStorageRepository.kt$com.drax.sendit.domain.repo.BaseStorageRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:BaseVBFragment.kt$com.drax.sendit.view.base.BaseVBFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:Bindings.kt$com.drax.sendit.view.util.Bindings.kt</ID>
+    <ID>NewLineAtEndOfFile:Connection.kt$com.drax.sendit.data.db.model.Connection.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionDao.kt$com.drax.sendit.data.db.ConnectionDao.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionModel.kt$com.drax.sendit.domain.network.model.ConnectionModel.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionRepository.kt$com.drax.sendit.domain.repo.ConnectionRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionRepositoryImpl.kt$com.drax.sendit.data.repo.ConnectionRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionRole.kt$com.drax.sendit.domain.network.model.type.ConnectionRole.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionStatus.kt$com.drax.sendit.domain.network.model.type.ConnectionStatus.kt</ID>
+    <ID>NewLineAtEndOfFile:ConnectionType.kt$com.drax.sendit.domain.network.model.type.ConnectionType.kt</ID>
+    <ID>NewLineAtEndOfFile:Converters.kt$com.drax.sendit.data.db.Converters.kt</ID>
+    <ID>NewLineAtEndOfFile:CryptoExt.kt$com.drax.sendit.view.util.CryptoExt.kt</ID>
+    <ID>NewLineAtEndOfFile:DeviceDomain.kt$com.drax.sendit.data.db.model.DeviceDomain.kt</ID>
+    <ID>NewLineAtEndOfFile:DevicePlatform.kt$com.drax.sendit.domain.network.model.type.DevicePlatform.kt</ID>
+    <ID>NewLineAtEndOfFile:DeviceRepositoryImpl.kt$com.drax.sendit.data.repo.DeviceRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:DeviceStatus.kt$com.drax.sendit.domain.network.model.type.DeviceStatus.kt</ID>
+    <ID>NewLineAtEndOfFile:DeviceWrapper.kt$com.drax.sendit.view.DeviceWrapper.kt</ID>
+    <ID>NewLineAtEndOfFile:ErrorHandlerInterceptor.kt$com.drax.sendit.domain.network.ErrorHandlerInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:ErrorResponse.kt$com.drax.sendit.domain.network.model.ErrorResponse.kt</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.drax.sendit.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:Font.kt$com.drax.sendit.view.theme.Font.kt</ID>
+    <ID>NewLineAtEndOfFile:ForgetPasswordUseCae.kt$com.drax.sendit.view.login.usecases.ForgetPasswordUseCae.kt</ID>
+    <ID>NewLineAtEndOfFile:FormState.kt$com.drax.sendit.view.login.FormState.kt</ID>
+    <ID>NewLineAtEndOfFile:FormType.kt$com.drax.sendit.view.login.FormType.kt</ID>
+    <ID>NewLineAtEndOfFile:FragmentExt.kt$com.drax.sendit.view.util.FragmentExt.kt</ID>
+    <ID>NewLineAtEndOfFile:HeaderInterceptor.kt$com.drax.sendit.domain.network.HeaderInterceptor.kt</ID>
+    <ID>NewLineAtEndOfFile:InputText.kt$com.drax.sendit.view.login.components.InputText.kt</ID>
+    <ID>NewLineAtEndOfFile:InstantDeserializer.kt$com.drax.sendit.domain.network.InstantDeserializer.kt</ID>
+    <ID>NewLineAtEndOfFile:InstantSerializer.kt$com.drax.sendit.data.model.InstantSerializer.kt</ID>
+    <ID>NewLineAtEndOfFile:Invitation.kt$com.drax.sendit.domain.network.model.Invitation.kt</ID>
+    <ID>NewLineAtEndOfFile:Json.kt$com.drax.sendit.di.builder.Json.kt</ID>
+    <ID>NewLineAtEndOfFile:Linkify.kt$com.drax.sendit.view.composeUtil.Linkify.kt</ID>
+    <ID>NewLineAtEndOfFile:LoginUiState.kt$com.drax.sendit.view.login.LoginUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:LoginUseCase.kt$com.drax.sendit.view.login.usecases.LoginUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:LoginVM.kt$com.drax.sendit.view.login.LoginVM.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt$com.drax.sendit.view.main.MainActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:MainVM.kt$com.drax.sendit.view.main.MainVM.kt</ID>
+    <ID>NewLineAtEndOfFile:MessageWrapper.kt$com.drax.sendit.view.MessageWrapper.kt</ID>
+    <ID>NewLineAtEndOfFile:MessagesAdapter.kt$com.drax.sendit.view.messages.MessagesAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:MessagesFragment.kt$com.drax.sendit.view.messages.MessagesFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:MessagesUiState.kt$com.drax.sendit.view.messages.MessagesUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:MessagesViewModel.kt$com.drax.sendit.view.messages.MessagesViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:ModalMessage.kt$com.drax.sendit.data.model.ModalMessage.kt</ID>
+    <ID>NewLineAtEndOfFile:NetworkCall.kt$com.drax.sendit.domain.network.NetworkCall.kt</ID>
+    <ID>NewLineAtEndOfFile:NewInvitation.kt$com.drax.sendit.data.service.models.NewInvitation.kt</ID>
+    <ID>NewLineAtEndOfFile:NotificationBuilder.kt$com.drax.sendit.data.service.NotificationBuilder.kt</ID>
+    <ID>NewLineAtEndOfFile:NotificationModel.kt$com.drax.sendit.data.service.models.NotificationModel.kt</ID>
+    <ID>NewLineAtEndOfFile:OverlapingLayout.kt$com.drax.sendit.view.login.OverlapingLayout.kt</ID>
+    <ID>NewLineAtEndOfFile:PairResponseType.kt$com.drax.sendit.domain.network.model.type.PairResponseType.kt</ID>
+    <ID>NewLineAtEndOfFile:PushOp.kt$com.drax.sendit.data.service.models.PushOp.kt</ID>
+    <ID>NewLineAtEndOfFile:PushRepositoryImpl.kt$com.drax.sendit.data.repo.PushRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:QrFragment.kt$com.drax.sendit.view.qr.QrFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:QrUiState.kt$com.drax.sendit.view.qr.QrUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:QrVM.kt$com.drax.sendit.view.qr.QrVM.kt</ID>
+    <ID>NewLineAtEndOfFile:RegisterUseCase.kt$com.drax.sendit.view.login.usecases.RegisterUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:Registry.kt$com.drax.sendit.data.db.model.Registry.kt</ID>
+    <ID>NewLineAtEndOfFile:RegistryDao.kt$com.drax.sendit.data.db.RegistryDao.kt</ID>
+    <ID>NewLineAtEndOfFile:RegistryRepository.kt$com.drax.sendit.domain.repo.RegistryRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:RegistryRepositoryImpl.kt$com.drax.sendit.data.repo.RegistryRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:ResViewModel.kt$com.drax.sendit.view.util.ResViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:ScannerFragment.kt$com.drax.sendit.view.scanner.ScannerFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:ScannerUiState.kt$com.drax.sendit.view.scanner.ScannerUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:ScannerVM.kt$com.drax.sendit.view.scanner.ScannerVM.kt</ID>
+    <ID>NewLineAtEndOfFile:Shape.kt$com.drax.sendit.view.theme.Shape.kt</ID>
+    <ID>NewLineAtEndOfFile:ShareConnectionsAdapter.kt$com.drax.sendit.view.shareContent.ShareConnectionsAdapter.kt</ID>
+    <ID>NewLineAtEndOfFile:ShareContentFragment.kt$com.drax.sendit.view.shareContent.ShareContentFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:ShareContentUiState.kt$com.drax.sendit.view.shareContent.ShareContentUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:ShareRequest.kt$com.drax.sendit.domain.network.model.ShareRequest.kt</ID>
+    <ID>NewLineAtEndOfFile:SignInSsoRequest.kt$com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest.kt</ID>
+    <ID>NewLineAtEndOfFile:Theme.kt$com.drax.sendit.view.theme.Theme.kt</ID>
+    <ID>NewLineAtEndOfFile:Transaction.kt$com.drax.sendit.data.db.model.Transaction.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionRepositoryImpl.kt$com.drax.sendit.data.repo.TransactionRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionsDao.kt$com.drax.sendit.data.db.TransactionsDao.kt</ID>
+    <ID>NewLineAtEndOfFile:Type.kt$com.drax.sendit.view.theme.Type.kt</ID>
+    <ID>NewLineAtEndOfFile:UnpairFragment.kt$com.drax.sendit.view.connections.unpair.UnpairFragment.kt</ID>
+    <ID>NewLineAtEndOfFile:UnpairRequest.kt$com.drax.sendit.domain.network.model.UnpairRequest.kt</ID>
+    <ID>NewLineAtEndOfFile:UnpairUiState.kt$com.drax.sendit.view.connections.unpair.UnpairUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:UserRepository.kt$com.drax.sendit.domain.repo.UserRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:UserRepositoryImpl.kt$com.drax.sendit.data.repo.UserRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:UserSex.kt$com.drax.sendit.domain.network.model.type.UserSex.kt</ID>
+    <ID>NewLineAtEndOfFile:UserStatus.kt$com.drax.sendit.domain.network.model.type.UserStatus.kt</ID>
+    <ID>NewLineAtEndOfFile:UserType.kt$com.drax.sendit.domain.network.model.type.UserType.kt</ID>
+    <ID>NewLineAtEndOfFile:ViewModelExt.kt$com.drax.sendit.view.util.ViewModelExt.kt</ID>
+    <ID>NewLineAtEndOfFile:WhoisResponse.kt$com.drax.sendit.domain.network.model.device.WhoisResponse.kt</ID>
+    <ID>NewLineAtEndOfFile:appModule.kt$com.drax.sendit.di.appModule.kt</ID>
+    <ID>NewLineAtEndOfFile:longExt.kt$.longExt.kt</ID>
+    <ID>NewLineAtEndOfFile:rememberImeState.kt$com.drax.sendit.view.util.rememberImeState.kt</ID>
+    <ID>PrintStackTrace:ErrorHandlerInterceptor.kt$ErrorHandlerInterceptor$e</ID>
+    <ID>PrintStackTrace:NetworkCall.kt$NetworkCall$e</ID>
+    <ID>PrintStackTrace:PushProcessor.kt$PushProcessor$e</ID>
+    <ID>SpreadOperator:ConnectionsVM.kt$ConnectionsVM$(*newConnections.toTypedArray())</ID>
+    <ID>SwallowedException:DeviceInfoHelper.kt$DeviceInfoHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DeviceInfoHelper.kt$DeviceInfoHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ErrorHandlerInterceptor.kt$ErrorHandlerInterceptor$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:GoogleSsoButton.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:NetworkCall.kt$NetworkCall$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PushProcessor.kt$PushProcessor$e: Exception</ID>
+    <ID>TooManyFunctions:ApiService.kt$ApiService</ID>
+    <ID>TooManyFunctions:LoginFragment.kt$LoginFragment : BaseComposeFragment</ID>
+    <ID>TooManyFunctions:LoginVM.kt$LoginVM : ResViewModel</ID>
+    <ID>TooManyFunctions:MainActivity.kt$MainActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:RegistryRepository.kt$RegistryRepository : BaseStorageRepository</ID>
+    <ID>TooManyFunctions:RegistryRepositoryImpl.kt$RegistryRepositoryImpl : RegistryRepository</ID>
+    <ID>UnusedParameter:MessagesScreenFragment.kt$MessagesScreenFragment$modifier: Modifier = Modifier</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$@Preview @Composable private fun LoginScreenPreview()</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun TextInputLayout.isValid(pattern: Pattern, errorText: Int): Boolean</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun clearPasswordInputs()</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun handleForgot()</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun handleSignin()</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun handleSignup()</ID>
+    <ID>UnusedPrivateMember:LoginFragment.kt$LoginFragment$private fun trySso(signInRequest: SignInSsoRequest?)</ID>
+    <ID>UnusedPrivateProperty:NotificationUtil.kt$NotificationUtil$private val json: Json</ID>
+    <ID>UnusedPrivateProperty:PushRepositoryImpl.kt$PushRepositoryImpl$private val deviceRepository: DeviceRepository</ID>
+    <ID>UnusedPrivateProperty:PushRepositoryImpl.kt$PushRepositoryImpl$private val registryRepository: RegistryRepository</ID>
+    <ID>UnusedPrivateProperty:RegisterUseCase.kt$RegisterUseCase$private val analytics: Analytics</ID>
+    <ID>UnusedPrivateProperty:RegisterUseCase.kt$RegisterUseCase$private val userRepository: UserRepository</ID>
+    <ID>UtilityClassWithPublicConstructor:ErrorUtils.kt$ErrorUtils</ID>
+    <ID>UtilityClassWithPublicConstructor:appModule.kt$otherModule</ID>
+    <ID>WildcardImport:Theme.kt$import androidx.compose.runtime.*</ID>
+    <ID>WildcardImport:rememberImeState.kt$import androidx.compose.runtime.*</ID>
+  </CurrentIssues>
+</SmellBaseline>
