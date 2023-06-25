@@ -1,8 +1,14 @@
 package com.drax.sendit.view.connections
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import app.siamak.sendit.R
@@ -34,11 +40,29 @@ class ConnectionsFragment :
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return ComposeView(requireContext(), null, 0).apply {
+            setContent {
+                ConnectionsScreen()
+            }
+        }
+    }
+
+    @Composable
+    fun ConnectionsScreen() {
+        Column {
+            Text(text = "Connections")
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObservers()
-        showUnpairBottomSheet(1)
     }
 
     private fun initObservers() {
