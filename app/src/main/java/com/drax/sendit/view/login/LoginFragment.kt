@@ -1,18 +1,14 @@
 package com.drax.sendit.view.login
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,50 +19,30 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.compose.hiltViewModel
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
-import com.drax.sendit.data.model.ModalMessage
-import com.drax.sendit.data.service.Event
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoRequest
-import com.drax.sendit.domain.network.model.auth.sso.SignInSsoResponse
 import com.drax.sendit.view.base.BaseComposeFragment
 import com.drax.sendit.view.theme.ComposeTheme
-import com.drax.sendit.view.util.DeviceInfoHelper
-import com.drax.sendit.view.util.isActive
-import com.drax.sendit.view.util.modal
-import com.drax.sendit.view.util.observe
 import com.drax.sendit.view.util.rememberImeState
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class LoginFragment : BaseComposeFragment() {
 
-    private val viewModel: LoginVM by viewModels()
-
-    @Inject
-    lateinit var deviceInfoHelper: DeviceInfoHelper
+    val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -82,7 +58,6 @@ class LoginFragment : BaseComposeFragment() {
             LoginContent()
         }
     }
-
 
     @Preview
     @Composable
@@ -135,16 +110,10 @@ class LoginFragment : BaseComposeFragment() {
 
                 LoginForm(
                     modifier = Modifier.fillMaxWidth(.85f),
-                    viewModel = hiltViewModel()
+                    viewModel = viewModel,
                 )
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initUI()
     }
 
     @Composable
@@ -164,25 +133,8 @@ class LoginFragment : BaseComposeFragment() {
                 fontSize = MaterialTheme.typography.caption.fontSize,
             )
         }
-    }/*
-        @Preview(
-            name = "Login Preview (Light)",
-            showBackground = true,
-            showSystemUi = true,
-            backgroundColor = 0xFFCCCCCC,
-            uiMode = Configuration.UI_MODE_NIGHT_NO
-        )
-        @Composable
-        fun LoginPreviewLight() {
-            LoginScreen()
-        }*/
-
-
-    private fun initUI() {
-        setupListeners()
-        setupUI()
-//        setupObservers()
     }
+
 
     @Composable
     fun HeaderLayout(modifier: Modifier = Modifier) {
@@ -257,171 +209,13 @@ class LoginFragment : BaseComposeFragment() {
             }
         }*/
 
-    private fun setupUI() {
 
-        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when (uiState) {
-                is LoginUiState.LoginFailed -> {
-                    analytics.set(Event.SignIn.Failed("REQUEST FAILED"))
-                    modal(
-                        if (uiState.errorCode in 1..799) ModalMessage.FromNetError(uiState.errorCode)
-                        else ModalMessage.Failed(
-                            when (uiState.errorCode) {
-                                SignInSsoResponse.DEVICE_IS_NOT_ACTIVE -> R.string.login_error_device_inactive
-                                SignInSsoResponse.INCORRECT_CREDENTIALS -> R.string.login_error_user_pass_incorrect
-                                SignInSsoResponse.USER_IS_NOT_ACTIVE -> R.string.login_error_user_inactive
-                                SignInSsoResponse.USER_ALREADY_ACTIVE -> R.string.login_error_user_inactive
-                                else -> R.string.error_internal
-                            }
-                        )
-                    )
-                }
-
-                LoginUiState.Neutral -> Unit
-                LoginUiState.LoginSucceed -> {
-                    analytics.set(Event.SignIn.Succeed)
-                    viewModel.updateSigninFormState(SigninFormState.FormHidden)
-                }
-
-                is LoginUiState.GoogleSignInFailed -> modal(ModalMessage.FromNetError(uiState.message))
-                LoginUiState.Loading -> Unit
-                LoginUiState.ForgetPasswordDone -> modal(ModalMessage.Success(R.string.login_forget_pass))
-                LoginUiState.SignupDone -> modal(ModalMessage.Success(R.string.signup_done))
-            }
+    @Preview
+    @Composable
+    private fun VersionTextPreview() {
+        ComposeTheme {
+            VersionText(appVersion = "1.0.2")
         }
     }
 
-    private fun setupListeners() {/*binding.tvBottomAction.setOnClickListener {
-            viewModel.updateSigninFormState(
-                if (binding.tvBottomAction.text.equals(getString(R.string.login_bottom_action_signin))) {
-                    SigninFormState.Signin
-                } else {
-                    SigninFormState.Signup
-                }
-            )
-        }
-        binding.signInGoogle.setOnClickListener {
-            analytics.set(Event.View.Clicked.SigninWithGoogle)
-            ssoHandler.launchOneTapSignIn(activity ?: return@setOnClickListener)
-        }
-        binding.tvForgotAction.setOnClickListener {
-            viewModel.updateSigninFormState(SigninFormState.Forgot)
-        }
-        binding.submitButton.setOnClickListener {
-            when (viewModel.signinFormState.value) {
-                SigninFormState.Forgot -> handleForgot()
-                SigninFormState.FormHidden -> Unit
-                SigninFormState.Signin -> handleSignin()
-                SigninFormState.Signup -> handleSignup()
-            }
-        }
-
-        */
-    }
-
-    private fun clearPasswordInputs() {
-//        binding.etPassword.setText("")
-//        binding.etConfirmPassword.setText("")
-    }
-
-    private fun handleSignup() {/*if (binding.emailTextField.isValid(
-                Patterns.EMAIL_ADDRESS,
-                R.string.login_form_error_email_input
-            ) &&
-            binding.passwordTextField.isValid(
-                Pattern.compile(PASSWORD_REGEX),
-                R.string.login_form_error_password_input
-            ) &&
-            binding.confirmPasswordTextField.isValid(
-                Pattern.compile(PASSWORD_REGEX),
-                R.string.login_form_error_password_input
-            )
-        ) {
-            if (binding.etPassword.text.toString() != binding.etConfirmPassword.text.toString()) {
-                binding.confirmPasswordTextField.apply {
-                    requestFocus()
-                    error = getString(R.string.login_form_error_password_equal)
-                }
-                return
-            }
-
-
-            val email = binding.etEmail.text.toString()
-            val passwordHash = binding.etPassword.text.toString().md5()
-
-            SenditFirebaseService.token(
-                onError = {
-                    analytics.set(Event.SignIn.Failed("Token is missing"))
-                    toast(getString(R.string.signin_google_error))
-
-                }) { instanceId ->
-                clearPasswordInputs()
-                viewModel.signupWithEmail(
-                    email = email,
-                    passwordHash = passwordHash,
-                    instanceId = instanceId,
-                    deviceId = deviceInfoHelper.getId()
-                )
-            }
-        }*/
-    }
-
-    private fun handleSignin() {/*if (binding.emailTextField.isValid(
-                Patterns.EMAIL_ADDRESS,
-                R.string.login_form_error_email_input
-            ) &&
-            binding.passwordTextField.isValid(
-                Pattern.compile(PASSWORD_REGEX),
-                R.string.login_form_error_password_input
-            )
-        ) {
-
-            val email = binding.etEmail.text.toString()
-            val passwordHash = binding.etPassword.text.toString().md5()
-
-            SenditFirebaseService.token(
-                onError = {
-                    analytics.set(Event.SignIn.Failed("Token is missing"))
-                    toast(getString(R.string.signin_google_error))
-
-                }) { instanceId ->
-                clearPasswordInputs()
-                viewModel.authoriseWithEmail(
-                    email = email,
-                    passwordHash = passwordHash,
-                    instanceId = instanceId,
-                    deviceId = deviceInfoHelper.getId()
-                )
-            }
-        }*/
-    }
-
-    private fun handleForgot() {/*if (binding.emailTextField.isValid(
-                Patterns.EMAIL_ADDRESS,
-                R.string.login_form_error_email_input
-            )
-        ) {
-            val email = binding.etEmail.text.toString()
-            viewModel.forgetPassword(email)
-        }*/
-    }
-
-    private fun trySso(signInRequest: SignInSsoRequest?) {
-        viewModel.authoriseWithSso(signInRequest ?: return)
-    }
-
-    private fun TextInputLayout.isValid(pattern: Pattern, errorText: Int): Boolean {
-        return if (editText?.text?.matches(pattern.toRegex()) == true) {
-            isErrorEnabled = false
-            true
-        } else {
-            error = getString(errorText)
-            requestFocus()
-            false
-        }
-    }
-
-    companion object {
-
-    }
 }
