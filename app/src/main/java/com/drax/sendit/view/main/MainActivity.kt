@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             .setPopExitAnim(R.anim.slide_up)
             .setPopUpTo(R.id.main_graph, true)
             .build()
-        navController.navigate(navController.graph.startDestinationId, null, navOptions)
+        navController.navigate(R.id.devicesFragment, null, navOptions)
     }
 
     private fun navigateTransactions(navController: NavController, args: Bundle) {

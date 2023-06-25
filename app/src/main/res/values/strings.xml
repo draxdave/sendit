@@ -45,6 +45,7 @@
     <string name="qr_help_desc">Use this QR code to connect to other devices. Or you can scan QR code on your other devices.</string>
     <string name="learn_more">Learn More</string>
     <string name="unpair">Unpair Connection</string>
+    <string name="unpair_done">Connection unpaired.</string>
     <string name="unpair_modal_description">You are removing this connection from your network. Proceed?</string>
     <string name="cancel">Cancel</string>
     <string name="login_email_hint">Enter your email address</string>

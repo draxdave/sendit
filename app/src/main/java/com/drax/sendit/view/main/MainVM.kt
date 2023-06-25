@@ -31,7 +31,7 @@ class MainVM @Inject constructor(
                         -> MainUiState.UserSignedOut
 
                         else -> {
-                            if (uiState.value == MainUiState.UserSignedOut) delay(5000)
+//                            if (uiState.value == MainUiState.UserSignedOut) delay(5000)
                             MainUiState.UserSignedIn
                         }
                     }

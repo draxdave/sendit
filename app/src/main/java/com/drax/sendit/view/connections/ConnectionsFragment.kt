@@ -38,6 +38,7 @@ class ConnectionsFragment :
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObservers()
+        showUnpairBottomSheet(1)
     }
 
     private fun initObservers() {
@@ -91,7 +92,11 @@ class ConnectionsFragment :
         childFragmentManager.setFragmentResultListener(UnpairFragment.TAG, this) { _, _ ->
             viewModel.getConnectionsFromServer()
         }
-        UnpairFragment(UnpairRequest(connectionId)).show(childFragmentManager, UnpairFragment.TAG)
+        UnpairFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(UnpairFragment.FRAGMENT_KEY, UnpairRequest(connectionId))
+            }
+        }.show(childFragmentManager, UnpairFragment.TAG)
     }
 
     private fun showPopup(view: View) {
