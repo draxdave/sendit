@@ -1,10 +1,15 @@
 package com.drax.sendit.view.connections
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
+import androidx.compose.runtime.mutableStateOf
 import app.siamak.sendit.R
+import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.data.model.User
+import com.drax.sendit.domain.network.model.type.ConnectionRole
+import com.drax.sendit.domain.network.model.type.ConnectionStatus
+import com.drax.sendit.domain.network.model.type.ConnectionType
+import com.drax.sendit.domain.network.model.type.DevicePlatform
+import com.drax.sendit.domain.network.model.type.DeviceStatus
 import com.drax.sendit.domain.repo.AuthRepository
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
@@ -18,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
@@ -29,9 +36,54 @@ class ConnectionsVM @Inject constructor(
 ) : ResViewModel() {
 
     private val _uiState = MutableStateFlow<ConnectionUiState>(ConnectionUiState.Neutral)
-    val uiState: StateFlow<ConnectionUiState> = _uiState
-    val user: LiveData<User?> = userRepository.getUser().asLiveData()
-    val device = deviceRepository.getSelfDevice()
+    val uiStates: StateFlow<ConnectionUiState> = _uiState
+
+    var deviceInfo = mutableStateOf<DeviceUiModel?>(null)
+
+    var uiState = mutableStateOf<ConnectionUiState>(
+        ConnectionUiState.ConnectionsLoaded(
+            listOf(
+                DeviceWrapper(
+                    Connection(
+                        id = 1,
+                        name = "iPhone 12 Pro",
+                        connectDate = 1348333333,
+                        lastUsed = 1348333333,
+                        status = ConnectionStatus.ConnectionStatus_ACTIVE,
+                        meta = "",
+                        iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                        platform = DevicePlatform.DevicePlatform_ANDROID,
+                        platformVersion = "11",
+                        deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
+                        model = "As",
+                        role = ConnectionRole.ROLE_CONNECTEE,
+                        type = ConnectionType.ConnectionType_BLOCKED,
+                    )
+                ),
+                DeviceWrapper(
+                    Connection(
+                        id = 1,
+                        name = "iPhone 12 Pro",
+                        connectDate = 1348333333,
+                        lastUsed = 1348333333,
+                        status = ConnectionStatus.ConnectionStatus_ACTIVE,
+                        meta = "",
+                        iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                        platform = DevicePlatform.DevicePlatform_ANDROID,
+                        platformVersion = "11",
+                        deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
+                        model = "As",
+                        role = ConnectionRole.ROLE_CONNECTEE,
+                        type = ConnectionType.ConnectionType_BLOCKED,
+                    )
+                )
+            )
+        )
+    )
+
+    private val user = userRepository.getUser()
+    var userInfo = mutableStateOf<User?>(null)
+    private val device = deviceRepository.getSelfDevice()
 
     init {
         job(Dispatchers.Default) {
@@ -50,6 +102,22 @@ class ConnectionsVM @Inject constructor(
                 }
             }
         }
+
+        job {
+            device.filterNotNull()
+                .map {
+                    DeviceTransformer.toUiModel(it)
+                }
+                .collect {
+                    deviceInfo.value = it
+                }
+        }
+        job {
+            user.collect {
+                userInfo.value = it
+            }
+        }
+        getConnectionsFromServer()
     }
 
     fun getConnectionsFromServer() {
@@ -61,12 +129,14 @@ class ConnectionsVM @Inject constructor(
                         is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(
                             getConnections
                         )
+
                         is Resource.SUCCESS -> {
                             val newConnections = getConnections.data.data?.connections
                             when {
                                 newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(
                                     Resource.ERROR(errorCode = R.string.unknown_error)
                                 )
+
                                 newConnections.isNotEmpty() -> {
                                     emptyConnections()
                                     connectionRepository.addConnection(*newConnections.toTypedArray())
@@ -78,6 +148,7 @@ class ConnectionsVM @Inject constructor(
                                         }
                                     )
                                 }
+
                                 else -> {
                                     emptyConnections()
                                     ConnectionUiState.NoConnection
@@ -91,6 +162,7 @@ class ConnectionsVM @Inject constructor(
     }
 
     fun signOut() {
+        uiState.value = ConnectionUiState.RefreshingConnectionList
         job {
             authRepository.signOutDevice().collect()
         }

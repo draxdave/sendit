@@ -67,7 +67,7 @@ fun ConnectionsHeader(
                     colorFilter = ColorFilter.tint(MaterialTheme.colors.background),
                 )
                 Text(
-                    text = deviceInfo,
+                    text = stringResource(id = R.string.device_name, deviceInfo),
                     color = MaterialTheme.colors.background,
                 )
             }
