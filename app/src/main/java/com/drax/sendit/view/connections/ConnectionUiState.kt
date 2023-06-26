@@ -7,6 +7,6 @@ sealed class ConnectionUiState {
     object Neutral : ConnectionUiState()
     object NoConnection : ConnectionUiState()
     data class ConnectionsLoaded(val connectionList: List<DeviceWrapper>) : ConnectionUiState()
-    object RefreshingConnectionList : ConnectionUiState()
+    object Refreshing : ConnectionUiState()
     data class RefreshConnectionListFailed(val error: Resource.ERROR) : ConnectionUiState()
 }

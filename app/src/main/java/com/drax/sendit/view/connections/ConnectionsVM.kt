@@ -21,11 +21,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class ConnectionsVM @Inject constructor(
@@ -34,9 +34,6 @@ class ConnectionsVM @Inject constructor(
     userRepository: UserRepository,
     private val authRepository: AuthRepository,
 ) : ResViewModel() {
-
-    private val _uiState = MutableStateFlow<ConnectionUiState>(ConnectionUiState.Neutral)
-    val uiStates: StateFlow<ConnectionUiState> = _uiState
 
     var deviceInfo = mutableStateOf<DeviceUiModel?>(null)
 
@@ -86,10 +83,10 @@ class ConnectionsVM @Inject constructor(
     private val device = deviceRepository.getSelfDevice()
 
     init {
-        job(Dispatchers.Default) {
+        job {
             connectionRepository.getConnections(onlyActive = false).collect { connectionsList ->
-                _uiState.update {
-                    when (connectionsList.isEmpty()) {
+                withContext(Dispatchers.Main) {
+                    uiState.value = when (connectionsList.isEmpty()) {
                         true -> ConnectionUiState.NoConnection
                         false -> ConnectionUiState.ConnectionsLoaded(
                             connectionsList.map { connection ->
@@ -103,7 +100,7 @@ class ConnectionsVM @Inject constructor(
             }
         }
 
-        job {
+        job(dispatcher = Dispatchers.Main) {
             device.filterNotNull()
                 .map {
                     DeviceTransformer.toUiModel(it)
@@ -112,7 +109,7 @@ class ConnectionsVM @Inject constructor(
                     deviceInfo.value = it
                 }
         }
-        job {
+        job(dispatcher = Dispatchers.Main) {
             user.collect {
                 userInfo.value = it
             }
@@ -121,48 +118,51 @@ class ConnectionsVM @Inject constructor(
     }
 
     fun getConnectionsFromServer() {
-        _uiState.update { ConnectionUiState.RefreshingConnectionList }
+        uiState.value = ConnectionUiState.Refreshing
         job {
             connectionRepository.getConnectionsFromServer().collect { getConnections ->
-                _uiState.update {
-                    when (getConnections) {
-                        is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(
-                            getConnections
-                        )
 
-                        is Resource.SUCCESS -> {
-                            val newConnections = getConnections.data.data?.connections
-                            when {
-                                newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(
-                                    Resource.ERROR(errorCode = R.string.unknown_error)
+                val newState = when (getConnections) {
+                    is Resource.ERROR -> ConnectionUiState.RefreshConnectionListFailed(
+                        getConnections
+                    )
+
+                    is Resource.SUCCESS -> {
+                        val newConnections = getConnections.data.data?.connections
+                        when {
+                            newConnections == null -> ConnectionUiState.RefreshConnectionListFailed(
+                                Resource.ERROR(errorCode = R.string.unknown_error)
+                            )
+
+                            newConnections.isNotEmpty() -> {
+                                emptyConnections()
+                                connectionRepository.addConnection(*newConnections.toTypedArray())
+                                ConnectionUiState.ConnectionsLoaded(
+                                    newConnections.map { connection ->
+                                        DeviceWrapper(
+                                            connection
+                                        )
+                                    }
                                 )
+                            }
 
-                                newConnections.isNotEmpty() -> {
-                                    emptyConnections()
-                                    connectionRepository.addConnection(*newConnections.toTypedArray())
-                                    ConnectionUiState.ConnectionsLoaded(
-                                        newConnections.map { connection ->
-                                            DeviceWrapper(
-                                                connection
-                                            )
-                                        }
-                                    )
-                                }
-
-                                else -> {
-                                    emptyConnections()
-                                    ConnectionUiState.NoConnection
-                                }
+                            else -> {
+                                emptyConnections()
+                                ConnectionUiState.NoConnection
                             }
                         }
                     }
+                }
+
+                withContext(Dispatchers.Main) {
+                    uiState.value = newState
                 }
             }
         }
     }
 
     fun signOut() {
-        uiState.value = ConnectionUiState.RefreshingConnectionList
+        uiState.value = ConnectionUiState.Refreshing
         job {
             authRepository.signOutDevice().collect()
         }

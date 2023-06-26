@@ -66,5 +66,11 @@
     <string name="login_form_error">An error happened. Try again please.</string>
     <string name="login_form_success">Operation done successfully</string>
     <string name="passwords_dont_match">Passwords do not match.</string>
+    <string name="active">Active</string>
+    <string name="blocked">Blocked</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="expired">Expired</string>
+    <string name="rejected">Rejected</string>
+    <string name="unknown">Unknown</string>
 
 </resources>

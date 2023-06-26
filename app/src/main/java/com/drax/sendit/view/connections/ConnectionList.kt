@@ -1,5 +1,7 @@
 package com.drax.sendit.view.connections
 
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,13 +24,10 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -40,12 +39,6 @@ import androidx.compose.ui.unit.dp
 import app.siamak.sendit.R
 import coil.compose.AsyncImage
 import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.domain.network.model.type.ConnectionRole
-import com.drax.sendit.domain.network.model.type.ConnectionStatus
-import com.drax.sendit.domain.network.model.type.ConnectionType
-import com.drax.sendit.domain.network.model.type.DevicePlatform
-import com.drax.sendit.domain.network.model.type.DeviceStatus
-import com.drax.sendit.view.DeviceWrapper
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,7 +49,7 @@ fun ConnectionList(
     onUnpairConnectionClicked: (Connection) -> Unit
 ) {
     val refreshScope = rememberCoroutineScope()
-    val refreshing = uiState is ConnectionUiState.RefreshingConnectionList
+    val refreshing = uiState is ConnectionUiState.Refreshing
 
     fun refresh() = refreshScope.launch {
         onRefresh.invoke()
@@ -68,9 +61,9 @@ fun ConnectionList(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .pullRefresh(pullToRefreshState),
+            .pullRefresh(pullToRefreshState)
+            .clipToBounds(),
     ) {
-
         if (uiState is ConnectionUiState.ConnectionsLoaded)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -82,6 +75,8 @@ fun ConnectionList(
                         iconUrl = item.connection.iconUrl,
                         deviceName = item.connection.name,
                         pairedSince = item.addedDate,
+                        statusColor = item.connection.statusToColorRes(),
+                        deviceStatus = item.connection.statusToStrRes(),
                     ) {
                         onUnpairConnectionClicked.invoke(item.connection)
                     }
@@ -111,8 +106,11 @@ fun ConnectionList(
                 )
             }
 
-
-        PullRefreshIndicator(refreshing, pullToRefreshState, Modifier.align(Alignment.TopCenter))
+        PullRefreshIndicator(
+            refreshing,
+            pullToRefreshState,
+            Modifier.align(Alignment.TopCenter)
+        )
     }
 }
 
@@ -121,11 +119,14 @@ fun ConnectionItem(
     iconUrl: String,
     deviceName: String,
     pairedSince: String,
+    @StringRes deviceStatus: Int,
+    @ColorRes statusColor: Int,
     onRemoveClick: () -> Unit = {},
 ) {
 
     Card(
         modifier = Modifier
+            .padding(4.dp)
             .fillMaxWidth(),
     ) {
         Column {
@@ -160,8 +161,8 @@ fun ConnectionItem(
                     modifier = Modifier
                         .padding(8.dp)
                         .align(alignment = Alignment.BottomStart),
-                    text = stringResource(id = R.string.devices_status_pending),
-                    color = colorResource(id = R.color.antique_brass),
+                    text = stringResource(id = deviceStatus),
+                    color = colorResource(id = statusColor),
                     style = MaterialTheme.typography.body1,
                 )
             }
@@ -211,5 +212,7 @@ fun ConnectionItemPreview() {
         iconUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png",
         deviceName = "Device Name",
         pairedSince = "2021-01-01",
+        deviceStatus = R.string.devices_status_pending,
+        statusColor = R.color.main_text_lighter,
     )
 }
