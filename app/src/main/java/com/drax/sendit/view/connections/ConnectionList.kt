@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -66,6 +67,8 @@ fun ConnectionList(
     ) {
         if (uiState is ConnectionUiState.ConnectionsLoaded)
             LazyVerticalGrid(
+                modifier = Modifier
+                    .heightIn(120.dp, 1200.dp),
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(4.dp),
             ) {

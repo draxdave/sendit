@@ -49,7 +49,7 @@ class ConnectionsFragment : BaseComposeFragment() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .verticalScroll(scrollState)
+                .verticalScroll(scrollState)
         ) {
             ConnectionsHeader(
                 email = userInfo?.email ?: "",
