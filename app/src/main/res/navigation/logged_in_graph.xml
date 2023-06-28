@@ -9,13 +9,13 @@
         android:id="@+id/devicesFragment"
         android:name="com.drax.sendit.view.connections.ConnectionsFragment"
         android:label="@string/fragment_devices"
-        tools:layout="@layout/connections_fragment" />
+         />
 
     <fragment
         android:id="@+id/qrFragment"
         android:name="com.drax.sendit.view.qr.QrFragment"
         android:label="@string/fragment_qr"
-        tools:layout="@layout/qr_fragment">
+        >
         <action
             android:id="@+id/qrToScanner"
             app:destination="@id/scannerFragment"
@@ -29,19 +29,19 @@
         android:id="@+id/transmissionsFragment"
         android:name="com.drax.sendit.view.messages.MessagesFragment"
         android:label="@string/fragment_transmitted"
-        tools:layout="@layout/transmissions_fragment" />
+        />
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.drax.sendit.view.login.LoginFragment"
         android:label="@string/fragment_login"
-        tools:layout="@layout/login_fragment" />
+         />
 
     <fragment
         android:id="@+id/scannerFragment"
         android:name="com.drax.sendit.view.scanner.ScannerFragment"
         android:label="@string/scanner"
-        tools:layout="@layout/scanner_fragment" />
+         />
 
 
 </navigation>

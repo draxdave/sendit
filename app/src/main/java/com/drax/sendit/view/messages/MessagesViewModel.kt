@@ -1,121 +1,66 @@
 package com.drax.sendit.view.messages
 
-import androidx.lifecycle.ViewModel
-import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.db.model.DeviceDomain
-import com.drax.sendit.data.db.model.Transaction
+import androidx.compose.runtime.mutableStateOf
+import com.drax.sendit.domain.repo.ConnectionRepository
+import com.drax.sendit.domain.repo.DeviceRepository
+import com.drax.sendit.domain.repo.TransactionRepository
+import com.drax.sendit.view.MessageWrapper
+import com.drax.sendit.view.util.ResViewModel
+import com.drax.sendit.view.util.job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import formatToDate
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
-class MessagesViewModel : ViewModel() {
-    val testMessages = listOf(
-        MessageUiModel(
-            id = 11,
-            isSender = true,
-            message = "Simple short",
-            partyName = "Siamak",
-            addedDate = "3 Feb 2022 12:45",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 12,
-            isSender = true,
-            message = "Simple Long message. Simple Long message. Simple Long message. \nSimple Long" +
-                    " message. Simple Long message.",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-            addedDate = "4 Feb 2022 12:45",
-        ),
-        MessageUiModel(
-            id = 13,
-            isSender = false,
-            message = "Links with Some message text or url like google.com http://some.com also\n" +
-                    " +986546232 f@g.r short",
-            partyName = "Behnaz Moradi",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-            addedDate = "6 Feb 2022 12:45",
-        ),
-        MessageUiModel(
-            id = 14,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 15,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 16,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 17,
-            isSender = true,
-            message = "Simple short",
-            partyName = "Siamak",
-            addedDate = "3 Feb 2022 12:45",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 18,
-            isSender = true,
-            message = "Simple Long message. Simple Long message. Simple Long message. \nSimple Long" +
-                    " message. Simple Long message.",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-            addedDate = "4 Feb 2022 12:45",
-        ),
-        MessageUiModel(
-            id = 19,
-            isSender = false,
-            message = "Links with Some message text or url like google.com http://some.com also\n" +
-                    " +986546232 f@g.r short",
-            partyName = "Behnaz Moradi",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-            addedDate = "6 Feb 2022 12:45",
-        ),
-        MessageUiModel(
-            id = 20,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 21,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 22,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-        MessageUiModel(
-            id = 10,
-            isSender = true,
-            message = "Normal message",
-            addedDate = "6 Feb 2022 12:45",
-            partyName = "Siamak",
-            thumbnail = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
-        ),
-    )
+@HiltViewModel
+class MessagesViewModel @Inject constructor(
+    private val transactionRepository: TransactionRepository,
+    private val connectionRepository: ConnectionRepository,
+    private val deviceRepository: DeviceRepository,
+) : ResViewModel() {
+    val uiState = mutableStateOf<UiState>(UiState.Loading)
+
+    init {
+        job {
+
+            transactionRepository.getAllTransactions().map { messagesList ->
+                    val thisDevice = deviceRepository.getSelfDevice().firstOrNull()
+                    val connections =
+                        connectionRepository.getConnections(onlyActive = false).firstOrNull()
+                    messagesList.map { message ->
+                        MessageWrapper(message = message,
+                            isSender = thisDevice?.id == message.broadcasterId,
+                            thisDevice = thisDevice,
+                            connection = connections?.firstOrNull { it.id == message.connectionId })
+                    }
+                }.collect { transactionsList ->
+
+                    withContext(Dispatchers.Main) {
+                        if (transactionsList.isEmpty()) {
+                            uiState.value = UiState.Empty
+                        } else {
+                            uiState.value = UiState.WithMessages(transactionsList.map {
+                                MessageUiModel(
+                                    id = it.message.id,
+                                    isSender = it.isSender,
+                                    message = it.message.content,
+                                    partyName = it.connection?.name ?: "Unknown",
+                                    thumbnail = it.connection?.iconUrl ?: "",
+                                    addedDate = it.message.sendDate.formatToDate(MessageUiModel.dateFormat),
+                                )
+                            })
+                        }
+                    }
+                }
+        }
+    }
+
+    fun removeTransaction(messageId: Long) = job {
+        transactionRepository.removeLocallyById(messageId)
+    }
 }
 
 data class MessageUiModel(
@@ -125,4 +70,9 @@ data class MessageUiModel(
     val addedDate: String,
     val partyName: String,
     val thumbnail: String,
-)
+) {
+
+    companion object {
+        const val dateFormat = "MMMM dd HH:mm"
+    }
+}

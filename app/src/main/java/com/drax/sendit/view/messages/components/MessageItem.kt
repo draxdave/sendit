@@ -1,6 +1,7 @@
-package com.drax.sendit.view.messages
+package com.drax.sendit.view.messages.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,16 +11,23 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -38,12 +46,19 @@ fun MessageItem(
     messageProfileIconUrl: String,
     isSender: Boolean,
     modifier: Modifier = Modifier,
+    onShareMessage: () -> Unit,
+    onCopyMessage: () -> Unit,
+    onRemoveMessage: () -> Unit,
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        var popupExpanded by remember { mutableStateOf(false) }
 
         Row(
             modifier = modifier
                 .fillMaxWidth()
+                .clickable {
+
+                }
         ) {
             AsyncImage(
                 model = messageProfileIconUrl,
@@ -97,6 +112,53 @@ fun MessageItem(
                         text = message,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
+                    DropdownMenu(
+                        modifier = Modifier,
+                        expanded = popupExpanded,
+                        onDismissRequest = {
+                            popupExpanded = false
+                            onShareMessage.invoke()
+                        }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                popupExpanded = false
+
+                            }
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = stringResource(id = R.string.share),
+                                style = MaterialTheme.typography.button,
+                            )
+                        }
+
+                        DropdownMenuItem(
+                            onClick = {
+                                popupExpanded = false
+                                onCopyMessage.invoke()
+                            }
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = stringResource(id = R.string.copy),
+                                style = MaterialTheme.typography.button,
+                            )
+                        }
+
+                        DropdownMenuItem(
+                            onClick = {
+                                popupExpanded = false
+                                onRemoveMessage.invoke()
+                            }
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = stringResource(id = R.string.remove),
+                                style = MaterialTheme.typography.button,
+                            )
+                        }
+                    }
                 }
 
                 Text(
@@ -124,6 +186,9 @@ fun SenderMessageItemPreview() {
         dateTime = "23 Feb 22",
         messageProfileIconUrl = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
         isSender = true,
+        onShareMessage = {},
+        onCopyMessage = {},
+        onRemoveMessage = {}
     )
 }
 
@@ -136,5 +201,8 @@ fun ReceiverMessageItemPreview() {
         dateTime = "23 Feb 22",
         messageProfileIconUrl = "https://cdn-icons-png.flaticon.com/512/882/882704.png",
         isSender = false,
+        onShareMessage = {},
+        onCopyMessage = {},
+        onRemoveMessage = {}
     )
 }

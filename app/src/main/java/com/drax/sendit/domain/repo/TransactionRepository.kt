@@ -13,5 +13,6 @@ interface TransactionRepository : BaseStorageRepository {
     suspend fun insertNewTransaction(transaction: Transaction)
 
     fun removeLocally(transaction: Transaction)
+    fun removeLocallyById(transactionId: Long)
 }
 

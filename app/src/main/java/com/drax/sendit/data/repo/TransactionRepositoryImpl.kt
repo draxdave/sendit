@@ -24,6 +24,7 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override fun removeLocally(transaction: Transaction) = transactionsDao.delete(transaction)
+    override fun removeLocallyById(transactionId: Long) = transactionsDao.deleteById(transactionId)
 
     override fun getAllTransactionsFromServer() = flow {
         emit(
