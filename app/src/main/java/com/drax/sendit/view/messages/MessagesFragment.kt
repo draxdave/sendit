@@ -52,6 +52,7 @@ class MessagesFragment : BaseComposeFragment() {
     ) {
         val uiState by viewModel.uiState
         RootScreen(
+            modifier = modifier,
             uiState = uiState,
             onRemoveRequest = {
                 viewModel.removeTransaction(it)
