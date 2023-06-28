@@ -44,7 +44,9 @@ class QrVM @Inject constructor(
                 if (imageUrl == null) {
                     requestQrUrl()
                 } else {
-                    qrState.value = QrLoadState.Success(imageUrl)
+                    withContext(Dispatchers.Main) {
+                        qrState.value = QrLoadState.Success(imageUrl)
+                    }
                 }
             }
 
