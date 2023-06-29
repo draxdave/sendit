@@ -1,11 +1,13 @@
 package com.drax.sendit.view.shareContent
 
+import android.util.Log
 import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.model.ShareRequest
 import com.drax.sendit.domain.network.model.type.TransactionContentType
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.TransactionRepository
+import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,11 +29,14 @@ class ShareContentVM @Inject constructor(
     init {
         job {
             connectionRepository.getConnections(onlyActive = true).collect { connections ->
+                Log.e("ShareContentScreen", "viewmodel uiState: ${this@ShareContentVM}")
                 _uiState.update {
                     if (connections.isEmpty())
                         ShareContentUiState.NoConnectionsAvailable
                     else
-                        ShareContentUiState.ConnectionsLoaded(connections)
+                        ShareContentUiState.ConnectionsLoaded(connections.map {
+                            DeviceWrapper(it)
+                        })
                 }
             }
         }

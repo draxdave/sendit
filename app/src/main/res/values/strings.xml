@@ -72,5 +72,6 @@
     <string name="expired">Expired</string>
     <string name="rejected">Rejected</string>
     <string name="unknown">Unknown</string>
+    <string name="share_bottom_sheet_empty_list">No devices found to share the content.\nAdd a device first.</string>
 
 </resources>

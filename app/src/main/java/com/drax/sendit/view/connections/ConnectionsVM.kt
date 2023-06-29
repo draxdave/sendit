@@ -38,44 +38,7 @@ class ConnectionsVM @Inject constructor(
     var deviceInfo = mutableStateOf<DeviceUiModel?>(null)
 
     var uiState = mutableStateOf<ConnectionUiState>(
-        ConnectionUiState.ConnectionsLoaded(
-            listOf(
-                DeviceWrapper(
-                    Connection(
-                        id = 1,
-                        name = "iPhone 12 Pro",
-                        connectDate = 1348333333,
-                        lastUsed = 1348333333,
-                        status = ConnectionStatus.ConnectionStatus_ACTIVE,
-                        meta = "",
-                        iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
-                        platform = DevicePlatform.DevicePlatform_ANDROID,
-                        platformVersion = "11",
-                        deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
-                        model = "As",
-                        role = ConnectionRole.ROLE_CONNECTEE,
-                        type = ConnectionType.ConnectionType_BLOCKED,
-                    )
-                ),
-                DeviceWrapper(
-                    Connection(
-                        id = 1,
-                        name = "iPhone 12 Pro",
-                        connectDate = 1348333333,
-                        lastUsed = 1348333333,
-                        status = ConnectionStatus.ConnectionStatus_ACTIVE,
-                        meta = "",
-                        iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
-                        platform = DevicePlatform.DevicePlatform_ANDROID,
-                        platformVersion = "11",
-                        deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
-                        model = "As",
-                        role = ConnectionRole.ROLE_CONNECTEE,
-                        type = ConnectionType.ConnectionType_BLOCKED,
-                    )
-                )
-            )
-        )
+        ConnectionUiState.ConnectionsLoaded(TEMP_DEVICES)
     )
 
     private val user = userRepository.getUser()
@@ -172,5 +135,41 @@ class ConnectionsVM @Inject constructor(
 
     companion object {
         const val DEFAULT_DEVICE_PLACEHOLDER = R.drawable.default_device_placeholder
+        val TEMP_DEVICES = listOf(
+            DeviceWrapper(
+                Connection(
+                    id = 1,
+                    name = "iPhone 12 Pro",
+                    connectDate = 1348333333,
+                    lastUsed = 1348333333,
+                    status = ConnectionStatus.ConnectionStatus_ACTIVE,
+                    meta = "",
+                    iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                    platform = DevicePlatform.DevicePlatform_ANDROID,
+                    platformVersion = "11",
+                    deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
+                    model = "As",
+                    role = ConnectionRole.ROLE_CONNECTEE,
+                    type = ConnectionType.ConnectionType_BLOCKED,
+                )
+            ),
+            DeviceWrapper(
+                Connection(
+                    id = 1,
+                    name = "iPhone 12 Pro",
+                    connectDate = 1348333333,
+                    lastUsed = 1348333333,
+                    status = ConnectionStatus.ConnectionStatus_ACTIVE,
+                    meta = "",
+                    iconUrl = "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                    platform = DevicePlatform.DevicePlatform_ANDROID,
+                    platformVersion = "11",
+                    deviceStatus = DeviceStatus.DeviceStatus_ACTIVE,
+                    model = "As",
+                    role = ConnectionRole.ROLE_CONNECTEE,
+                    type = ConnectionType.ConnectionType_BLOCKED,
+                )
+            )
+        )
     }
 }
