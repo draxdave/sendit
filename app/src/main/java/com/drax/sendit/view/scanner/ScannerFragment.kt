@@ -22,19 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import app.siamak.sendit.R
-import app.siamak.sendit.databinding.ScannerFragmentBinding
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.view.base.BaseComposeFragment
-import com.drax.sendit.view.base.BaseFragment
 import com.drax.sendit.view.theme.aqua200
 import com.drax.sendit.view.theme.low_white
-import com.drax.sendit.view.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
