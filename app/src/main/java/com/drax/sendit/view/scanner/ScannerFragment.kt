@@ -86,6 +86,7 @@ class ScannerFragment : BaseComposeFragment() {
 
             Image(
                 modifier = Modifier
+                    .padding(top = 48.dp)
                     .padding(16.dp)
                     .clickable {
                         findNavController().navigateUp()
