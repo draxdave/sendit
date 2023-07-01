@@ -110,11 +110,12 @@ class ShareContentFragment : BaseComposeBottomSheet() {
             ) {
 
                 Text(
+                    modifier = Modifier.padding(start = 4.dp),
                     text = stringResource(id = R.string.sendit),
                     style = MaterialTheme.typography.h6,
                 )
                 Text(
-                    modifier = Modifier.padding(bottom = 16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp, start = 4.dp),
                     text = stringResource(id = R.string.share_modal_title),
                     style = MaterialTheme.typography.body1,
                 )
