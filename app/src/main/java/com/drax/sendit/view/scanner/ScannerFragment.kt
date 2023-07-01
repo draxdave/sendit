@@ -39,7 +39,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ScannerFragment : BaseComposeFragment() {
-    val viewModel: ScannerVM by viewModels()
     private lateinit var codeScanner: CodeScanner
 
     override fun onCreateView(
@@ -102,7 +101,7 @@ class ScannerFragment : BaseComposeFragment() {
 
     @Preview
     @Composable
-    fun ScannerScreenPreview(uiState: ScannerUiState? = null) {
+    fun ScannerScreenPreview() {
         ScannerScreen()
     }
 
