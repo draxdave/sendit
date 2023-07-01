@@ -40,6 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScannerFragment : BaseComposeFragment() {
     val viewModel: ScannerVM by viewModels()
+    private lateinit var codeScanner: CodeScanner
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +56,8 @@ class ScannerFragment : BaseComposeFragment() {
     fun ScannerScreen() {
         Box(modifier = Modifier.fillMaxSize()) {
             AndroidView(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .clickable {
                         codeScanner.startPreview()
                     },
@@ -102,16 +104,6 @@ class ScannerFragment : BaseComposeFragment() {
     @Composable
     fun ScannerScreenPreview(uiState: ScannerUiState? = null) {
         ScannerScreen()
-    }
-
-    private lateinit var codeScanner: CodeScanner
-
-    private fun initView() {
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            when (it) {
-                ScannerUiState.Neutral -> Unit
-            }
-        }
     }
 
     private fun submitResultAndDismiss(qrData: String) {
