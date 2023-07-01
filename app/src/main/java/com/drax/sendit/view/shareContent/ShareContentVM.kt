@@ -7,7 +7,7 @@ import com.drax.sendit.domain.network.model.type.TransactionContentType
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.PushRepository
 import com.drax.sendit.domain.repo.TransactionRepository
-import com.drax.sendit.view.DeviceWrapper
+import com.drax.sendit.view.connections.DeviceWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import dagger.hilt.android.lifecycle.HiltViewModel

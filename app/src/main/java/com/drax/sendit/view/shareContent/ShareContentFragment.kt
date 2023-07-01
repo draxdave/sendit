@@ -36,9 +36,7 @@ import app.siamak.sendit.R
 import com.drax.sendit.data.model.ModalMessage
 import com.drax.sendit.data.service.Event
 import com.drax.sendit.domain.network.model.type.DevicePlatform
-import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.base.BaseComposeBottomSheet
-import com.drax.sendit.view.qr.QrUiState
 import com.drax.sendit.view.shareContent.components.ShareContentList
 import com.drax.sendit.view.util.modal
 import com.drax.sendit.view.util.observe

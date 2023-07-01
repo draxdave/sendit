@@ -107,7 +107,7 @@
     <ID>NewLineAtEndOfFile:DevicePlatform.kt$com.drax.sendit.domain.network.model.type.DevicePlatform.kt</ID>
     <ID>NewLineAtEndOfFile:DeviceRepositoryImpl.kt$com.drax.sendit.data.repo.DeviceRepositoryImpl.kt</ID>
     <ID>NewLineAtEndOfFile:DeviceStatus.kt$com.drax.sendit.domain.network.model.type.DeviceStatus.kt</ID>
-    <ID>NewLineAtEndOfFile:DeviceWrapper.kt$com.drax.sendit.view.DeviceWrapper.kt</ID>
+    <ID>NewLineAtEndOfFile:DeviceWrapper.kt$com.drax.sendit.view.connections.DeviceWrapper.kt</ID>
     <ID>NewLineAtEndOfFile:ErrorHandlerInterceptor.kt$com.drax.sendit.domain.network.ErrorHandlerInterceptor.kt</ID>
     <ID>NewLineAtEndOfFile:ErrorResponse.kt$com.drax.sendit.domain.network.model.ErrorResponse.kt</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.drax.sendit.ExampleUnitTest.kt</ID>
@@ -128,7 +128,7 @@
     <ID>NewLineAtEndOfFile:LoginVM.kt$com.drax.sendit.view.login.LoginVM.kt</ID>
     <ID>NewLineAtEndOfFile:MainActivity.kt$com.drax.sendit.view.main.MainActivity.kt</ID>
     <ID>NewLineAtEndOfFile:MainVM.kt$com.drax.sendit.view.main.MainVM.kt</ID>
-    <ID>NewLineAtEndOfFile:MessageWrapper.kt$com.drax.sendit.view.MessageWrapper.kt</ID>
+    <ID>NewLineAtEndOfFile:MessageWrapper.kt$com.drax.sendit.view.messages.MessageWrapper.kt</ID>
     <ID>NewLineAtEndOfFile:MessagesAdapter.kt$com.drax.sendit.view.messages.MessagesAdapter.kt</ID>
     <ID>NewLineAtEndOfFile:MessagesFragment.kt$com.drax.sendit.view.messages.MessagesFragment.kt</ID>
     <ID>NewLineAtEndOfFile:MessagesUiState.kt$com.drax.sendit.view.messages.MessagesUiState.kt</ID>

@@ -1,8 +1,7 @@
 package com.drax.sendit.view.shareContent
 
-import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.model.Resource
-import com.drax.sendit.view.DeviceWrapper
+import com.drax.sendit.view.connections.DeviceWrapper
 
 sealed class ShareContentUiState {
     object Loading : ShareContentUiState()

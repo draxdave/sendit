@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.DeviceRepository
 import com.drax.sendit.domain.repo.TransactionRepository
-import com.drax.sendit.view.MessageWrapper
 import com.drax.sendit.view.util.ResViewModel
 import com.drax.sendit.view.util.job
 import dagger.hilt.android.lifecycle.HiltViewModel

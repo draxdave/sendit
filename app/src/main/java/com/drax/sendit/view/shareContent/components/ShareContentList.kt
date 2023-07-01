@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.siamak.sendit.R
-import com.drax.sendit.view.DeviceWrapper
 import com.drax.sendit.view.connections.ConnectionsVM
 import com.drax.sendit.view.shareContent.ShareContentUiState
 

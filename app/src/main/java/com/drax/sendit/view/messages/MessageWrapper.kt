@@ -1,4 +1,4 @@
-package com.drax.sendit.view
+package com.drax.sendit.view.messages
 
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.DeviceDomain
