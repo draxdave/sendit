@@ -99,13 +99,14 @@ class ShareContentFragment : BaseComposeBottomSheet() {
     fun ShareContentScreen(uiStateProvider: State<ShareContentUiState>, share: (Long) -> Unit) {
         val uiState by uiStateProvider
 
-            Log.e("ShareContentScreen", "uiState: $uiState")
+        Log.e("ShareContentScreen", "uiState: $uiState")
 
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 8.dp)
             ) {
 
                 Text(

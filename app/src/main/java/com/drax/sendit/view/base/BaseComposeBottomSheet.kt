@@ -15,6 +15,7 @@ abstract class BaseComposeBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         analytics.set(Event.Fragment.Viewed(this))
     }
 
