@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         initActivity()
-        launchShareFragment("Some Test")
     }
 
     private fun initActivity() {
