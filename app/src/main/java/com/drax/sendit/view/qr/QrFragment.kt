@@ -41,7 +41,6 @@ import com.drax.sendit.view.qr.components.QrScanButton
 import com.drax.sendit.view.scanner.ScannerFragment
 import com.drax.sendit.view.util.allPermissionsGranted
 import com.drax.sendit.view.util.modal
-import com.drax.sendit.view.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 import ir.drax.modal.Modal
 import ir.drax.modal.model.MoButton

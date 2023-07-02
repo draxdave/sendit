@@ -37,6 +37,7 @@ import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.shareContent.ShareContentFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Random
 import javax.inject.Inject
 
 
@@ -44,6 +45,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private val mainVM: MainVM by viewModels()
     private lateinit var navController: NavController
+    private val nav_host_fragment_container = Random().nextInt()
 
     @Inject
     lateinit var analytics: Analytics
@@ -62,21 +64,6 @@ class MainActivity : AppCompatActivity() {
         val uiState by mainVM.uiState.collectAsState()
         Log.e("MainActivity", "MainActivityScreen: $uiState")
 
-        when (uiState) {
-            MainUiState.Neutral -> Unit
-            MainUiState.UserSignedIn -> {
-//                    userSignedIn(
-//                        bottomNavigationView,
-//                        navController,
-//                        intent
-//                    )
-            }
-
-            MainUiState.UserSignedOut -> {
-//                    userSignedOut(bottomNavigationView, navController)
-            }
-        }
-
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -93,13 +80,13 @@ class MainActivity : AppCompatActivity() {
                         },
                     factory = { context ->
                         FragmentContainerView(context).apply {
-                            id = R.id.nav_host_fragment_container
+                            id = nav_host_fragment_container
                         }
                     }) {
                     val navHostFragment = NavHostFragment.create(R.navigation.logged_in_graph)
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.nav_host_fragment_container, navHostFragment)
+                        .replace(nav_host_fragment_container, navHostFragment)
                         .setPrimaryNavigationFragment(navHostFragment)
                         .commit()
 
@@ -121,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                             },
                         factory = {
                             BottomNavigationView(it).apply {
-                                id = R.id.bottom_nav
                                 inflateMenu(R.menu.bottom_nav)
                                 itemTextColor =
                                     ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryDark))
