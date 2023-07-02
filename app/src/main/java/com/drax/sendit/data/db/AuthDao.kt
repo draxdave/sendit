@@ -5,7 +5,7 @@ import androidx.room.Query
 
 @Dao
 interface AuthDao {
-    @Query("DELETE FROM registry")
+    @Query("DELETE FROM registry WHERE isUserData = 1")
     fun clearUserData()
     @Query("DELETE FROM connection")
     fun clearDeviceData()

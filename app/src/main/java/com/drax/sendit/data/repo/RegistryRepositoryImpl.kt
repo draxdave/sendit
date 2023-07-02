@@ -29,12 +29,12 @@ class RegistryRepositoryImpl @Inject constructor(
 
 
     override suspend fun setFirebaseId(id: String) =
-        registryDao.addOrUpdate(Registry(key = FIREBASE_ID, value = id))
+        registryDao.addOrUpdate(Registry(key = FIREBASE_ID, value = id, isUserData = false))
 
     override fun getFirebaseId(): String? = registryDao.getRegistryValueSync(FIREBASE_ID)
 
-    override suspend fun updateToken(token: String){
-        registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token))
+    override suspend fun updateToken(token: String) {
+        registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token, isUserData = true))
     }
 
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
@@ -42,6 +42,7 @@ class RegistryRepositoryImpl @Inject constructor(
     override suspend fun updateThisDevice(device: DeviceDomain?) {
         store(THIS_DEVICE, device)
     }
+
     override fun getThisDevice() =
         registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
 
@@ -58,12 +59,18 @@ class RegistryRepositoryImpl @Inject constructor(
 
     override fun getDeviceId(): String =
         registryDao.getRegistryValueSync(DEVICE_UNIQUE_ID) ?: deviceInfoHelper.getId().also {
-            registryDao.addOrUpdate(Registry(key = DEVICE_UNIQUE_ID, value = it))
+            registryDao.addOrUpdate(
+                Registry(
+                    key = DEVICE_UNIQUE_ID,
+                    value = it,
+                    isUserData = false
+                )
+            )
         }
 
     private inline fun <reified T> store(key: String, value: T?) {
         registryDao.addOrUpdate(
-            Registry(key = key, value = value.encode<T>(json))
+            Registry(key = key, value = value.encode<T>(json), isUserData = true)
         )
     }
 

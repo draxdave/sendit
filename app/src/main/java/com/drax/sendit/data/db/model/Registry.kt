@@ -9,5 +9,6 @@ data class Registry(
     @PrimaryKey(autoGenerate = false)
     var key: String,
     var value: String?,
-    var modifiedAt: Long = System.currentTimeMillis()
+    var modifiedAt: Long = System.currentTimeMillis(),
+    val isUserData: Boolean = false,
 )

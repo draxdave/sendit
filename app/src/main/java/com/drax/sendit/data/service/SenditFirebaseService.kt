@@ -10,10 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 
@@ -54,10 +52,6 @@ class SenditFirebaseService : FirebaseMessagingService() {
         GlobalScope.launch(Dispatchers.IO) {
             deviceRepository.updateInstanceId(instanceId)
         }
-//
-//        GlobalScope.launch(Dispatchers.IO) {
-//            deviceRepository.pushNewInstanceId(instanceId)
-//        }
     }
 
     companion object {
