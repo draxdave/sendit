@@ -40,9 +40,12 @@ class DeviceRepositoryImpl @Inject constructor(
     }
     override suspend fun updateInstanceId(instanceId: String) {
         registryRepository.setFirebaseId(instanceId)
-//        apiService.updateInstanceId(
-//            UpdateInstanceIdRequest(instanceId)
-//        )
+    }
+
+    override suspend fun pushNewInstanceId(id: String){
+        apiService.updateInstanceId(
+            UpdateInstanceIdRequest(id)
+        )
     }
 
     override fun getApiToken() = registryRepository.getApiToken()

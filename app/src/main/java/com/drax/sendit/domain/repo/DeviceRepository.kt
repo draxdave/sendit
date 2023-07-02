@@ -23,4 +23,5 @@ interface DeviceRepository : BaseStorageRepository {
 
     suspend fun getWhois(): Resource<ApiResponse<WhoisResponse>>
 
+    suspend fun pushNewInstanceId(id: String)
 }

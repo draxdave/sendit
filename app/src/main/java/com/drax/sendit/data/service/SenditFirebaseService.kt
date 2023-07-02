@@ -10,8 +10,10 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 
@@ -49,7 +51,10 @@ class SenditFirebaseService : FirebaseMessagingService() {
     }
 
     private fun updateDeviceInstanceId(instanceId: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }
+        GlobalScope.launch(Dispatchers.IO + exceptionHandler + SupervisorJob()) {
             deviceRepository.updateInstanceId(instanceId)
         }
     }
