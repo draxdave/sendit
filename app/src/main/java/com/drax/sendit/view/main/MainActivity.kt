@@ -3,6 +3,7 @@ package com.drax.sendit.view.main
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun MainActivityScreen() {
         val uiState by mainVM.uiState.collectAsState()
+        Log.e("MainActivity", "MainActivityScreen: $uiState")
 
         when (uiState) {
             MainUiState.Neutral -> Unit
