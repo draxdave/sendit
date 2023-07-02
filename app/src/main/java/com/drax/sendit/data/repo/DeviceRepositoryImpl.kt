@@ -25,14 +25,19 @@ class DeviceRepositoryImpl @Inject constructor(
         registryRepository.getFirebaseId() ?: ""
     }
 
-    override suspend fun addOrUpdateDevice(device: DeviceDomain) =
+    override suspend fun addOrUpdateDevice(device: DeviceDomain){
         registryRepository.updateThisDevice(device)
+    }
 
     override fun getSelfDevice() = registryRepository.getThisDevice()
 
-    override suspend fun clearDb() = registryRepository.updateThisDevice(null)
+    override suspend fun clearDb(): Unit {
+        registryRepository.updateThisDevice(null)
+    }
 
-    override suspend fun storeToken(token: String) = registryRepository.updateToken(token)
+    override suspend fun storeToken(token: String){
+        registryRepository.updateToken(token)
+    }
     override suspend fun updateInstanceId(instanceId: String) {
         registryRepository.setFirebaseId(instanceId)
         apiService.updateInstanceId(
@@ -46,7 +51,9 @@ class DeviceRepositoryImpl @Inject constructor(
         apiService.getQr()
     }.fetch()
 
-    override suspend fun storeQRUrl(qrUrl: String) = registryRepository.updateQrUrl(qrUrl)
+    override suspend fun storeQRUrl(qrUrl: String) {
+        registryRepository.updateQrUrl(qrUrl)
+    }
 
     override fun getQrUrl() = registryRepository.getQrUrl()
 

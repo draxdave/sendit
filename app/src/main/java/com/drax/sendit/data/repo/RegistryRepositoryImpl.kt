@@ -33,12 +33,15 @@ class RegistryRepositoryImpl @Inject constructor(
 
     override fun getFirebaseId(): String? = registryDao.getRegistryValueSync(FIREBASE_ID)
 
-    override suspend fun updateToken(token: String) =
+    override suspend fun updateToken(token: String){
         registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token))
+    }
 
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
-    override suspend fun updateThisDevice(device: DeviceDomain?) = store(THIS_DEVICE, device)
+    override suspend fun updateThisDevice(device: DeviceDomain?) {
+        store(THIS_DEVICE, device)
+    }
     override fun getThisDevice() =
         registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
 

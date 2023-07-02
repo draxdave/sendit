@@ -13,6 +13,11 @@ class UserRepositoryImpl @Inject constructor(
     //    override fun getUserSync() = registryRepository.getUser()
     override fun getUser() = registryRepository.getUser()
 
-    override suspend fun addOrUpdateUser(user: User) = registryRepository.updateUser(user)
-    override suspend fun clearDb() = registryRepository.updateUser(null)
+    override suspend fun addOrUpdateUser(user: User) {
+        registryRepository.updateUser(user)
+    }
+
+    override suspend fun clearDb() {
+        registryRepository.updateUser(null)
+    }
 }

@@ -5,7 +5,7 @@ import com.drax.sendit.data.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface RegistryRepository : BaseStorageRepository {
-    suspend fun setFirebaseId(id: String)
+    suspend fun setFirebaseId(id: String): Long
     fun getFirebaseId(): String?
 
     suspend fun updateToken(token: String)
