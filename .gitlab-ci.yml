@@ -1,6 +1,13 @@
 image: openjdk:17
 
 before_script:
+  - apt-get --quiet update
+  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
+  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+  - unzip -q android-sdk.zip -d android-sdk-linux
+  - export ANDROID_SDK_ROOT=$PWD/android-sdk-linux
+  - export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools/bin
+  - yes | sdkmanager --licenses
   - chmod +x ./gradlew
   - echo $CI_PIPELINE_SOURCE
   - cat $LOCAL_PROPERTIES > local.properties
