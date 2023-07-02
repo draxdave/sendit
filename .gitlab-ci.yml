@@ -1,8 +1,8 @@
-image: adoptopenjdk/openjdk17:alpine
+image: openjdk:17-jdk-alpine
 
 before_script:
-  - apt-get --quiet update
-  - apt-get install -y curl
+  - apk update
+  - apk add curl
   - curl -sL https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip > cmdline-tools.zip
   - unzip -q cmdline-tools.zip -d /sdk
   - yes | /sdk/cmdline-tools/bin/sdkmanager --sdk_root=/sdk --licenses
