@@ -1,12 +1,15 @@
-image: openjdk:17
+image: adoptopenjdk/openjdk17:alpine
 
 before_script:
   - apt-get --quiet update
-  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-  - unzip -q android-sdk.zip -d android-sdk-linux
-  - export ANDROID_SDK_ROOT=$PWD/android-sdk-linux
-  - export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools/bin
+  - apt-get install -y curl
+  - curl -sL https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip > cmdline-tools.zip
+  - unzip -q cmdline-tools.zip -d /sdk
+  - yes | /sdk/cmdline-tools/bin/sdkmanager --sdk_root=/sdk --licenses
+  - /sdk/cmdline-tools/bin/sdkmanager --sdk_root=/sdk "platforms;android-${ANDROID_COMPILE_SDK}"
+  - /sdk/cmdline-tools/bin/sdkmanager --sdk_root=/sdk "build-tools;${ANDROID_BUILD_TOOLS}"
+  - export ANDROID_HOME=/sdk
+  - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
   - yes | sdkmanager --licenses
   - chmod +x ./gradlew
   - echo $CI_PIPELINE_SOURCE
