@@ -32,7 +32,7 @@ class LoginUseCase @Inject constructor(
         password: String
     ) {
         val deviceId = deviceRepository.deviceUniqueId
-        val instanceId = deviceRepository.getDeviceInstanceId()
+        val instanceId = deviceRepository.deviceInstanceId
 
         formState.value = FormState.Loading
 

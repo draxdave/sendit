@@ -21,8 +21,9 @@ class DeviceRepositoryImpl @Inject constructor(
         registryRepository.getDeviceId()
     }
 
-    override suspend fun getDeviceInstanceId(): String =
+    override val deviceInstanceId: String by lazy {
         registryRepository.getFirebaseId() ?: ""
+    }
 
     override suspend fun addOrUpdateDevice(device: DeviceDomain) =
         registryRepository.updateThisDevice(device)

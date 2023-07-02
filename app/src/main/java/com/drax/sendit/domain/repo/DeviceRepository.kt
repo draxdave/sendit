@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository : BaseStorageRepository {
     val deviceUniqueId: String
-    suspend fun getDeviceInstanceId(): String
+    val deviceInstanceId: String
 
     suspend fun addOrUpdateDevice(device: DeviceDomain)
     fun getSelfDevice(): Flow<DeviceDomain?>
