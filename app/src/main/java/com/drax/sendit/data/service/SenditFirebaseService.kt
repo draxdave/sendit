@@ -51,12 +51,13 @@ class SenditFirebaseService : FirebaseMessagingService() {
     }
 
     private fun updateDeviceInstanceId(instanceId: String) {
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            throwable.printStackTrace()
-        }
-        GlobalScope.launch(Dispatchers.IO + exceptionHandler + SupervisorJob()) {
+        GlobalScope.launch(Dispatchers.IO) {
             deviceRepository.updateInstanceId(instanceId)
         }
+//
+//        GlobalScope.launch(Dispatchers.IO) {
+//            deviceRepository.pushNewInstanceId(instanceId)
+//        }
     }
 
     companion object {
