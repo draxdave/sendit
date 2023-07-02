@@ -1,5 +1,4 @@
-image: jangrewe/gitlab-ci-android
-
+image: openjdk:17
 
 before_script:
   - chmod +x ./gradlew
