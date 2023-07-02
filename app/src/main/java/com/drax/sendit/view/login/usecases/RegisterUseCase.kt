@@ -41,7 +41,7 @@ class RegisterUseCase @Inject constructor(
         }
 
         val deviceId = deviceRepository.deviceUniqueId
-        val instanceId = deviceRepository.deviceInstanceId
+        val instanceId = deviceRepository.getDeviceInstanceId()
 
         formState.value = FormState.Loading
 

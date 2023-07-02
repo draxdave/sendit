@@ -31,7 +31,7 @@ class GoogleSsoUseCase @Inject constructor(
         idToken: String
     ) {
         val deviceId = deviceRepository.deviceUniqueId
-        val instanceId = deviceRepository.deviceInstanceId
+        val instanceId = deviceRepository.getDeviceInstanceId()
 
         formState.value = FormState.Loading
 
