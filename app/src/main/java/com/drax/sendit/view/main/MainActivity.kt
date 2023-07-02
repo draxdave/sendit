@@ -195,37 +195,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun userSignedIn(
-        bottomNavigationView: BottomNavigationView,
-        navController: NavController,
-        intent: Intent?
-    ) {
-        bottomNavigationView.isVisible = true
-        navigateToHomePage(navController)
-        handleNewIntent(intent ?: return)
-    }
-
-    private fun userSignedOut(
-        bottomNavigationView: BottomNavigationView,
-        navController: NavController
-    ) {
-        bottomNavigationView.visibility = View.GONE
-        navigateToLogin(navController)
-    }
-
-    private fun navigateToLogin(navController: NavController) {
-        navController.currentDestination?.id?.let {
-            if (it == R.id.loginFragment) return
-        }
-        val navOptions = NavOptions.Builder()
-            .setLaunchSingleTop(true)
-            .setEnterAnim(R.anim.slide_down)
-            .setPopExitAnim(R.anim.slide_up)
-            .setPopUpTo(R.id.main_graph, true)
-            .build()
-        navController.navigate(R.id.loginFragment, null, navOptions)
-    }
-
     private fun navigateToHomePage(navController: NavController) {
         val navOptions = NavOptions.Builder()
             .setLaunchSingleTop(true)
