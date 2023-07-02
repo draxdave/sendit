@@ -2,34 +2,26 @@ package com.drax.sendit.view.main
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
-import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentOnAttachListener
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -42,7 +34,6 @@ import com.drax.sendit.data.service.NotificationUtil
 import com.drax.sendit.data.service.models.NotificationData
 import com.drax.sendit.data.service.models.NotificationModel
 import com.drax.sendit.view.shareContent.ShareContentFragment
-import com.drax.sendit.view.util.observe
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -88,14 +79,21 @@ class MainActivity : AppCompatActivity() {
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            Column {
+            ConstraintLayout {
+                val (bottomNavRef, navHostRef) = createRefs()
 
-                AndroidView(factory = { context ->
-                    FragmentContainerView(context).apply {
-                        id = R.id.nav_host_fragment_container
-                    }
-                }) { fragment ->
-
+                AndroidView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(navHostRef) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(bottomNavRef.top)
+                        },
+                    factory = { context ->
+                        FragmentContainerView(context).apply {
+                            id = R.id.nav_host_fragment_container
+                        }
+                    }) {
                     val navHostFragment = NavHostFragment.create(R.navigation.logged_in_graph)
                     supportFragmentManager
                         .beginTransaction()
@@ -103,12 +101,22 @@ class MainActivity : AppCompatActivity() {
                         .setPrimaryNavigationFragment(navHostFragment)
                         .commit()
 
+                    supportFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
+                        if (uiState is MainUiState.UserSignedIn) {
+                            navController = fragment.findNavController()
+                            navigateToHomePage(navController)
+                        }
+                    }
                 }
 
-                if (uiState !is MainUiState.UserSignedIn)
+                if (uiState is MainUiState.UserSignedIn)
                     AndroidView(
-                        modifier = Modifier.fillMaxWidth()
-                            .height(integerResource(id = R.BottomNavigationView_android_minHeight)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp)
+                            .constrainAs(bottomNavRef) {
+                                bottom.linkTo(parent.bottom)
+                            },
                         factory = {
                             BottomNavigationView(it).apply {
                                 id = R.id.bottom_nav
@@ -193,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         intent: Intent?
     ) {
         bottomNavigationView.isVisible = true
-        navigateToFirstPage(navController)
+        navigateToHomePage(navController)
         handleNewIntent(intent ?: return)
     }
 
@@ -218,7 +226,7 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.loginFragment, null, navOptions)
     }
 
-    private fun navigateToFirstPage(navController: NavController) {
+    private fun navigateToHomePage(navController: NavController) {
         val navOptions = NavOptions.Builder()
             .setLaunchSingleTop(true)
             .setEnterAnim(R.anim.slide_down)
