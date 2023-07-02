@@ -10,7 +10,6 @@ before_script:
   - /sdk/cmdline-tools/bin/sdkmanager --sdk_root=/sdk "build-tools;${ANDROID_BUILD_TOOLS}"
   - export ANDROID_HOME=/sdk
   - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
-  - yes | sdkmanager --licenses
   - chmod +x ./gradlew
   - echo $CI_PIPELINE_SOURCE
   - cat $LOCAL_PROPERTIES > local.properties
