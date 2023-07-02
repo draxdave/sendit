@@ -1,16 +1,39 @@
 package com.drax.sendit.view.main
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
+import androidx.compose.ui.node.Ref
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.integerResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentOnAttachListener
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import app.siamak.sendit.R
 import com.drax.sendit.data.service.Analytics
@@ -29,33 +52,89 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private val mainVM: MainVM by viewModels()
     private lateinit var navController: NavController
+
     @Inject
     lateinit var analytics: Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        initActivity()
+        setContentView(ComposeView(this).apply {
+            setContent {
+                MainActivityScreen()
+            }
+        })
     }
 
-    private fun initActivity() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
-        navController = navHostFragment.navController
+    @Composable
+    fun MainActivityScreen() {
+        val uiState by mainVM.uiState.collectAsState()
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        NavigationUI.setupWithNavController(bottomNavigationView, navController)
-        mainVM.uiState.observe(this) { uiState ->
-            when (uiState) {
-                MainUiState.Neutral -> Unit
-                MainUiState.UserSignedIn -> userSignedIn(
-                    bottomNavigationView,
-                    navController,
-                    intent
-                )
-                MainUiState.UserSignedOut -> userSignedOut(bottomNavigationView, navController)
+        when (uiState) {
+            MainUiState.Neutral -> Unit
+            MainUiState.UserSignedIn -> {
+//                    userSignedIn(
+//                        bottomNavigationView,
+//                        navController,
+//                        intent
+//                    )
+            }
+
+            MainUiState.UserSignedOut -> {
+//                    userSignedOut(bottomNavigationView, navController)
             }
         }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+
+            Column {
+
+                AndroidView(factory = { context ->
+                    FragmentContainerView(context).apply {
+                        id = R.id.nav_host_fragment_container
+                    }
+                }) { fragment ->
+
+                    val navHostFragment = NavHostFragment.create(R.navigation.logged_in_graph)
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment_container, navHostFragment)
+                        .setPrimaryNavigationFragment(navHostFragment)
+                        .commit()
+
+                }
+
+                if (uiState !is MainUiState.UserSignedIn)
+                    AndroidView(
+                        modifier = Modifier.fillMaxWidth()
+                            .height(integerResource(id = R.BottomNavigationView_android_minHeight)),
+                        factory = {
+                            BottomNavigationView(it).apply {
+                                id = R.id.bottom_nav
+                                inflateMenu(R.menu.bottom_nav)
+                                itemTextColor =
+                                    ColorStateList.valueOf(resources.getColor(R.color.colorPrimaryDark))
+                                itemIconTintList =
+                                    ColorStateList.valueOf(R.drawable.navigation_view_colored)
+                            }
+                        }) { bottomNav ->
+                        supportFragmentManager.addFragmentOnAttachListener { _, fragment ->
+
+                            NavigationUI.setupWithNavController(
+                                bottomNav,
+                                fragment.findNavController()
+                            )
+                        }
+                    }
+            }
+        }
+    }
+
+    @Preview
+    @Composable
+    fun PreviewMainActivityScreen() {
+        MainActivityScreen()
     }
 
     override fun onNewIntent(newIntent: Intent?) {
