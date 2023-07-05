@@ -19,7 +19,7 @@ sealed class ModalMessage(
     val lock: Boolean,
     val description: Int? = null
 ) {
-    data class Success(val message: Int): ModalMessage(
+    data class Success(val message: Int) : ModalMessage(
         title = message,
         icon = R.drawable.tick,
         fromTop = true,
@@ -27,21 +27,21 @@ sealed class ModalMessage(
     )
 
 
-    data class Failed(val message: Int): ModalMessage(
+    data class Failed(val message: Int) : ModalMessage(
         title = message,
         icon = R.drawable.warning,
         fromTop = true,
         lock = false
     )
 
-    data class FromNetError(val errorCode: Int): ModalMessage(
+    data class FromNetError(val errorCode: Int) : ModalMessage(
         title = errorCode.toStringId(),
         icon = errorCode.toDrawableId(),
         fromTop = true,
         lock = false
     )
 
-    data class Neutral(val message: Int): ModalMessage(
+    data class Neutral(val message: Int) : ModalMessage(
         title = message,
         icon = R.drawable.ic_outline_info_24,
         fromTop = true,
@@ -54,7 +54,7 @@ sealed class ModalMessage(
         val mFromTop: Boolean,
         val mLock: Boolean,
         val mDescription: Int
-    ): ModalMessage(
+    ) : ModalMessage(
         title = mTitle,
         icon = mIcon,
         fromTop = mFromTop,
@@ -63,24 +63,24 @@ sealed class ModalMessage(
     )
 }
 
-private fun Int.toStringId() = when(this){
+fun Int.toStringId() = when (this) {
     UNAUTHORIZED_ACCESS -> R.string.error_unauthorized
     ConnectException -> R.string.network_unavailable
-    SocketTimeoutException-> R.string.network_unavailable
-    UnknownHostException->R.string.network_unavailable
-    ErrorHandlerInterceptor.Exception-> R.string.error_internal
+    SocketTimeoutException -> R.string.network_unavailable
+    UnknownHostException -> R.string.network_unavailable
+    ErrorHandlerInterceptor.Exception -> R.string.error_internal
     BadRequest -> R.string.error_internal
     in UnControlledBadRequest -> R.string.error_internal
-    in UnControlledRedirection-> R.string.error_internal
+    in UnControlledRedirection -> R.string.error_internal
     in UnControlledServerError -> R.string.error_internal
     else -> R.string.unknown_error
 }
 
-private fun Int.toDrawableId() = when(this){
+fun Int.toDrawableId() = when (this) {
     UNAUTHORIZED_ACCESS -> R.drawable.ic_round_signal_cellular_connected_no_internet_4_bar_24
 
     UnknownHostException,
-    SocketTimeoutException ,
+    SocketTimeoutException,
     ConnectException ->
         R.drawable.ic_round_signal_cellular_connected_no_internet_4_bar_24
 

@@ -12,9 +12,7 @@
 
     <string name="fragment_qr">Pairing</string>
     <string name="fragment_devices">Devices</string>
-    <string name="fragment_profile">Profile</string>
     <string name="fragment_transmitted">Transactions</string>
-    <string name="fragment_transactions_title">Transactions History</string>
     <string name="sign_in_with_google">Sign In With Google</string>
     <string name="fragment_login">Login</string>
     <string name="devices_item_device_added_date">Paired Since %s</string>
@@ -28,13 +26,6 @@
     <string name="scanner">Scanner</string>
     <string name="invitation_sent_title">The Connection Request Is Sent!</string>
     <string name="invitation_sent_desc">You will see the new connection on \'Devices\' soon.</string>
-    <string name="new_invitation">New Pair Request</string>
-    <string name="new_invitation_desc"><b>%s</b> wants to connect and send you messages.\nDo you accept the invitation?</string>
-    <string name="new_invitation_accept"><b>Yes</b>, Accept the invitation</string>
-    <string name="invitation_accept">Accept Invitation</string>
-    <string name="new_invitation_decline">No, Decline the request</string>
-    <string name="invitation_decline">Decline</string>
-    <string name="new_invitation_accept_sent">Your response is sent!</string>
     <string name="permission_needed">Permission Is Required</string>
     <string name="permission_needed_camera">SendIt Needs Camera permission to scan the barcodes. Please provide it.</string>
     <string name="invitation_already_active">You are already connected to this device.</string>
@@ -46,7 +37,6 @@
     <string name="login_error_device_inactive">This device is not active. Please contact support for more info.</string>
     <string name="login_error_user_pass_incorrect">Email or Password is incorrect.</string>
     <string name="login_error_user_inactive">This user is not active. Please contact support for more info.</string>
-    <string name="login_error_user_active">User is already registered. Please sign in with your credentials.</string>
     <string name="sendit">Send It</string>
     <string name="share">Share</string>
     <string name="copy">Copy</string>
@@ -55,21 +45,33 @@
     <string name="qr_help_desc">Use this QR code to connect to other devices. Or you can scan QR code on your other devices.</string>
     <string name="learn_more">Learn More</string>
     <string name="unpair">Unpair Connection</string>
+    <string name="unpair_done">Connection unpaired.</string>
     <string name="unpair_modal_description">You are removing this connection from your network. Proceed?</string>
     <string name="cancel">Cancel</string>
     <string name="login_email_hint">Enter your email address</string>
+    <string name="login_email_placeholder">ex: email@mail.com</string>
+    <string name="login_password_placeholder">Your password</string>
+    <string name="login_password_repeat_placeholder">Repeat your password</string>
     <string name="login_password_hint">Enter your Password</string>
     <string name="login_password_confirm_hint">Enter your Password again</string>
     <string name="login_bottom_action_signup">Create An Account Now!</string>
-    <string name="login_bottom_action_signin">Already Have An Account?</string>
     <string name="login_bottom_action_forgot">Forgot your password?</string>
     <string name="login_submit_signin">Sign In</string>
-    <string name="login_submit_forgot">Send Recovery Email</string>
-    <string name="login_submit_signup">Sign Up</string>
-    <string name="login_form_error_email_input">Please enter correct email address.</string>
-    <string name="login_form_error_password_input">Please enter a complex password with 6&#8211;20 characters.</string>
-    <string name="login_form_error_password_equal">Passwords do not match.</string>
     <string name="signup_done">A confirmation Email is sent to your email address. Please follow instructions in it to verify your email address.</string>
     <string name="login_forget_pass">We sent the required instructions to your email address. Please follow them in order to reset account password.</string>
+    <string name="login_submit_signup">Sign-Up Now!</string>
+    <string name="login_submit_forget">Send Password</string>
+    <string name="login_form_error_email_input">Please enter correct email address</string>
+    <string name="login_form_error_password_input">Enter a valid password, please</string>
+    <string name="login_form_error">An error happened. Try again please.</string>
+    <string name="login_form_success">Operation done successfully</string>
+    <string name="passwords_dont_match">Passwords do not match.</string>
+    <string name="active">Active</string>
+    <string name="blocked">Blocked</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="expired">Expired</string>
+    <string name="rejected">Rejected</string>
+    <string name="unknown">Unknown</string>
+    <string name="share_bottom_sheet_empty_list">No devices found to share the content.\nAdd a device first.</string>
 
 </resources>

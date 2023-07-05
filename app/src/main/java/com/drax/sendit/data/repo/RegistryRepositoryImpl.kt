@@ -5,6 +5,9 @@ import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.model.User
 import com.drax.sendit.domain.repo.RegistryRepository
+import com.drax.sendit.view.util.DeviceInfoHelper
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.decodeFromString
@@ -17,24 +20,31 @@ import kotlinx.serialization.json.Json
  * Just define a constant number as record key and then save the value as a String value.
  * Use Gson to make sure the data stays the same while saving and loading.
  */
-class RegistryRepositoryImpl(
+@Singleton
+class RegistryRepositoryImpl @Inject constructor(
     private val registryDao: RegistryDao,
+    private val deviceInfoHelper: DeviceInfoHelper,
     private val json: Json,
 ) : RegistryRepository {
 
 
     override suspend fun setFirebaseId(id: String) =
-        registryDao.addOrUpdate(Registry(key = FIREBASE_ID, value = id))
+        registryDao.addOrUpdate(Registry(key = FIREBASE_ID, value = id, isUserData = false))
 
     override fun getFirebaseId(): String? = registryDao.getRegistryValueSync(FIREBASE_ID)
 
-    override suspend fun updateToken(token: String) =
-        registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token))
+    override suspend fun updateToken(token: String) {
+        registryDao.addOrUpdate(Registry(key = API_TOKEN, value = token, isUserData = true))
+    }
 
     override fun getApiToken(): String? = registryDao.getRegistryValueSync(API_TOKEN)
 
-    override suspend fun updateThisDevice(device: DeviceDomain?) = store(THIS_DEVICE,device)
-    override fun getThisDevice() =  registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
+    override suspend fun updateThisDevice(device: DeviceDomain?) {
+        store(THIS_DEVICE, device)
+    }
+
+    override fun getThisDevice() =
+        registryDao.getRegistryValue(THIS_DEVICE).decode<DeviceDomain>(json)
 
     override suspend fun updateUser(user: User?) {
         store(THIS_USER, user)
@@ -47,9 +57,20 @@ class RegistryRepositoryImpl(
 
     override fun getQrUrl() = registryDao.getRegistryValue(QR_URL).decode<String>(json)
 
+    override fun getDeviceId(): String =
+        registryDao.getRegistryValueSync(DEVICE_UNIQUE_ID) ?: deviceInfoHelper.getId().also {
+            registryDao.addOrUpdate(
+                Registry(
+                    key = DEVICE_UNIQUE_ID,
+                    value = it,
+                    isUserData = false
+                )
+            )
+        }
+
     private inline fun <reified T> store(key: String, value: T?) {
         registryDao.addOrUpdate(
-            Registry(key = key, value = value.encode<T>(json))
+            Registry(key = key, value = value.encode<T>(json), isUserData = true)
         )
     }
 
@@ -66,6 +87,7 @@ class RegistryRepositoryImpl(
         private const val THIS_DEVICE = "THIS_DEVICE"
         private const val THIS_USER = "THIS_USER"
         private const val QR_URL = "QR_URL"
+        private const val DEVICE_UNIQUE_ID = "DEVICE_UNIQUE_ID"
     }
 }
 

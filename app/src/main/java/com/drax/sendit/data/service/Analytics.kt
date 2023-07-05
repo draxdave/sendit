@@ -1,17 +1,33 @@
 package com.drax.sendit.data.service
 
+import android.content.Context
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import app.siamak.sendit.BuildConfig
 import com.google.firebase.analytics.FirebaseAnalytics
+import javax.inject.Inject
 
-class Analytics(
+
+class Analytics @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
 ) {
 
-    fun set(event: Event){
+    fun set(event: Event) {
 //        if (!BuildConfig.DEBUG)
-            firebaseAnalytics.logEvent(event.category, event.params)
+        firebaseAnalytics.logEvent(event.category, event.params)
+    }
+
+    companion object {
+
+        private var INSTANCE: Analytics? = null
+
+        @Synchronized
+        fun getInstance(context: Context): Analytics {
+            return INSTANCE ?: synchronized(this) {
+                Analytics(FirebaseAnalytics.getInstance(context)).also {
+                    INSTANCE = it
+                }
+            }
+        }
     }
 }
 
@@ -29,11 +45,8 @@ sealed class Event {
     }
 
 
-
-
-
     sealed class Fragment(override val category: String = "FRAGMENT") : Event() {
-        data class Viewed(val fragment: androidx.fragment.app.Fragment): Fragment() {
+        data class Viewed(val fragment: androidx.fragment.app.Fragment) : Fragment() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "EVENT_FRAGMENT_VIEWED",
                 "FRAGMENT_NAME" to fragment::class.java.name
@@ -42,7 +55,7 @@ sealed class Event {
     }
 
     sealed class View(override val category: String = "VIEW") : Event() {
-        sealed class Clicked(viewEventName: String): View() {
+        sealed class Clicked(viewEventName: String) : View() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "EVENT_VIEW_CLICKED",
                 "VIEW_EVENT_NAME" to viewEventName
@@ -56,44 +69,45 @@ sealed class Event {
 
     }
 
-    sealed class SignIn(override val category: String = "SignIn"): Event() {
+    sealed class SignIn(override val category: String = "SignIn") : Event() {
 
-        object LeftSignIn: SignIn() {
+        object LeftSignIn : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Exit"
             )
         }
 
-        object Succeed: SignIn() {
+        object Succeed : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Succeed"
             )
         }
 
-        object SsoDone: SignIn() {
+        object SsoDone : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "SSO Succeed"
             )
         }
 
-        object SignInFlowFailed: SignIn() {
+        object SignInFlowFailed : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "SignInFlowFailed"
             )
         }
-        object SignUpFlowStarted: SignIn() {
+
+        object SignUpFlowStarted : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "SignUpFlowFailed"
             )
         }
 
-        object GoToHome: SignIn() {
+        object GoToHome : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "GoToHome"
             )
         }
 
-        data class Failed(val reason: String): SignIn() {
+        data class Failed(val reason: String) : SignIn() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Failed",
                 "DETAIL" to reason
@@ -101,26 +115,27 @@ sealed class Event {
         }
     }
 
-    sealed class Notification(override val category: String = "Notification"): Event() {
-        data class Any(val data: Map<String, String>): Notification() {
+    sealed class Notification(override val category: String = "Notification") : Event() {
+        data class Any(val data: Map<String, String>) : Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "All",
                 "DATA" to data.toList()
             )
         }
-        object ConnectionRequest: Notification() {
+
+        object ConnectionRequest : Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ConnectionRequest"
             )
         }
 
-        object Content: Notification() {
+        object Content : Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Content"
             )
         }
 
-        data class Clicked(val notificationData: String): Notification() {
+        data class Clicked(val notificationData: String) : Notification() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Clicked",
                 "DATA" to notificationData
@@ -128,19 +143,20 @@ sealed class Event {
         }
     }
 
-    sealed class Share(override val category: String = "Share"): Event() {
-        object Requested: Share(){
+    sealed class Share(override val category: String = "Share") : Event() {
+        object Requested : Share() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Requested"
             )
         }
 
-        object Sent: Share(){
+        object Sent : Share() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Sent"
             )
         }
-        data class Failed(val reason: String): Share(){
+
+        data class Failed(val reason: String) : Share() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Failed",
                 "REASON" to reason
@@ -148,140 +164,147 @@ sealed class Event {
         }
     }
 
-    sealed class QR(override val category: String = "QR"): Event() {
-        object Scanned: QR(){
+    sealed class QR(override val category: String = "QR") : Event() {
+        object Scanned : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Scanned"
             )
         }
 
-        object ScannerRequested: QR(){
+        object ScannerRequested : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ScannerRequested"
             )
         }
 
-        object LoadQRFailed: QR(){
+        object LoadQRFailed : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "LoadQRFailed"
             )
         }
-        object LoadQRFailedFromNet: QR(){
+
+        object LoadQRFailedFromNet : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "LoadQRFailedFromNet"
             )
         }
 
-        object InvitationSent: QR(){
+        object InvitationSent : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "InvitationSent"
             )
         }
 
-        object ReceivedInvitationDialogShown: QR(){
+        object ReceivedInvitationDialogShown : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ReceivedInvitationDialogShown"
             )
         }
-        object ReceivedInvitationRejected: QR(){
+
+        object ReceivedInvitationRejected : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "InvitationRejected"
             )
         }
 
-        object ReceivedInvitationFailedToSend: QR(){
+        object ReceivedInvitationFailedToSend : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ReceivedInvitationFailedToSend"
             )
         }
-        object ReceivedInvitationAccepted: QR(){
+
+        object ReceivedInvitationAccepted : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ReceivedInvitationAccepted"
             )
         }
 
-        object CameraPermissionRejected: QR(){
+        object CameraPermissionRejected : QR() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "CameraPermissionRejected"
             )
         }
     }
 
-    sealed class Messages(override val category: String = "Messages"): Event() {
-        object Copy: Messages(){
+    sealed class Messages(override val category: String = "Messages") : Event() {
+        object Copy : Messages() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Copy"
             )
         }
 
-        object Remove: Messages(){
+        object Remove : Messages() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Remove"
             )
         }
-        object Share: Messages(){
+
+        object Share : Messages() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Share"
             )
         }
     }
 
-    sealed class Connections(override val category: String = "Connections"): Event() {
-        object UnpairRequested: Connections() {
+    sealed class Connections(override val category: String = "Connections") : Event() {
+        object UnpairRequested : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "UnpairRequested"
             )
         }
-        object Unpaired: Connections() {
+
+        object Unpaired : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Unpaired"
             )
         }
-        object PopupShown: Connections() {
+
+        object PopupShown : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "PopupShown"
             )
         }
-        object Accepted: Connections() {
+
+        object Accepted : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Accepted"
             )
         }
 
-        object Rejected: Connections() {
+        object Rejected : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Rejected"
             )
         }
 
-        object RefreshedList: Connections() {
+        object RefreshedList : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "RefreshedList"
             )
         }
 
-        object RefreshFailed: Connections() {
+        object RefreshFailed : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "RefreshFailed"
             )
         }
 
-        object Logout: Connections() {
+        object Logout : Connections() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "Logout"
             )
         }
     }
 
-    sealed class Network(override val category: String = "Network"): Event() {
-        data class ApiRequest(val apiName: String): Network() {
+    sealed class Network(override val category: String = "Network") : Event() {
+        data class ApiRequest(val apiName: String) : Network() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ApiCalled",
                 "NAME" to apiName
             )
         }
 
-        data class ApiError(val errorCode: String, val request: String): Network() {
+        data class ApiError(val errorCode: String, val request: String) : Network() {
             override val params: Bundle = bundleOf(
                 EVENT_KEY to "ApiError",
                 "CODE" to errorCode,

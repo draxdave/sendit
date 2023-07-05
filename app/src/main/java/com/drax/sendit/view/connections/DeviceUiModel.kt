@@ -1,7 +1,5 @@
 package com.drax.sendit.view.connections
 
-import android.content.Context
-import app.siamak.sendit.R
 import com.drax.sendit.data.db.model.DeviceDomain
 import com.drax.sendit.domain.network.model.type.DevicePlatform
 import com.drax.sendit.domain.network.model.type.DeviceStatus
@@ -25,10 +23,10 @@ data class DeviceUiModel(
 )
 
 object DeviceTransformer {
-    private val DATE_FORMAT="hh:mm a - MMM dd ,yyyy"
-    fun toUiModel(context: Context, device: DeviceDomain) = DeviceUiModel(
+    private val DATE_FORMAT = "hh:mm a - MMM dd ,yyyy"
+    fun toUiModel(device: DeviceDomain) = DeviceUiModel(
         id = device.id,
-        name = context.getString(R.string.device_name, device.name),
+        name = device.name,
         platform = device.platform,
         status = device.status,
         region = device.region,
@@ -39,7 +37,7 @@ object DeviceTransformer {
         platformVersion = device.platformVersion,
         appVersion = device.appVersion,
         languageCode = device.languageCode,
-        lastTouch = context.getString(R.string.last_used, device.lastTouch.formatToDate(DATE_FORMAT)),
+        lastTouch = device.lastTouch.formatToDate(DATE_FORMAT),
         isThisDevice = device.isThisDevice,
     )
 }

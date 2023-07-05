@@ -4,10 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "registry")
-data class Registry (
+data class Registry(
 
     @PrimaryKey(autoGenerate = false)
-    var key               : String,
-    var value              : String?,
-    var modifiedAt              : Long = System.currentTimeMillis()
+    var key: String,
+    var value: String?,
+    var modifiedAt: Long = System.currentTimeMillis(),
+    val isUserData: Boolean = false,
 )

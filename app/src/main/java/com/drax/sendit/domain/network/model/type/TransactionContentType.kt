@@ -10,7 +10,7 @@ import androidx.annotation.IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class TransactionContentType {
 
-    companion object{
+    companion object {
         const val TransactionType_CONTENT_TEXT = 100
         const val TransactionType_CONTENT_URL = 200
         const val TransactionType_CONTENT_MEDIA_IMAGE = 300

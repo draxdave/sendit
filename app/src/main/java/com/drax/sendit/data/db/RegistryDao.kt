@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.Flow
 interface RegistryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addOrUpdate(registry: Registry)
+    fun addOrUpdate(registry: Registry): Long
 
-    @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 " )
-    fun getRegistryValue(key:String):Flow<String?>
+    @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 ")
+    fun getRegistryValue(key: String): Flow<String?>
 
-    @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 " )
-    fun getRegistryValueSync(key:String):String?
+    @Query("SELECT value FROM registry  WHERE `key`=:key  LIMIT 1 ")
+    fun getRegistryValueSync(key: String): String?
 
     @Update
     fun updateRegistry(registry: Registry)

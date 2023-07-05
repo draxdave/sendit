@@ -5,105 +5,139 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.siamak.sendit.BuildConfig
 import app.siamak.sendit.R
-import com.drax.sendit.data.service.Event
-import app.siamak.sendit.databinding.TransmissionsFragmentBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.drax.sendit.view.MessageWrapper
-import com.drax.sendit.view.base.BaseFragment
-import com.drax.sendit.view.util.observe
+import coil.compose.AsyncImage
+import com.drax.sendit.view.base.BaseComposeFragment
+import com.drax.sendit.view.messages.components.EmptyTransaction
+import com.drax.sendit.view.messages.components.MessagesListLayout
+import com.drax.sendit.view.messages.components.TEMP_MESSAGES
 import com.drax.sendit.view.util.toast
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class MessagesFragment: BaseFragment<TransmissionsFragmentBinding, MessagesVM>(TransmissionsFragmentBinding::inflate) {
-    override val viewModel: MessagesVM by viewModel()
+@AndroidEntryPoint
+class MessagesFragment : BaseComposeFragment() {
+    val viewModel by viewModels<MessagesViewModel>()
 
-    private val transitionAdapter: TransactionAdapter by lazy {
-        TransactionAdapter(
-            copy = {
-                analytics.set(Event.Messages.Copy)
-                copyToClipboard(it)
-            },
-            remove = {
-                analytics.set(Event.Messages.Remove)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return ComposeView(context = requireContext()).apply {
+            setContent {
+                MessagesScreen(
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun MessagesScreen(
+        modifier: Modifier = Modifier,
+        viewModel: MessagesViewModel,
+    ) {
+        val uiState by viewModel.uiState
+        RootScreen(
+            modifier = modifier,
+            uiState = uiState,
+            onRemoveRequest = {
                 viewModel.removeTransaction(it)
-            },
-            share = {
-                analytics.set(Event.Messages.Share)
-                shareTransaction(it)
             }
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObservers()
-        initView()
-    }
+    @Composable
+    fun RootScreen(
+        modifier: Modifier = Modifier,
+        uiState: UiState = UiState.Loading,
+        onRemoveRequest: (Long) -> Unit,
+    ) {
+        Box(modifier = Modifier) {
+            AsyncImage(
+                model = CHAT_BG_IMG_URL,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+            )
 
-    private fun initObservers() {
+            if (uiState is UiState.Empty)
+                EmptyTransaction()
 
-        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when(uiState){
-                MessagesUiState.Neutral -> Unit
-                MessagesUiState.NoTransaction -> {
-                    binding.emptyDialog.visibility = View.VISIBLE
-                    transitionAdapter.submitList(listOf())
-                }
-                is MessagesUiState.MessagesLoaded -> {
-                    binding.emptyDialog.visibility = View.GONE
-                    transitionAdapter.submitList(uiState.transmissions)
-                }
+            (uiState as? UiState.WithMessages)?.run {
+                MessagesListLayout(
+                    modifier = modifier,
+                    onShareMessage = { shareTransaction(it) },
+                    onCopyMessage = { copyToClipboard(it) },
+                    onRemove = onRemoveRequest,
+                    messagesList = messages
+                )
             }
         }
-
-        viewModel.messagesList.observe(viewLifecycleOwner) {
-            transitionAdapter.submitList(it)
-        }
     }
 
-    private fun initView(){
-        binding.list.apply {
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.VERTICAL,
-                true
-            )
-            adapter = transitionAdapter
-        }
-
-        Glide.with(binding.listBg)
-            .asBitmap()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .load(CHAT_BG_IMG_URL)
-            .into(binding.listBg)
-    }
-
-    private fun copyToClipboard(messageWrapper: MessageWrapper) {
+    private fun copyToClipboard(content: String) {
         (context?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
             ?.setPrimaryClip(
-                ClipData.
-                newPlainText(getString(R.string.copied_text_label), messageWrapper.message.content)
+                ClipData.newPlainText(
+                    getString(R.string.copied_text_label),
+                    content
+                )
             )
         toast(getString(R.string.copied_text_label))
     }
 
-    private fun shareTransaction(messageWrapper: MessageWrapper) {
+
+    private fun shareTransaction(content: String) {
         Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, messageWrapper.message.content)
+            putExtra(Intent.EXTRA_TEXT, content)
 
         }.also {
             startActivity(Intent.createChooser(it, null))
         }
     }
 
+    @Preview(showBackground = true, showSystemUi = true)
+    @Composable
+    fun EmptyMessagesScreenPreview() {
+        RootScreen(
+            uiState = UiState.Empty,
+            onRemoveRequest = {},
+        )
+    }
+
+    @Preview(showBackground = true, showSystemUi = true)
+    @Composable
+    fun NonEmptyMessagesScreenPreview() {
+        RootScreen(
+            uiState = UiState.WithMessages(TEMP_MESSAGES),
+            onRemoveRequest = {},
+        )
+    }
+
     companion object {
         private const val CHAT_BG_IMG_URL = "${BuildConfig.BASE_URL}/img/chat_background_01.jpg"
     }
+}
+
+sealed class UiState {
+    object Empty : UiState()
+    object Loading : UiState()
+    data class WithMessages(val messages: List<MessageUiModel>) : UiState()
+
 }

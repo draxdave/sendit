@@ -7,7 +7,9 @@ import com.drax.sendit.domain.network.model.GetQRResponse
 import com.drax.sendit.domain.network.model.device.WhoisResponse
 import kotlinx.coroutines.flow.Flow
 
-interface DeviceRepository: BaseStorageRepository{
+interface DeviceRepository : BaseStorageRepository {
+    val deviceUniqueId: String
+    val deviceInstanceId: String
 
     suspend fun addOrUpdateDevice(device: DeviceDomain)
     fun getSelfDevice(): Flow<DeviceDomain?>
@@ -20,4 +22,5 @@ interface DeviceRepository: BaseStorageRepository{
     fun getQrUrl(): Flow<String?>
 
     suspend fun getWhois(): Resource<ApiResponse<WhoisResponse>>
+
 }

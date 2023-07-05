@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DeviceDomain (
+data class DeviceDomain(
     val id: Long,
     val name: String,
     @DevicePlatform val platform: Int,

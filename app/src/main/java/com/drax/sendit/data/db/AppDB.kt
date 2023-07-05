@@ -10,10 +10,12 @@ import app.siamak.sendit.BuildConfig
 import com.drax.sendit.data.db.model.Connection
 import com.drax.sendit.data.db.model.Registry
 import com.drax.sendit.data.db.model.Transaction
+import javax.inject.Singleton
 
 /**
  * Main database description.
  */
+@Singleton
 @Database(
     entities = [
         Registry::class,
@@ -25,10 +27,10 @@ import com.drax.sendit.data.db.model.Transaction
 )
 @TypeConverters(TimeConverters::class)
 abstract class AppDB : RoomDatabase() {
-    abstract fun registryDao() : RegistryDao
-    abstract fun transactionDao() : TransactionsDao
-    abstract fun connectionDao() : ConnectionDao
-    abstract fun authDao() : AuthDao
+    abstract fun registryDao(): RegistryDao
+    abstract fun transactionDao(): TransactionsDao
+    abstract fun connectionDao(): ConnectionDao
+    abstract fun authDao(): AuthDao
 
     companion object {
         private var instance: AppDB? = null

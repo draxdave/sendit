@@ -2,28 +2,27 @@ package com.drax.sendit.data.repo
 
 import com.drax.sendit.data.db.ConnectionDao
 import com.drax.sendit.data.db.model.Connection
-import com.drax.sendit.data.model.Resource
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
-import com.drax.sendit.domain.network.model.ApiResponse
-import com.drax.sendit.domain.network.model.GetConnectionResponse
 import com.drax.sendit.domain.network.model.PairRequest
-import com.drax.sendit.domain.network.model.PairResponseRequest
 import com.drax.sendit.domain.network.model.UnpairRequest
 import com.drax.sendit.domain.repo.ConnectionRepository
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.flow
 
-class ConnectionRepositoryImpl(
+@Singleton
+class ConnectionRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val connectionDao: ConnectionDao,
-)
-    : ConnectionRepository {
+) : ConnectionRepository {
     override fun getConnections(onlyActive: Boolean) =
         if (onlyActive) connectionDao.getActiveConnections()
         else connectionDao.getAll()
 
-    override suspend fun addConnection(vararg connection: Connection) = connectionDao.add(*connection)
+    override suspend fun addConnection(vararg connection: Connection) =
+        connectionDao.add(*connection)
+
     override suspend fun emptyConnections(): Unit = connectionDao.deleteAll()
 
     override fun sendPairRequest(pairRequest: PairRequest) = flow {
@@ -46,7 +45,7 @@ class ConnectionRepositoryImpl(
 
     override fun getConnectionsFromServer() = flow {
         emit(
-            NetworkCall{
+            NetworkCall {
                 apiService.getConnections()
             }.fetch()
         )
@@ -54,7 +53,7 @@ class ConnectionRepositoryImpl(
 
     override fun getConnectionFromServer(id: String) = flow {
         emit(
-            NetworkCall{
+            NetworkCall {
                 apiService.getConnection(id)
             }.fetch()
         )

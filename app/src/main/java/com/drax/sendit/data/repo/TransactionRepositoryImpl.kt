@@ -5,12 +5,15 @@ import com.drax.sendit.data.db.model.Transaction
 import com.drax.sendit.domain.network.ApiService
 import com.drax.sendit.domain.network.NetworkCall
 import com.drax.sendit.domain.repo.TransactionRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.flow
 
-class TransactionRepositoryImpl(
+@Singleton
+class TransactionRepositoryImpl @Inject constructor(
     private val transactionsDao: TransactionsDao,
     private val apiService: ApiService
-): TransactionRepository {
+) : TransactionRepository {
     override fun getAllTransactions() = transactionsDao.getList()
     override suspend fun clearDb() {
         transactionsDao.deleteAll()
@@ -21,10 +24,11 @@ class TransactionRepositoryImpl(
     }
 
     override fun removeLocally(transaction: Transaction) = transactionsDao.delete(transaction)
+    override fun removeLocallyById(transactionId: Long) = transactionsDao.deleteById(transactionId)
 
     override fun getAllTransactionsFromServer() = flow {
         emit(
-            NetworkCall{
+            NetworkCall {
                 apiService.getTransactions(1)
             }.fetch()
         )

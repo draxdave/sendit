@@ -8,6 +8,9 @@ import com.drax.sendit.data.service.models.NewInvitation
 import com.drax.sendit.data.service.models.PushOp
 import com.drax.sendit.domain.repo.ConnectionRepository
 import com.drax.sendit.domain.repo.TransactionRepository
+import javax.inject.Inject
+import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -15,17 +18,17 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlin.coroutines.CoroutineContext
 
-class PushProcessor(
+@Singleton
+class PushProcessor @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val connectionRepository: ConnectionRepository,
     private val notificationBuilder: NotificationBuilder,
     private val json: Json,
     private val analytics: Analytics
-){
+) {
 
-    fun process(op: String?, rawData: String?): Pair<String, Bundle>? = when(op?.toInt()){
+    fun process(op: String?, rawData: String?): Pair<String, Bundle>? = when (op?.toInt()) {
         null -> null
 
         PushOp.PUSH_OP_NEW_CONNECTION -> {
@@ -69,11 +72,14 @@ class PushProcessor(
         // Notify User
         notificationBuilder.fireNotification(transaction)
         // Update server to delivered
-    } catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
     }
 
-    private fun job(dispatcher: CoroutineContext = Dispatchers.IO, job: suspend CoroutineScope.() -> Unit){
+    private fun job(
+        dispatcher: CoroutineContext = Dispatchers.IO,
+        job: suspend CoroutineScope.() -> Unit
+    ) {
         GlobalScope.launch(dispatcher, CoroutineStart.DEFAULT, job)
     }
 

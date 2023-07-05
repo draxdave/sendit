@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 class RocketAnimationHandler(
     private val ivRocketAnimated: ImageView,
     lifecycle: Lifecycle,
-    uiState: StateFlow<LoginUiState>,
+    uiState: StateFlow<FormState>,
 ) : LifecycleEventObserver {
     private var stopped = false
     private var succeed = false
@@ -26,7 +26,7 @@ class RocketAnimationHandler(
         lifecycle.addObserver(this)
         lifecycle.coroutineScope.launchWhenStarted {
             uiState.collect {
-                succeed = it is LoginUiState.LoginSucceed
+                succeed = it is FormState.Success
             }
         }
     }
@@ -69,7 +69,7 @@ class RocketAnimationHandler(
 
     fun startAnimation() {
         stopped = false
-        with(R.drawable.login_rocket_animated.asVectorAnimated()){
+        with(R.drawable.login_rocket_animated.asVectorAnimated()) {
             ivRocketAnimated.setImageDrawable(this)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 registerAnimationCallback(object : Animatable2.AnimationCallback() {

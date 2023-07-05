@@ -14,7 +14,8 @@ class InstantDeserializer {
             if (json.contains("T")) TIMEZONE_DATE_FORMAT
             else COMMON_DATE_FORMAT
 
-        ))
+        )
+    )
         .atZone(ZoneId.systemDefault())
         .toInstant()
 
@@ -34,7 +35,7 @@ class InstantDeserializer {
         return formatter.format(instant)
     }
 
-    companion object{
+    companion object {
         private const val COMMON_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
         private const val TIMEZONE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX"
     }

@@ -8,28 +8,36 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 
+@AndroidEntryPoint
 class SenditFirebaseService : FirebaseMessagingService() {
 
-    private val pushProcessor: PushProcessor by inject()
-    private val deviceRepository: DeviceRepository by inject()
-    private val analytics: Analytics by inject()
+    @Inject
+    lateinit var pushProcessor: PushProcessor
+
+    @Inject
+    lateinit var deviceRepository: DeviceRepository
+
+    @Inject
+    lateinit var analytics: Analytics
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         println("onMessageReceived")
         analytics.set(Event.Notification.Any(remoteMessage.data))
         if (remoteMessage.data.containsKey("op") &&
-            remoteMessage.data.containsKey("data"))
+            remoteMessage.data.containsKey("data")
+        )
             pushProcessor.process(remoteMessage.data["op"], remoteMessage.data["data"])?.send()
     }
 
-    private fun Pair<String,Bundle>.send(){
+    private fun Pair<String, Bundle>.send() {
         val intent = Intent(first)
         intent.putExtras(second)
         applicationContext.sendBroadcast(intent)
@@ -46,14 +54,14 @@ class SenditFirebaseService : FirebaseMessagingService() {
         }
     }
 
-    companion object{
+    companion object {
 
-        fun token(onError : () -> Unit, then : (String) -> Unit) =
+        fun token(onError: () -> Unit, then: (String) -> Unit) =
             run {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
                         if (BuildConfig.DEBUG)
-                            println( "Fetching FCM registration token failed"+ task.exception)
+                            println("Fetching FCM registration token failed" + task.exception)
                         onError()
                         return@OnCompleteListener
                     }

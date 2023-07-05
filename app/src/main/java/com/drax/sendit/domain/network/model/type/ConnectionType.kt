@@ -11,7 +11,7 @@ import androidx.annotation.IntDef
 @Retention(AnnotationRetention.SOURCE)
 annotation class ConnectionType {
 
-    companion object{
+    companion object {
         const val ConnectionType_NORMAL = 201
         const val ConnectionType_ONE_WAY_CONNECTEE = 301
         const val ConnectionType_ONE_WAY_CONNECTOR = 401

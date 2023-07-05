@@ -1,6 +1,8 @@
 package com.drax.sendit.domain.network
 
 import com.drax.sendit.data.db.AuthDao
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -8,10 +10,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 
-class AuthInterceptor(
+@Singleton
+class AuthInterceptor @Inject constructor(
     private val authDao: AuthDao,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-): Interceptor {
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(chain.request()).also {
         if (it.code == UNAUTHORIZED_ACCESS) {
@@ -20,7 +23,7 @@ class AuthInterceptor(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun unAuthorizedAccessDetected(){
+    private fun unAuthorizedAccessDetected() {
 
         GlobalScope.launch(defaultDispatcher) {
             authDao.clearDeviceData()
@@ -29,7 +32,7 @@ class AuthInterceptor(
         }
     }
 
-    companion object{
+    companion object {
         const val UNAUTHORIZED_ACCESS = 401
     }
 }
